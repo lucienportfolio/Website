@@ -2,7 +2,7 @@
  * @Author       : hwl
  * @Date         : 2022-05-11 16:36:23
  * @LastEditors  : hwl
- * @LastEditTime : 2022-05-13 16:51:43
+ * @LastEditTime : 2022-05-14 20:36:30
  * @Description  :
  */
 import { defineConfig } from 'vite'
@@ -33,5 +33,6 @@ export default defineConfig({
     //     rewrite: (path) => path.replace('/api/', '/')
     //   }
     // }
-  }
+  },
+  productionSourceMap: false
 })

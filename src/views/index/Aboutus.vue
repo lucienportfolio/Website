@@ -83,13 +83,20 @@
   </section>
 </template>
 <script>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, onMounted } from 'vue'
+import $ from 'jquery'
 import { teamList as getTeamList } from '@/api/index'
 
 export default defineComponent({
   name: 'AboutUs',
   setup() {
     const teamList = reactive(getTeamList)
+    onMounted(() => {
+      $('.view-all').bind('click', () => {
+        $(this).hide()
+        $('.team-info-box').show()
+      })
+    })
     return { teamList }
   }
 })
@@ -391,6 +398,13 @@ export default defineComponent({
         margin-right: 0;
         margin-top: 2.1rem;
         min-height: 42.9rem;
+        display: none;
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(3),
+        &:nth-child(4) {
+          display: block;
+        }
         .team-member-avatar-box {
           max-height: 28rem;
           > img {
@@ -467,9 +481,11 @@ export default defineComponent({
         &:nth-child(3) {
           width: 100%;
           padding-right: 0;
-          background-image: url(@/assets/images/aboutus-manifesto-bg-wap-3.png);
-          background-position: left top;
           border-radius: 0.4rem;
+          .manifesto-info {
+            background-image: url(@/assets/images/aboutus-manifesto-bg-wap-3.png);
+            background-position: left top;
+          }
         }
         &:nth-child(4) {
           width: 100%;
@@ -479,9 +495,11 @@ export default defineComponent({
         &:nth-child(5) {
           width: 100%;
           padding-right: 0;
-          background-image: url(@/assets/images/aboutus-manifesto-bg-wap-5.png);
-          background-position: left top;
           border-radius: 0.4rem;
+          .manifesto-info {
+            background-image: url(@/assets/images/aboutus-manifesto-bg-wap-5.png);
+            background-position: left top;
+          }
         }
       }
     }

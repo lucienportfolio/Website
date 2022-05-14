@@ -362,7 +362,15 @@ export default defineComponent({
     SwiperSlide
   },
   setup() {
+    const raqList = reactive(getRaqList)
     onMounted(() => {
+      $('.roadmap-info').eq(0).show().siblings().hide()
+      raqList.forEach((opv, opi) => {
+        raqList[opi].forEach((ov, oi) => {
+          raqList[opi][oi].active = false
+        })
+      })
+      $('.faq-question').removeClass('active')
       let startDX = 0
       let startDY = 0
       document.addEventListener('touchstart', (e) => {
@@ -560,7 +568,7 @@ export default defineComponent({
     const teamList = reactive(getTeamList)
 
     // raq
-    const raqList = reactive(getRaqList)
+
     const onClickQuestion = (pi, i) => {
       if (raqList[pi][i].active) {
         raqList[pi][i].active = !raqList[pi][i].active

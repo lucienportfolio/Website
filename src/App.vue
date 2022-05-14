@@ -64,7 +64,9 @@
       </div>
     </div>
   </header>
+  <!-- <keep-alive> -->
   <router-view />
+  <!-- </keep-alive> -->
   <footer>
     <div class="info">
       <img src="@/assets/images/footer-logo-1.png" alt="" class="logo" />
@@ -144,7 +146,7 @@ export default defineComponent({
         setTimeout(() => {
           $('.loading-text .pro').html('(100%)')
           $('html').css('overflow-y', 'auto')
-          pagePg(1)
+          // pagePg(1)
           loading.value = false
         }, 300)
       }
