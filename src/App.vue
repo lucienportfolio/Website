@@ -7,7 +7,7 @@
         loop
         playsinline
         autoplay
-        src="@/assets/videos/loading.mp4"
+        src="https://ambrus.s3.amazonaws.com/1653214988260_0.67_loading.mp4"
         tabindex="-1"
         muted="muted"
       ></video>
@@ -22,9 +22,14 @@
       </div>
     </div>
   </div>
+  -->
   <header>
     <div class="info">
-      <img src="@/assets/images/header-logo.png" alt="" class="logo" />
+      <img
+        src="https://ambrus.s3.amazonaws.com/1653214835451_0.00_header-logo.png"
+        alt=""
+        class="logo"
+      />
       <div class="middle-box">
         <nav>
           <router-link to="/" :class="routeName === 'IndexIndex' ? 'active' : ''">HOME</router-link>
@@ -35,19 +40,28 @@
         <div class="top-right clearfix">
           <div class="link-list">
             <a href="https://discord.gg/e4c" target="_blank">
-              <img src="@/assets/images/header-link-1.png" alt="" />
+              <img
+                src="https://ambrus.s3.amazonaws.com/1653214835443_0.02_header-link-1.png"
+                alt=""
+              />
             </a>
             <!-- <a href="javascript:;">
-                <img src="@/assets/images/header-link-2.png" alt="" />
+                <img src="https://ambrus.s3.amazonaws.com/1653214835444_0.10_header-link-2.png" alt="" />
               </a> -->
             <a href="https://twitter.com/AmbrusStudio" target="_blank">
-              <img src="@/assets/images/header-link-3.png" alt="" />
+              <img
+                src="https://ambrus.s3.amazonaws.com/1653214835446_0.37_header-link-3.png"
+                alt=""
+              />
             </a>
             <!-- <a href="javascript:;">
-                <img src="@/assets/images/header-link-4.png" alt="" />
+                <img src="https://ambrus.s3.amazonaws.com/1653214835447_0.57_header-link-4.png" alt="" />
               </a> -->
             <a href="https://medium.com/@AmbrusStudio" target="_blank">
-              <img src="@/assets/images/header-link-5.png" alt="" />
+              <img
+                src="https://ambrus.s3.amazonaws.com/1653214835448_0.81_header-link-5.png"
+                alt=""
+              />
             </a>
           </div>
           <div class="language">Eng</div>
@@ -59,8 +73,16 @@
         </div>
       </div>
       <div class="menu-box">
-        <img src="@/assets/images/header-menu.png" alt="" class="header-menu" />
-        <img src="@/assets/images/header-menu-close.png" alt="" class="header-menu-close hidden" />
+        <img
+          src="https://ambrus.s3.amazonaws.com/1653214835453_0.82_header-menu.png"
+          alt=""
+          class="header-menu"
+        />
+        <img
+          src="https://ambrus.s3.amazonaws.com/1653214835454_0.97_header-menu-close.png"
+          alt=""
+          class="header-menu-close hidden"
+        />
       </div>
     </div>
   </header>
@@ -69,7 +91,11 @@
   <!-- </keep-alive> -->
   <footer>
     <div class="info">
-      <img src="@/assets/images/footer-logo-1.png" alt="" class="logo" />
+      <img
+        src="https://ambrus.s3.amazonaws.com/1653214835428_0.14_footer-logo-1.png"
+        alt=""
+        class="logo"
+      />
       <div class="sub-box">
         <!-- <div class="sub-title">Newsletter</div>
           <div class="sub-input-box clearfix">
@@ -79,23 +105,23 @@
       </div>
       <div class="link-list">
         <a href="https://discord.gg/e4c" target="_blank">
-          <img src="@/assets/images/footer-link-1.png" alt="" />
+          <img src="	https://ambrus.s3.amazonaws.com/1653214783661_0.71_footer-link-1.png" alt="" />
         </a>
         <!-- <a href="javascript:;">
-            <img src="@/assets/images/footer-link-2.png" alt="" />
+            <img src="https://ambrus.s3.amazonaws.com/1653214783662_0.80_footer-link-2.png" alt="" />
           </a> -->
         <a href="https://twitter.com/AmbrusStudio" target="_blank">
-          <img src="@/assets/images/footer-link-3.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1653214783663_0.58_footer-link-3.png" alt="" />
         </a>
         <!-- <a href="javascript:;">
-            <img src="@/assets/images/footer-link-4.png" alt="" />
+            <img src="https://ambrus.s3.amazonaws.com/1653214783664_0.75_footer-link-4.png" alt="" />
           </a> -->
         <a href="https://medium.com/@AmbrusStudio" target="_blank">
-          <img src="@/assets/images/footer-link-5.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1653214783665_0.92_footer-link-5.png" alt="" />
         </a>
       </div>
       <div class="footer-logo">
-        <img src="@/assets/images/footer-logo-2.png" alt="" />
+        <img src="https://ambrus.s3.amazonaws.com/1653214835436_0.79_footer-logo-2.png" alt="" />
       </div>
       <div class="help-link-list">
         <a href="javascript:;">Terms of Service</a>

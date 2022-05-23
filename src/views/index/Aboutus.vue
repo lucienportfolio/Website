@@ -14,19 +14,38 @@
       <div class="team-box-list clearfix">
         <div class="team-info-box" v-for="(v, i) in teamList" :key="i">
           <div class="team-member-avatar-box">
-            <img src="@/assets/images/aboutus-team-avatar-1.png" alt="" v-if="i === 0" />
-            <img src="@/assets/images/aboutus-team-avatar.png" alt="" v-else />
-            <a :href="v.instagram" target="_blank" v-if="v.instagram">
-              <img src="@/assets/images/team-link-3.png" alt="" />
-            </a>
-            <a :href="v.linkedin" target="_blank" v-if="v.linkedin">
-              <img src="@/assets/images/team-link-2.png" alt="" />
-            </a>
-            <a :href="v.twitter" target="_blank" v-if="v.twitter">
-              <img src="@/assets/images/team-link-1.png" alt="" />
-            </a>
+            <img
+              src="https://ambrus.s3.amazonaws.com/1653214679085_0.72_aboutus-team-avatar-1.png"
+              alt=""
+              v-if="i === 0"
+            />
+            <img
+              src="https://ambrus.s3.amazonaws.com/1653214679083_0.11_aboutus-team-avatar.png"
+              alt=""
+              v-else
+            />
           </div>
           <div class="team-member-info">
+            <div class="link">
+              <a :href="v.instagram" target="_blank" v-if="v.instagram">
+                <img
+                  src="https://ambrus.s3.amazonaws.com/1653214931634_0.91_team-link-3.png"
+                  alt=""
+                />
+              </a>
+              <a :href="v.linkedin" target="_blank" v-if="v.linkedin">
+                <img
+                  src="https://ambrus.s3.amazonaws.com/1653214931633_0.04_team-link-2.png"
+                  alt=""
+                />
+              </a>
+              <a :href="v.twitter" target="_blank" v-if="v.twitter">
+                <img
+                  src="	https://ambrus.s3.amazonaws.com/1653216688984_0.62_team-link-1.png"
+                  alt=""
+                />
+              </a>
+            </div>
             <div class="name">{{ v.name }}</div>
             <div class="edu">{{ v.edu }}</div>
             <div class="post" v-html="v.post"></div>
@@ -106,7 +125,7 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 63.6rem;
-  background-image: url('@/assets/images/aboutus-banner.jpg');
+  background-image: url('https://ambrus.s3.amazonaws.com/1653214679050_0.43_aboutus-banner.jpg');
   background-size: 100%;
   .title {
     padding: 40.8rem 0 0 8.8rem;
@@ -174,26 +193,6 @@ export default defineComponent({
           overflow: hidden;
           border-radius: 0.4rem 3.6rem 0 0;
         }
-        a {
-          img {
-            width: 3.6rem;
-          }
-          &:nth-child(2) {
-            position: absolute;
-            bottom: 1.6rem;
-            right: 1.6rem;
-          }
-          &:nth-child(3) {
-            position: absolute;
-            bottom: 1.6rem;
-            right: 5.8rem;
-          }
-          &:nth-child(4) {
-            position: absolute;
-            bottom: 1.6rem;
-            right: 10rem;
-          }
-        }
       }
       .team-member-info {
         position: absolute;
@@ -204,6 +203,19 @@ export default defineComponent({
         padding: 1.6rem 1.6rem 0;
         background: #ffffff;
         border-radius: 0px 0px 4px 12px;
+
+        .link {
+          position: absolute;
+          right: 1.6rem;
+          top: -5.2rem;
+          a {
+            img {
+              width: 3.6rem;
+              margin-left: 0.6rem;
+            }
+          }
+        }
+
         .name {
           font-family: Montserrat;
           font-weight: 600;
@@ -322,7 +334,7 @@ export default defineComponent({
         width: 27.3%;
         padding-right: 1.2rem;
         .manifesto-info {
-          background-image: url(@/assets/images/aboutus-manifesto-bg-1.png);
+          background-image: url(https://ambrus.s3.amazonaws.com/1653214679069_0.32_aboutus-manifesto-bg-1.png);
           border-radius: 3.6rem 1.2rem 0.4rem 1.2rem;
         }
       }
@@ -330,14 +342,14 @@ export default defineComponent({
         width: 30.7%;
         padding-right: 1.2rem;
         .manifesto-info {
-          background-image: url(@/assets/images/aboutus-manifesto-bg-2.png);
+          background-image: url(https://ambrus.s3.amazonaws.com/1653214679071_0.95_aboutus-manifesto-bg-2.png);
           border-radius: 1.2rem 1.2rem 0.4rem 0.4rem;
         }
       }
       &:nth-child(3) {
         width: 42%;
         .manifesto-info {
-          background-image: url(@/assets/images/aboutus-manifesto-bg-3.png);
+          background-image: url(https://ambrus.s3.amazonaws.com/1653214679073_0.23_aboutus-manifesto-bg-3.png);
           background-position: right top;
           border-radius: 1.2rem 3.6rem 1.2rem 0.4rem;
         }
@@ -346,14 +358,14 @@ export default defineComponent({
         width: 52.1%;
         padding-right: 1.2rem;
         .manifesto-info {
-          background-image: url(@/assets/images/aboutus-manifesto-bg-4.png);
+          background-image: url(https://ambrus.s3.amazonaws.com/1653214679075_0.68_aboutus-manifesto-bg-4.png);
           border-radius: 1.2rem 0.4rem 1.2rem 3.6rem;
         }
       }
       &:nth-child(5) {
         width: 47.9%;
         .manifesto-info {
-          background-image: url(@/assets/images/aboutus-manifesto-bg-5.png);
+          background-image: url(https://ambrus.s3.amazonaws.com/1653214679078_0.61_aboutus-manifesto-bg-5.png);
           background-position: right top;
           border-radius: 0.4rem 1.2rem 3.6rem 1.2rem;
         }
@@ -367,7 +379,7 @@ export default defineComponent({
   }
   .banner-box {
     height: 64rem;
-    background-image: url('@/assets/images/aboutus-banner.jpg');
+    background-image: url(https://ambrus.s3.amazonaws.com/1653214679050_0.43_aboutus-banner.jpg);
     background-size: 100%;
     .title {
       padding: 43.5rem 0 0 2.4rem;
@@ -415,7 +427,6 @@ export default defineComponent({
         }
         .team-member-info {
           width: 100%;
-          position: unset;
         }
       }
     }
@@ -483,7 +494,7 @@ export default defineComponent({
           padding-right: 0;
           border-radius: 0.4rem;
           .manifesto-info {
-            background-image: url(@/assets/images/aboutus-manifesto-bg-wap-3.png);
+            background-image: url(https://ambrus.s3.amazonaws.com/1653214679080_0.39_aboutus-manifesto-bg-wap-3.png);
             background-position: left top;
           }
         }
@@ -497,7 +508,7 @@ export default defineComponent({
           padding-right: 0;
           border-radius: 0.4rem;
           .manifesto-info {
-            background-image: url(@/assets/images/aboutus-manifesto-bg-wap-5.png);
+            background-image: url(https://ambrus.s3.amazonaws.com/1653214679082_0.45_aboutus-manifesto-bg-wap-5.png);
             background-position: left top;
           }
         }

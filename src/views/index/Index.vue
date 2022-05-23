@@ -7,13 +7,17 @@
         loop
         playsinline
         autoplay
-        src="@/assets/videos/home.mp4"
+        src="https://ambrus.s3.amazonaws.com/1653214988253_0.29_home.mp4"
         tabindex="-1"
         muted="muted"
       ></video>
       <div class="banner-info">
         <div class="desc">A blockchain game for gamers</div>
-        <img src="@/assets/images/home-banner-text-logo.png" alt="" class="text-logo" />
+        <img
+          src="https://ambrus.s3.amazonaws.com/1653214864716_0.93_home-banner-text-logo.png"
+          alt=""
+          class="text-logo"
+        />
         <div class="content">
           Year of <span>2100</span><br />
           Average global temperature increased by <span>4 °C</span><br />
@@ -40,10 +44,10 @@
       </div>
       <div class="arrow">
         <div class="left-arrow" id="rangers-left-arrow">
-          <img src="@/assets/images/ranger-left.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1653214899894_0.93_ranger-left.png	" alt="" />
         </div>
         <div class="right-arrow" id="rangers-right-arrow">
-          <img src="@/assets/images/ranger-right.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1653214899896_0.15_ranger-right.png" alt="" />
         </div>
       </div>
       <div class="rangers-bg-box"></div>
@@ -59,7 +63,7 @@
         class="rangers-list"
       >
         <swiper-slide class="ranger-box" v-for="(v, i) in rangerList" :key="i">
-          <img src="@/assets/images/blindbox2.gif" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1653214738331_0.53_blindbox2.gif" alt="" />
           <div class="ranger-name">{{ v.name }}</div>
         </swiper-slide>
       </swiper>
@@ -94,7 +98,7 @@
           loop
           playsinline
           autoplay
-          src="@/assets/videos/roadmap-0.mp4"
+          src="https://ambrus.s3.amazonaws.com/1653215111330_0.58_roadmap-0.mp4"
           tabindex="-1"
           muted="muted"
         ></video>
@@ -104,7 +108,7 @@
           loop
           playsinline
           autoplay
-          src="@/assets/videos/mobile-0.mp4"
+          src="https://ambrus.s3.amazonaws.com/1653215055509_0.07_mobile-0.mp4"
           tabindex="-1"
           muted="muted"
         ></video>
@@ -224,23 +228,69 @@
         </div>
       </div>
       <div class="preload-video-list">
-        <video preload="auto" autoplay src="@/assets/videos/roadmap-0.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/roadmap-1.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/roadmap-2.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/roadmap-3.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/roadmap-4.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/mobile-0.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/mobile-1.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/mobile-2.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/mobile-3.mp4"></video>
-        <video preload="auto" autoplay src="@/assets/videos/mobile-4.mp4"></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215111330_0.58_roadmap-0.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215111333_0.95_roadmap-1.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215111341_0.23_roadmap-2.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="	https://ambrus.s3.amazonaws.com/1653215111342_0.97_roadmap-3.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215111343_0.62_roadmap-4.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215055509_0.07_mobile-0.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215055516_0.04_mobile-1.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215055517_0.60_mobile-2.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215055519_0.17_mobile-3.mp4"
+        ></video>
+        <video
+          preload="auto"
+          autoplay
+          src="https://ambrus.s3.amazonaws.com/1653215055522_0.27_mobile-4.mp4"
+        ></video>
       </div>
       <div class="arrow">
         <div class="left-arrow" id="roadmap-left-arrow" @click="onRoadLeft(0)">
-          <img src="@/assets/images/roadmap-left-arrow.png" alt="" />
+          <img
+            src="https://ambrus.s3.amazonaws.com/1653214899905_0.62_roadmap-left-arrow.png"
+            alt=""
+          />
         </div>
         <div class="right-arrow" id="roadmap-right-arrow" @click="onRoadRight">
-          <img src="@/assets/images/roadmap-right-arrow.png" alt="" />
+          <img
+            src="https://ambrus.s3.amazonaws.com/1653214931627_0.00_roadmap-right-arrow.png"
+            alt=""
+          />
         </div>
       </div>
       <div class="skip-box">
@@ -283,10 +333,10 @@
       <div class="desc">DM us on Twitter, it's free</div>
       <div class="arrow">
         <div class="left-arrow" id="team-left-arrow">
-          <img src="@/assets/images/ranger-left.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1653214899894_0.93_ranger-left.png" alt="" />
         </div>
         <div class="right-arrow" id="team-right-arrow">
-          <img src="@/assets/images/ranger-right.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1653214899896_0.15_ranger-right.png" alt="" />
         </div>
       </div>
       <swiper
@@ -302,19 +352,38 @@
       >
         <swiper-slide class="team-info-box" v-for="(v, i) in teamList" :key="i">
           <div class="team-member-avatar-box">
-            <img src="@/assets/images/aboutus-team-avatar-1.png" alt="" v-if="i === 0" />
-            <img src="@/assets/images/aboutus-team-avatar.png" alt="" v-else />
-            <a :href="v.instagram" target="_blank" v-if="v.instagram">
-              <img src="@/assets/images/team-link-3.png" alt="" />
-            </a>
-            <a :href="v.linkedin" target="_blank" v-if="v.linkedin">
-              <img src="@/assets/images/team-link-2.png" alt="" />
-            </a>
-            <a :href="v.twitter" target="_blank" v-if="v.twitter">
-              <img src="@/assets/images/team-link-1.png" alt="" />
-            </a>
+            <img
+              src="https://ambrus.s3.amazonaws.com/1653214679085_0.72_aboutus-team-avatar-1.png"
+              alt=""
+              v-if="i === 0"
+            />
+            <img
+              src="https://ambrus.s3.amazonaws.com/1653214679083_0.11_aboutus-team-avatar.png"
+              alt=""
+              v-else
+            />
           </div>
           <div class="team-member-info">
+            <div class="link">
+              <a :href="v.instagram" target="_blank" v-if="v.instagram">
+                <img
+                  src="https://ambrus.s3.amazonaws.com/1653214931634_0.91_team-link-3.png"
+                  alt=""
+                />
+              </a>
+              <a :href="v.linkedin" target="_blank" v-if="v.linkedin">
+                <img
+                  src="https://ambrus.s3.amazonaws.com/1653214931633_0.04_team-link-2.png"
+                  alt=""
+                />
+              </a>
+              <a :href="v.twitter" target="_blank" v-if="v.twitter">
+                <img
+                  src="https://ambrus.s3.amazonaws.com/1653216688984_0.62_team-link-1.png"
+                  alt=""
+                />
+              </a>
+            </div>
             <div class="name">{{ v.name }}</div>
             <div class="edu">{{ v.edu }}</div>
             <div class="post" v-html="v.post"></div>
@@ -848,27 +917,27 @@ export default defineComponent({
         margin-right: 0;
       }
       &:nth-child(1) {
-        background-image: url(@/assets/images/perk-bg-1.png);
+        background-image: url(https://ambrus.s3.amazonaws.com/1653214864737_0.50_perk-bg-1.png);
         background-size: 100% auto;
         background-position: right bottom;
       }
       &:nth-child(2) {
-        background-image: url(@/assets/images/perk-bg-2.png);
+        background-image: url(https://ambrus.s3.amazonaws.com/1653214899882_0.34_perk-bg-2.png);
         background-size: 100% auto;
         background-position: right bottom;
       }
       &:nth-child(3) {
-        background-image: url(@/assets/images/perk-bg-3.png);
+        background-image: url(https://ambrus.s3.amazonaws.com/1653214899888_0.10_perk-bg-3.png);
         background-size: 100% auto;
         background-position: right bottom;
       }
       &:nth-child(4) {
-        background-image: url(@/assets/images/perk-bg-4.png);
+        background-image: url(https://ambrus.s3.amazonaws.com/1653214899889_0.40_perk-bg-4.png);
         background-size: 100% auto;
         background-position: right bottom;
       }
       &:nth-child(5) {
-        background-image: url(@/assets/images/perk-bg-5.png);
+        background-image: url(https://ambrus.s3.amazonaws.com/1653214899890_0.84_perk-bg-5.png);
         background-size: 100% auto;
         background-position: right bottom;
       }
@@ -935,7 +1004,7 @@ export default defineComponent({
       opacity: 0;
       display: none;
       position: absolute;
-      background-image: url(@/assets/images/roadmap-glitch.jpg);
+      background-image: url(https://ambrus.s3.amazonaws.com/1653214899904_0.88_roadmap-glitch.jpg);
       background-size: cover;
       background-position: center;
       width: 100%;
@@ -1372,26 +1441,6 @@ export default defineComponent({
           overflow: hidden;
           border-radius: 0.4rem 3.6rem 0 0;
         }
-        a {
-          img {
-            width: 3.6rem;
-          }
-          &:nth-child(2) {
-            position: absolute;
-            bottom: 1.6rem;
-            right: 1.6rem;
-          }
-          &:nth-child(3) {
-            position: absolute;
-            bottom: 1.6rem;
-            right: 5.8rem;
-          }
-          &:nth-child(4) {
-            position: absolute;
-            bottom: 1.6rem;
-            right: 10rem;
-          }
-        }
       }
 
       .team-member-info {
@@ -1403,6 +1452,18 @@ export default defineComponent({
         padding: 1.6rem 1.6rem 0;
         background: #ffffff;
         border-radius: 0px 0px 0.4rem 1.2rem;
+        .link {
+          position: absolute;
+          right: 1.6rem;
+          top: -5.2rem;
+          a {
+            img {
+              width: 3.6rem;
+              margin-left: 0.6rem;
+            }
+          }
+        }
+
         .name {
           font-family: Montserrat;
           font-weight: 600;
@@ -1538,7 +1599,7 @@ export default defineComponent({
           display: block;
           width: 1.2rem;
           height: 1.2rem;
-          background-image: url(@/assets/images/faq-top.png);
+          background-image: url(https://ambrus.s3.amazonaws.com/1653214783660_0.56_faq-top.png);
           background-size: 100% auto;
           position: absolute;
           top: 0;
@@ -1549,7 +1610,7 @@ export default defineComponent({
           background: #ff4125;
           border-radius: 0.4rem 0.4rem 0 0;
           &::before {
-            background-image: url(@/assets/images/faq-active.png);
+            background-image: url(https://ambrus.s3.amazonaws.com/1653214783659_0.48_faq-active.png);
           }
         }
       }
@@ -1844,11 +1905,6 @@ export default defineComponent({
       left: 0;
       padding-left: 2.4rem;
       padding-bottom: 1rem;
-      .team-info-box {
-        .team-member-info {
-          position: unset;
-        }
-      }
     }
     .swiper {
       width: 100%;
