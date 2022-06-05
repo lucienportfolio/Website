@@ -1,117 +1,38 @@
 <template>
   <section class="main">
-    <section class="banner-box">
-      <video
-        class="banner-background"
-        preload="auto"
-        loop
-        playsinline
-        autoplay
-        src="https://ambrus.s3.amazonaws.com/1653214988253_0.29_home.mp4"
-        tabindex="-1"
-        muted="muted"
-      ></video>
-      <div class="banner-info">
-        <div class="desc">A blockchain game for gamers</div>
-        <img
-          src="https://ambrus.s3.amazonaws.com/1653214864716_0.93_home-banner-text-logo.png"
-          alt=""
-          class="text-logo"
-        />
-        <div class="content">
-          Year of <span>2100</span><br />
-          Average global temperature increased by <span>4 °C</span><br />
-          <span>7</span> E4C Rangers<br />
-          <span>1</span> Earth to save
-        </div>
-        <a href="javascript:;" class="btn graybtn">E4C rangers nft coming soon</a>
+    <div class="rotating-box"></div>
+    <div
+      class="banner-box sect"
+      v-html="bannerInfo.html"
+      :style="`background-image: url(${bannerInfo.material_list.material.url})`"
+    ></div>
+    <div class="rangers-box sect">
+      <div class="background"></div>
+      <div class="rangers-info">
+        <div class="title inside">{{ rangerInfo.name }}</div>
+        <div class="info-box" v-html="rangerInfo.html"></div>
       </div>
-    </section>
-    <section class="rangers-box">
-      <div class="bg"></div>
-      <div class="title"><span>E4C</span> rangers</div>
-      <div class="desc">
-        <p>
-          In the year 2100, the world temperature will rise by 4℃ due to environmental
-          deterioration, almost causing the extinction of the human race.
-        </p>
-        <p>
-          Meanwhile, E4C Rangers emerge. E4C Rangers are made up of survivors from all over the
-          world, all feeling deeply about the damage humans have done to the planet and have decided
-          to come together as E4C Rangers to save it.
-        </p>
-        <p>Now Rangers has opened new recruitment.</p>
-      </div>
-      <div class="arrow">
-        <div class="left-arrow" id="rangers-left-arrow">
-          <img src="https://ambrus.s3.amazonaws.com/1653214899894_0.93_ranger-left.png	" alt="" />
-        </div>
-        <div class="right-arrow" id="rangers-right-arrow">
-          <img src="https://ambrus.s3.amazonaws.com/1653214899896_0.15_ranger-right.png" alt="" />
-        </div>
-      </div>
-      <div class="rangers-bg-box"></div>
-      <swiper
-        :modules="swiperModules"
-        slides-per-view="auto"
-        :space-between="24"
-        :simulate-touch="false"
-        :navigation="{
-          nextEl: '#rangers-right-arrow',
-          prevEl: '#rangers-left-arrow'
-        }"
-        class="rangers-list"
-      >
-        <swiper-slide class="ranger-box" v-for="(v, i) in rangerList" :key="i">
-          <img src="https://ambrus.s3.amazonaws.com/1653214738331_0.53_blindbox2.gif" alt="" />
-          <div class="ranger-name">{{ v.name }}</div>
-        </swiper-slide>
-      </swiper>
-    </section>
-    <section class="perks-box">
-      <div class="title"><span>E4C</span> Ranger <span>Perks</span></div>
-      <div class="desc">
-        OG of the gaming metaverse: Rangers holders will become the OG of our incoming gaming
-        metaverse, and the Rangers identity will be a guarantee of their future benefits and a
-        symbol of their status.
-      </div>
-      <div class="perks-list clearfix">
+    </div>
+    <div class="perks-box sect">
+      <div class="background"></div>
+      <div class="perks-box-list">
         <div
-          class="perk-box card"
-          v-for="(v, i) in perkList"
+          class="perks"
+          v-for="(v, i) in perkInfo"
           :key="i"
-          @mousemove="(e) => onPerkMouseMove(e, i)"
-          @mouseleave="(e) => onPerkMouseLeave(e, i)"
+          :style="
+            v.material_list.material.url
+              ? `background-image: url(${v.material_list.material.url})`
+              : ''
+          "
         >
-          <div class="info">
-            <div class="name">{{ v.name }}</div>
-            <div class="text">{{ v.text }}</div>
-          </div>
+          <div class="title">{{ v.name }}</div>
+          <div class="desc" v-html="v.html"></div>
         </div>
       </div>
-    </section>
-    <section class="roadmap-box">
+    </div>
+    <section class="roadmap-box sect" :style="`background-image:url(${roadMapBg})`">
       <div class="roadmap-box-block">
-        <video
-          class="video-background"
-          preload="auto"
-          loop
-          playsinline
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215111330_0.58_roadmap-0.mp4"
-          tabindex="-1"
-          muted="muted"
-        ></video>
-        <video
-          class="video-background-mobile"
-          preload="auto"
-          loop
-          playsinline
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215055509_0.07_mobile-0.mp4"
-          tabindex="-1"
-          muted="muted"
-        ></video>
         <div class="roadmap-glitch"></div>
         <div
           class="roadmap-info-box"
@@ -119,224 +40,51 @@
           @touchmove.stop="onRoadmapTouchMove"
           @touchend.stop="onRoadmapTouchEnd"
         >
-          <div class="title">Roadmap</div>
-          <div class="roadmap-info-list">
-            <div class="roadmap-info">
-              <div class="header-info">
-                <div class="phase">Phase 1</div>
-                <div class="desc">
-                  E4C Rangers NFT<br />
-                  Biographies of the first series of Rangers<br />
-                  Release our whitepaper v1.0
-                </div>
-              </div>
-              <div class="footer-info">
-                <div class="time">2079<span>(World Setting)</span></div>
-                <div class="text"><span>Echoes</span> of the past</div>
-                <div class="desc">
-                  On the day that Ishiguro finally completed work on Lady Samurai, tropical storm
-                  Shinigami tore through his retreat in the forests of Yamanashi in the country’s
-                  Chubu region and killed him. The storm was caused by Hive experimenting with
-                  terraforming in the Pacific Ocean and also caused Nuclear fallout at major power
-                  plants in Japan
-                </div>
-              </div>
-            </div>
-            <div class="roadmap-info">
-              <div class="header-info">
-                <div class="phase">Phase 2</div>
-                <div class="desc">
-                  E4C: Fallen Arena launch<br />
-                  In-game Ranking system<br />
-                  Esports tournaments for Rangers<br />
-                  Continued improvement and patching of E4C: Fallen Arena
-                </div>
-              </div>
-              <div class="footer-info">
-                <div class="time">2083</div>
-                <div class="text">The Calm before <span>the storm</span></div>
-                <div class="desc">
-                  After the disaster at its headquarters, Hive expands its land reclamation project,
-                  and has repurposed its robot bees, which now surveil enemies of the Hive(to be
-                  discussed)
-                </div>
-              </div>
-            </div>
-            <div class="roadmap-info">
-              <div class="header-info">
-                <div class="phase">Phase 3</div>
-                <div class="desc">
-                  E4C DAO Token launch<br />
-                  Main game Beta launch<br />
-                  Publish complete world stories<br />
-                  Trailers launch
-                </div>
-              </div>
-              <div class="footer-info">
-                <div class="time">2091</div>
-                <div class="text"><span>Set fire</span> to the rain</div>
-                <div class="desc">
-                  Ilan abducts meteorologists, geologists, and cartographers as he seeks to find an
-                  answer to the ever-present pollution that hangs over the city. These people tell
-                  Ilan that the pollution is irreversible because the city continues to sink, and
-                  the cloud of pollution will remain as long as people live in the city. Ilan
-                  decides to save the city
-                </div>
-              </div>
-            </div>
-            <div class="roadmap-info">
-              <div class="header-info">
-                <div class="phase">Phase 4</div>
-                <div class="desc">
-                  Main game official launch<br />
-                  Implement game within game<br />
-                  Worldview-based fiction publishing<br />
-                </div>
-              </div>
-              <div class="footer-info">
-                <div class="time">2100</div>
-                <div class="text">Formation of <span>the new order</span></div>
-                <div class="desc">
-                  As completion of the Mediterranean terraforming project nears, Hive turns its
-                  attention to the East China Sea and the Yellow Sea, landing on the West coast of
-                  Japan and the east coast of China
-                </div>
-              </div>
-            </div>
-            <div class="roadmap-info">
-              <div class="header-info">
-                <div class="phase">Phase 5</div>
-                <div class="desc">
-                  Open UGC option to players<br />
-                  Rangers are self-governed using the DAO system<br />
-                  Active social gaming metaverse
-                </div>
-              </div>
-              <div class="footer-info">
-                <div class="time">21XX</div>
-                <div class="text"><span>The Ivory Tower</span> That never falls</div>
-                <div class="desc">
-                  On the day that Ishiguro finally completed work on Lady Samurai, tropical storm
-                  Shinigami tore through his retreat in the forests of Yamanashi in the country’s
-                  Chubu region and killed him. The storm was caused by Hive experimenting with
-                  terraforming in the Pacific Ocean and also caused Nuclear fallout at major power
-                  plants in Japan
-                </div>
-              </div>
+          <div id="wrapper">
+            <div class="title">{{ roadMapInfo[0].name }}</div>
+            <div class="roadmap-info-list">
+              <div
+                class="roadmap-info"
+                v-for="(item, i) in roadMapInfo"
+                :key="i"
+                v-html="item.html"
+              ></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="preload-video-list">
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215111330_0.58_roadmap-0.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215111333_0.95_roadmap-1.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215111341_0.23_roadmap-2.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="	https://ambrus.s3.amazonaws.com/1653215111342_0.97_roadmap-3.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215111343_0.62_roadmap-4.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215055509_0.07_mobile-0.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215055516_0.04_mobile-1.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215055517_0.60_mobile-2.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215055519_0.17_mobile-3.mp4"
-        ></video>
-        <video
-          preload="auto"
-          autoplay
-          src="https://ambrus.s3.amazonaws.com/1653215055522_0.27_mobile-4.mp4"
-        ></video>
-      </div>
       <div class="arrow">
         <div class="left-arrow" id="roadmap-left-arrow" @click="onRoadLeft(0)">
-          <img
-            src="https://ambrus.s3.amazonaws.com/1653214899905_0.62_roadmap-left-arrow.png"
-            alt=""
-          />
+          <img src="https://ambrus.s3.amazonaws.com/1654419946095_0.40_arrow-left.png" alt="" />
         </div>
         <div class="right-arrow" id="roadmap-right-arrow" @click="onRoadRight">
-          <img
-            src="https://ambrus.s3.amazonaws.com/1653214931627_0.00_roadmap-right-arrow.png"
-            alt=""
-          />
+          <img src="https://ambrus.s3.amazonaws.com/1654419946096_0.14_arrow-right.png" alt="" />
         </div>
       </div>
       <div class="skip-box">
         <div class="skip-has"></div>
-        <div class="skip-bot"></div>
+        <div
+          class="skip-bot"
+          :style="roadMapInfo.length ? `width:${99 / roadMapInfo.length}%` : ''"
+        ></div>
       </div>
     </section>
-    <section class="tag-box">
-      <div class="title"><span>E4C</span> Token</div>
-      <div class="desc">
-        <p>Player experience above everything:</p>
-        <ul>
-          <li>
-            Ensure the equal balanced and competitive gameplay experience of Web2 and Web3 game
-            players, as well as paying and non-paying players
-          </li>
-          <li>Free-to-Play and Play-and-Earn</li>
-        </ul>
-        <p>Long-term sustainable tokenomics:</p>
-        <ul>
-          <li>
-            DAO: Conduct a long-term sustainable DAO currency and governance system, provide
-            investors with stable and attractive long-term returns
-          </li>
-          <li>
-            In-game Crypto: Maintain a stable and sustainable internal token circulation, and
-            restrain excessive inflation
-          </li>
-        </ul>
-      </div>
-      <div class="btn-box">
-        <div class="text">To learn about our tokenomics and more:</div>
-        <a href="https://whitepaper.ambrus.studio/e4c-whitepaper/" class="btn" target="_blank"
-          >E4C: Whitepaper</a
-        >
+    <section class="token-box sect">
+      <!-- <div class="background"></div> -->
+      <div class="token-info-box">
+        <div class="title inside">{{ tokenInfo.name }}</div>
+        <div class="token-info-list clearfix" v-html="tokenInfo.html"></div>
       </div>
     </section>
-    <section class="team-box">
-      <div class="title"><span>E4C</span> Team</div>
-      <div class="desc">DM us on Twitter, it's free</div>
+    <section class="team-box sect">
+      <div class="title inside">{{ teamInfo[0].name }}</div>
+      <div class="desc">{{ teamInfo[0].introduction }}</div>
       <div class="arrow">
         <div class="left-arrow" id="team-left-arrow">
-          <img src="https://ambrus.s3.amazonaws.com/1653214899894_0.93_ranger-left.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1654419946095_0.40_arrow-left.png" alt="" />
         </div>
         <div class="right-arrow" id="team-right-arrow">
-          <img src="https://ambrus.s3.amazonaws.com/1653214899896_0.15_ranger-right.png" alt="" />
+          <img src="https://ambrus.s3.amazonaws.com/1654419946096_0.14_arrow-right.png" alt="" />
         </div>
       </div>
       <swiper
@@ -350,79 +98,47 @@
         }"
         class="team-box-list"
       >
-        <swiper-slide class="team-info-box" v-for="(v, i) in teamList" :key="i">
-          <div class="team-member-avatar-box">
-            <img
-              src="https://ambrus.s3.amazonaws.com/1653214679085_0.72_aboutus-team-avatar-1.png"
-              alt=""
-              v-if="i === 0"
-            />
-            <img
-              src="https://ambrus.s3.amazonaws.com/1653214679083_0.11_aboutus-team-avatar.png"
-              alt=""
-              v-else
-            />
-          </div>
-          <div class="team-member-info">
-            <div class="link">
-              <a :href="v.instagram" target="_blank" v-if="v.instagram">
-                <img
-                  src="https://ambrus.s3.amazonaws.com/1653214931634_0.91_team-link-3.png"
-                  alt=""
-                />
-              </a>
-              <a :href="v.linkedin" target="_blank" v-if="v.linkedin">
-                <img
-                  src="https://ambrus.s3.amazonaws.com/1653214931633_0.04_team-link-2.png"
-                  alt=""
-                />
-              </a>
-              <a :href="v.twitter" target="_blank" v-if="v.twitter">
-                <img
-                  src="https://ambrus.s3.amazonaws.com/1653216688984_0.62_team-link-1.png"
-                  alt=""
-                />
-              </a>
+        <template v-for="(v, i) in teamInfo">
+          <swiper-slide class="team-info-box" :key="i" v-if="i > 0">
+            <div class="team-member-avatar-box">
+              <img :src="v.material_list.material.url" />
             </div>
-            <div class="name">{{ v.name }}</div>
-            <div class="edu">{{ v.edu }}</div>
-            <div class="post" v-html="v.post"></div>
-          </div>
-        </swiper-slide>
+            <div class="team-member-info" v-html="v.html"></div>
+          </swiper-slide>
+        </template>
       </swiper>
     </section>
-    <section class="faq-box">
-      <div class="title">FAQ</div>
-      <div class="desc">Many asked why our NFT is free</div>
-      <div class="faq-box-list clearfix">
-        <div class="faq-box-info-list" v-for="(pv, pi) in raqList" :key="pi">
-          <div class="faq-box-info" v-for="(v, i) in pv" :key="i">
-            <div
-              :class="v.active ? 'faq-question active' : 'faq-question'"
-              @click="onClickQuestion(pi, i)"
-            >
-              {{ v.question }}
+    <section class="faq-box sect">
+      <div class="faq-info-box">
+        <div class="title inside">{{ faqInfo[0][0].name }}</div>
+        <div class="desc">{{ faqInfo[0][0].introduction }}</div>
+        <div class="faq-box-list clearfix">
+          <template v-for="(pv, pi) in faqInfo">
+            <div class="faq-box-info-list" :key="pi" v-if="pi > 0">
+              <div class="faq-box-info" v-for="(v, i) in pv" :key="i">
+                <div
+                  :class="v.active ? 'faq-question active' : 'faq-question'"
+                  @click="onClickQuestion(pi, i)"
+                >
+                  {{ v.name }}
+                </div>
+                <div class="faq-reply" v-html="v.html"></div>
+              </div>
             </div>
-            <!-- <transition name="reply"> -->
-            <div class="faq-reply" v-html="v.reply"></div>
-            <!-- </transition> -->
-          </div>
+          </template>
         </div>
       </div>
     </section>
   </section>
 </template>
 <script>
-import { defineComponent, reactive, onMounted } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { Navigation, Pagination, A11y } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import $ from 'jquery'
-import {
-  teamList as getTeamList,
-  raqList as getRaqList,
-  perkList as getPerkList
-} from '@/api/index'
+import { onCheckMaterial } from '@/utils/index.js'
+import { getBlockInfoApi } from '@/api/block/index'
 
 export default defineComponent({
   name: 'IndexIndex',
@@ -431,15 +147,192 @@ export default defineComponent({
     SwiperSlide
   },
   setup() {
-    const raqList = reactive(getRaqList)
-    onMounted(() => {
-      $('.roadmap-info').eq(0).show().siblings().hide()
-      raqList.forEach((opv, opi) => {
-        raqList[opi].forEach((ov, oi) => {
-          raqList[opi][oi].active = false
+    const bannerInfo = ref({
+      html: '',
+      material_list: {
+        material: { type: '', url: '' },
+        material_pc: { type: '', url: '' },
+        material_mob: { type: '', url: '' }
+      }
+    })
+    const rangerInfo = ref({
+      name: '',
+      html: '',
+      material_list: {
+        material: { type: '', url: '' },
+        material_pc: { type: '', url: '' },
+        material_mob: { type: '', url: '' }
+      }
+    })
+    const perkInfo = ref([])
+
+    const tokenInfo = ref({
+      name: '',
+      html: '',
+      material_list: {
+        material: { type: '', url: '' },
+        material_pc: { type: '', url: '' },
+        material_mob: { type: '', url: '' }
+      }
+    })
+    const roadMapInfo = ref([
+      {
+        name: '',
+        material_list: {
+          material: { type: '', url: '' },
+          material_pc: { type: '', url: '' },
+          material_mob: { type: '', url: '' }
+        }
+      }
+    ])
+    const roadMapBg = ref('')
+    const teamInfo = ref([
+      {
+        name: '',
+        introduction: ''
+      }
+    ])
+    const faqInfo = ref([[{ name: '', introduction: '' }], [], []])
+
+    onMounted(async () => {
+      // const sections = document.getElementsByClassName('sect')
+
+      // document.addEventListener('scroll', (e) => {
+      //   if (window.scrollY < sections[1].offsetTop - 480) {
+      //     sections[1].children[0].style.filter = 'grayscale(100%)'
+      //   }
+
+      //   if (window.scrollY > sections[1].offsetTop - 480) {
+      //     sections[1].children[0].style.filter = 'grayscale(0%)'
+      //     sections[2].children[0].style.filter = 'grayscale(100%)'
+      //   }
+
+      //   if (window.scrollY > sections[2].offsetTop - 480) {
+      //     sections[1].children[0].style.filter = 'grayscale(100%)'
+      //     sections[3].children[0].style.filter = 'grayscale(100%)'
+      //     sections[2].children[0].style.filter = 'grayscale(0%)'
+      //   }
+
+      //   if (window.scrollY > sections[3].offsetTop - 480) {
+      //     sections[2].children[0].style.filter = 'grayscale(100%)'
+      //     sections[4].children[0].style.filter = 'grayscale(100%)'
+      //     sections[3].children[0].style.filter = 'grayscale(0%)'
+      //   }
+
+      //   if (window.scrollY > sections[4].offsetTop - 480) {
+      //     sections[3].children[0].style.filter = 'grayscale(100%)'
+      //     sections[5].children[0].style.filter = 'grayscale(100%)'
+      //     sections[4].children[0].style.filter = 'grayscale(0%)'
+      //   }
+
+      //   if (window.scrollY > sections[5].offsetTop - 480) {
+      //     sections[4].children[0].style.filter = 'grayscale(100%)'
+      //     sections[6].children[0].style.filter = 'grayscale(100%)'
+      //     sections[5].children[0].style.filter = 'grayscale(0%)'
+      //   }
+
+      //   if (window.scrollY > sections[6].offsetTop - 480) {
+      //     sections[5].children[0].style.filter = 'grayscale(100%)'
+      //     sections[7].children[0].style.filter = 'grayscale(100%)'
+      //     sections[6].children[0].style.filter = 'grayscale(0%)'
+      //   }
+      // })
+      const bannerInfoRes = await getBlockInfoApi('indexBanner')
+      if (bannerInfoRes.code === 200) {
+        if (bannerInfoRes.data.length > 0) {
+          bannerInfo.value.html = bannerInfoRes.data[0].html
+          bannerInfo.value.material_list = onCheckMaterial(
+            bannerInfoRes.data[0].material,
+            bannerInfoRes.data[0].material_mob
+          )
+        }
+      }
+      const rangerInfoRes = await getBlockInfoApi('indexRangers')
+      if (rangerInfoRes.code === 200) {
+        if (bannerInfoRes.data.length > 0) {
+          rangerInfo.value.name = rangerInfoRes.data[0].name
+          rangerInfo.value.html = rangerInfoRes.data[0].html
+          rangerInfo.value.material_list = onCheckMaterial(
+            rangerInfoRes.data[0].material,
+            rangerInfoRes.data[0].material_mob
+          )
+        }
+      }
+      const perkInfoRes = await getBlockInfoApi('indexRanderPark')
+      if (perkInfoRes.code === 200) {
+        perkInfo.value = []
+        perkInfoRes.data.forEach((v) => {
+          perkInfo.value.push({
+            name: v.name,
+            html: v.html,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
         })
-      })
+      }
+
+      const tokenInfoRes = await getBlockInfoApi('indexWhitePaper')
+      if (tokenInfoRes.code === 200) {
+        if (tokenInfoRes.data.length > 0) {
+          tokenInfo.value.name = tokenInfoRes.data[0].name
+          tokenInfo.value.html = tokenInfoRes.data[0].html
+          tokenInfo.value.material_list = onCheckMaterial(
+            tokenInfoRes.data[0].material,
+            tokenInfoRes.data[0].material_mob
+          )
+        }
+      }
+      const roadMapInfoRes = await getBlockInfoApi('indexRoadMap')
+      if (roadMapInfoRes.code === 200) {
+        roadMapInfo.value = []
+        roadMapInfoRes.data.forEach((v) => {
+          roadMapInfo.value.push({
+            name: v.name,
+            html: v.html,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+        roadMapBg.value = roadMapInfo.value[0].material_list.material.url
+      }
+      const teamInfoRes = await getBlockInfoApi('indexTeam')
+      if (teamInfoRes.code === 200) {
+        teamInfo.value = []
+        teamInfoRes.data.forEach((v) => {
+          teamInfo.value.push({
+            name: v.name,
+            html: v.html,
+            introduction: v.introduction,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+      }
+
+      const faqInfoRes = await getBlockInfoApi('indexFaq')
+      if (faqInfoRes.code === 200) {
+        faqInfo.value = [[], [], []]
+        faqInfoRes.data.forEach((v, i) => {
+          if (i === 0) {
+            faqInfo.value[0].push({
+              name: v.name,
+              html: v.html,
+              introduction: v.introduction,
+              active: false,
+              material_list: onCheckMaterial(v.material, v.material_mob)
+            })
+          } else {
+            const num = i % 2 === 0 ? 2 : 1
+            faqInfo.value[num].push({
+              name: v.name,
+              html: v.html,
+              introduction: v.introduction,
+              active: false,
+              material_list: onCheckMaterial(v.material, v.material_mob)
+            })
+          }
+        })
+      }
       $('.faq-question').removeClass('active')
+
+      $('.roadmap-info').eq(0).show().siblings().hide()
       let startDX = 0
       let startDY = 0
       document.addEventListener('touchstart', (e) => {
@@ -462,43 +355,6 @@ export default defineComponent({
       )
     })
 
-    const perkList = reactive(getPerkList)
-    const onPerkMouseMove = (e, i) => {
-      console.log(e, i)
-      if ($(window).width() > 960) {
-        const THRESHOLD = 5
-        const { clientX } = e
-        const { clientY } = e
-        const { currentTarget } = e
-        const { clientWidth } = currentTarget
-        const { clientHeight } = currentTarget
-        const { offsetLeft } = currentTarget
-        const { offsetTop } = currentTarget
-        const horizontal = (clientX - offsetLeft) / clientWidth
-        const vertical = (clientY - offsetTop) / clientHeight
-        const rotateX = THRESHOLD / 2 - horizontal * THRESHOLD
-        const rotateY = vertical * THRESHOLD - THRESHOLD / 2
-        $('.perk-box')
-          .eq(i)
-          .css(
-            'transform',
-            `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.03, 1.03, 1.03)`
-          )
-      }
-    }
-
-    const onPerkMouseLeave = (e, i) => {
-      console.log(e, i)
-      if ($(window).width() > 960) {
-        $('.perk-box')
-          .eq(i)
-          .css(
-            'transform',
-            `perspective(${e.currentTarget.clientWidth}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`
-          )
-      }
-    }
-
     // roadmap
     let roadmapIndex = 0
     let roadmapFlag = true
@@ -506,7 +362,7 @@ export default defineComponent({
       const roadmapDiv = $('.roadmap-info')
       const roadmapListDiv = $('.roadmap-info-list')
       const roadmapBoxDiv = $('.roadmap-info-box')
-      const roadmapBgDiv = $('.roadmap-box-block')
+      // const roadmapBgDiv = $('.roadmap-box')
       const roadmapGlitchDiv = $('.roadmap-glitch')
       const roadmapSkipDiv = $('.skip-bot')
       if (roadmapIndex > 0 && roadmapFlag) {
@@ -519,23 +375,19 @@ export default defineComponent({
           roadmapListDiv.css('transform', `translateX(-${roadmapRemove}px)`)
         }
         roadmapBoxDiv.css('opacity', 0)
-        roadmapGlitchDiv.show()
-
         roadmapIndex -= 1
+        roadmapGlitchDiv
+          .css(
+            'background-image',
+            `url(${roadMapInfo.value[roadmapIndex].material_list.material.url})`
+          )
+          .show()
 
         setTimeout(() => {
           roadmapGlitchDiv.css('opacity', 0.6).css('animation', 'glitch-anim-1-horizontal 0.98s')
         }, 10)
         setTimeout(() => {
-          roadmapBgDiv
-            .find('.video-background')
-            .attr('src', $('.preload-video-list video').eq(roadmapIndex).attr('src'))
-          roadmapBgDiv.find('.video-background-mobile').attr(
-            'src',
-            $('.preload-video-list video')
-              .eq(roadmapIndex + roadmapDiv.length)
-              .attr('src')
-          )
+          roadMapBg.value = roadMapInfo.value[roadmapIndex].material_list.material.url
         }, 500)
         setTimeout(() => {
           roadmapDiv.eq(roadmapIndex + 1).hide()
@@ -543,7 +395,9 @@ export default defineComponent({
           roadmapBoxDiv.css('opacity', 1)
           roadmapSkipDiv.css(
             'transform',
-            `translateX(${($('.skip-box').width() * (19.8 * roadmapIndex)) / 100}px)`
+            `translateX(${
+              ($('.skip-box').width() * ((99 / roadmapDiv.length) * roadmapIndex)) / 100
+            }px)`
           )
           roadmapListDiv.css('transform', 'translateX(0)')
           roadmapGlitchDiv.css('opacity', 0).hide()
@@ -556,7 +410,6 @@ export default defineComponent({
       const roadmapDiv = $('.roadmap-info')
       const roadmapListDiv = $('.roadmap-info-list')
       const roadmapBoxDiv = $('.roadmap-info-box')
-      const roadmapBgDiv = $('.roadmap-box-block')
       const roadmapGlitchDiv = $('.roadmap-glitch')
       const roadmapSkipDiv = $('.skip-bot')
       if (roadmapIndex < roadmapDiv.length - 1 && roadmapFlag) {
@@ -565,22 +418,19 @@ export default defineComponent({
         roadmapFlag = false
         roadmapListDiv.css('transform', `translateX(-${roadmapRemove}px)`)
         roadmapBoxDiv.css('opacity', 0)
-        roadmapGlitchDiv.show()
+
         roadmapIndex += 1
+        roadmapGlitchDiv
+          .css(
+            'background-image',
+            `url(${roadMapInfo.value[roadmapIndex].material_list.material.url})`
+          )
+          .show()
         setTimeout(() => {
           roadmapGlitchDiv.css('opacity', 0.6).css('animation', 'glitch-anim-1-horizontal 0.98s')
         }, 10)
         setTimeout(() => {
-          console.log($('.preload-video-list video').eq(roadmapIndex).attr('src'))
-          roadmapBgDiv
-            .find('.video-background')
-            .attr('src', $('.preload-video-list video').eq(roadmapIndex).attr('src'))
-          roadmapBgDiv.find('.video-background-mobile').attr(
-            'src',
-            $('.preload-video-list video')
-              .eq(roadmapIndex + roadmapDiv.length)
-              .attr('src')
-          )
+          roadMapBg.value = roadMapInfo.value[roadmapIndex].material_list.material.url
         }, 500)
 
         setTimeout(() => {
@@ -590,7 +440,9 @@ export default defineComponent({
           roadmapBoxDiv.css('opacity', 1)
           roadmapSkipDiv.css(
             'transform',
-            `translateX(${($('.skip-box').width() * (19.8 * roadmapIndex)) / 100}px)`
+            `translateX(${
+              ($('.skip-box').width() * ((99 / roadmapDiv.length) * roadmapIndex)) / 100
+            }px)`
           )
           roadmapListDiv.css('transform', 'translateX(0)')
           roadmapGlitchDiv.css('opacity', 0).hide()
@@ -626,28 +478,16 @@ export default defineComponent({
         }
       }
     }
-
-    const rangerList = reactive([])
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < 20; i++) {
-      rangerList.push({
-        name: 'Decoding ...'
-      })
-    }
-    const teamList = reactive(getTeamList)
-
-    // raq
-
     const onClickQuestion = (pi, i) => {
-      if (raqList[pi][i].active) {
-        raqList[pi][i].active = !raqList[pi][i].active
+      if (faqInfo.value[pi][i].active) {
+        faqInfo.value[pi][i].active = !faqInfo.value[pi][i].active
       } else {
-        raqList.forEach((opv, opi) => {
-          raqList[opi].forEach((ov, oi) => {
-            raqList[opi][oi].active = !!(opi === pi && oi === i)
+        faqInfo.value.forEach((opv, opi) => {
+          faqInfo.value[opi].forEach((ov, oi) => {
+            faqInfo.value[opi][oi].active = !!(opi === pi && oi === i)
             if (!(opi === pi && oi === i)) {
               $('.faq-box-info-list')
-                .eq(opi)
+                .eq(opi - 1)
                 .find('.faq-box-info')
                 .eq(oi)
                 .find('.faq-reply')
@@ -656,15 +496,22 @@ export default defineComponent({
           })
         })
       }
-      $('.faq-box-info-list').eq(pi).find('.faq-box-info').eq(i).find('.faq-reply').slideToggle()
+      $('.faq-box-info-list')
+        .eq(pi - 1)
+        .find('.faq-box-info')
+        .eq(i)
+        .find('.faq-reply')
+        .slideToggle()
     }
     return {
-      perkList,
-      onPerkMouseMove,
-      onPerkMouseLeave,
-      rangerList,
-      teamList,
-      raqList,
+      bannerInfo,
+      rangerInfo,
+      perkInfo,
+      tokenInfo,
+      roadMapInfo,
+      roadMapBg,
+      teamInfo,
+      faqInfo,
       onClickQuestion,
       onRoadLeft,
       onRoadRight,
@@ -681,296 +528,312 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 100vh;
-  overflow: hidden;
-  .banner-background {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+  background-size: cover;
+  background-position: center;
+  -webkit-mask: url(https://ambrus.s3.amazonaws.com/1654419946111_0.20_header-mask.png);
+  mask: url(https://ambrus.s3.amazonaws.com/1654419946111_0.20_header-mask.png);
+  -webkit-mask-size: auto 100%;
+  mask-size: auto 100%;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-position: top center;
+  mask-position: top center;
+  /deep/.rin {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    min-height: 100vh;
+
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
   }
-  .banner-info {
-    position: relative;
-    margin-top: calc((100vh - 48rem) / 2);
-    .desc {
-      position: absolute;
-      top: 0;
-      left: 8.8rem;
-      height: 3.2rem;
-      font-family: Teko;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 1.6rem;
-      line-height: 3.2rem;
-      text-transform: uppercase;
-      color: #465358;
-      background: #ffffff;
-      padding: 0 1.2rem;
-    }
-    .text-logo {
-      position: absolute;
-      top: 1.6rem;
-      left: 8.9rem;
-      width: 40rem;
-    }
-    .content {
-      position: absolute;
-      top: 26.9rem;
-      left: 8.8rem;
-      font-family: Montserrat;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 1.6rem;
-      line-height: 3rem;
-      text-transform: uppercase;
-      font-feature-settings: 'tnum' on, 'lnum' on;
-      color: #000000;
-      span {
-        font-weight: 700;
-        color: #ff4125;
-      }
-    }
-    .btn {
-      position: absolute;
-      top: 42.5rem;
-      left: 8.8rem;
-      /* background: #ff4125; */
-      border-radius: 4px;
-      padding: 1.7rem 5.2rem;
-      font-family: Montserrat;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 1.6rem;
-      line-height: 2rem;
-      text-align: center;
-      text-transform: uppercase;
-      color: #ffffff;
-    }
+
+  /deep/.title {
+    position: fixed;
+    top: 30vh;
+    right: 46vw;
+    margin: 0;
+    width: 100%;
+    text-align: right;
+    font-family: Teko, sans-serif;
+    font-size: 18rem;
+    line-height: 14rem;
+    z-index: -1;
+    text-shadow: 0.02em 0 0 rgba(255, 0, 0, 0.25), -0.02em 0 0 rgba(0, 0, 0, 0.3);
+    animation: glitch-text infinite 0.8s linear;
   }
 }
+
+@keyframes glitch-text {
+  0% {
+    text-shadow: 0.02em 0.03em 0 rgba(255, 0, 0, 0.25), -0.02em -0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  11% {
+    text-shadow: 0.02em 0.03em 0 rgba(255, 0, 0, 0.25), -0.02em -0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  12% {
+    text-shadow: -0.03em -0.01em 0 rgba(255, 0, 0, 0.25), 0.01em 0.04em 0 rgba(0, 0, 0, 0.3);
+  }
+  24% {
+    text-shadow: -0.03em -0.01em 0 rgba(255, 0, 0, 0.25), 0.01em 0.04em 0 rgba(0, 0, 0, 0.3);
+  }
+  25% {
+    text-shadow: 0.04em 0.03em 0 rgba(255, 0, 0, 0.25), -0.03em -0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  49% {
+    text-shadow: 0.04em 0.03em 0 rgba(255, 0, 0, 0.25), -0.03em -0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    text-shadow: -0.01em 0 0 rgba(255, 0, 0, 0.25), 0.03em 0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  59% {
+    text-shadow: -0.01em 0 0 rgba(255, 0, 0, 0.25), 0.03em 0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  60% {
+    text-shadow: 0.03em -0.04em 0 rgba(255, 0, 0, 0.25), -0.02em 0.03em 0 rgba(0, 0, 0, 0.3);
+  }
+  74% {
+    text-shadow: 0.03em -0.04em 0 rgba(255, 0, 0, 0.25), -0.02em 0.03em 0 rgba(0, 0, 0, 0.3);
+  }
+  75% {
+    text-shadow: -0.02em 0.01em 0 rgba(255, 0, 0, 0.25), 0.01em 0.04em 0 rgba(0, 0, 0, 0.3);
+  }
+  84% {
+    text-shadow: -0.02em 0.01em 0 rgba(255, 0, 0, 0.25), 0.01em 0.04em 0 rgba(0, 0, 0, 0.3);
+  }
+  95% {
+    text-shadow: -0.03em -0.02em 0 rgba(255, 0, 0, 0.25), -0.02em -0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  99% {
+    text-shadow: -0.03em -0.02em 0 rgba(255, 0, 0, 0.25), -0.02em -0.01em 0 rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(255, 0, 0, 0.25), 0 0 0 rgba(0, 0, 0, 0.3);
+  }
+}
+
+.background {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: grayscale(100%);
+  transition: all 0.3s ease-out;
+}
+
+.rotating-box {
+  display: none;
+  width: 24rem;
+  height: 24rem;
+  background: url(https://ambrus.s3.amazonaws.com/1654419946103_0.07_cs.png);
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: 8.8rem;
+  right: 8.8rem;
+  animation: circle infinite 5s linear;
+  z-index: 99;
+  &:hover {
+    background: url(https://ambrus.s3.amazonaws.com/1654419946105_0.43_cs2.png);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
 .rangers-box {
   position: relative;
   width: 100%;
-  background: #ffffff;
-  padding: 6rem 0 44.6rem 8.8rem;
-  overflow: hidden;
-  .bg {
-    position: absolute;
-    width: 102.8rem;
-    height: 102.8rem;
-    right: -42.2rem;
-    top: -20.6rem;
-    background: #f0f0f0;
-    opacity: 0.5;
-    border-radius: 50%;
-    box-shadow: inset 0px 0px 3.6rem rgba(0, 0, 0, 0.1);
-    z-index: -1;
+  .background {
+    display: none;
+    background: url(https://ambrus.s3.amazonaws.com/1654419946129_0.44_rangers.png);
+    background-size: auto 100%;
+    background-position: right;
+    background-repeat: no-repeat;
   }
-  .title {
-    font-family: Teko;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 6.4rem;
-    line-height: 9.2rem;
-    text-transform: uppercase;
-    color: #000;
-    margin-bottom: -1.2rem;
-    span {
-      color: #ff4125;
-    }
-  }
-  .desc {
-    width: 54.9rem;
-    font-family: Montserrat;
-    font-weight: 400;
-    font-size: 1.4rem;
-    line-height: 2.4rem;
-    color: #000000;
-    p {
-      margin-bottom: 2.4rem;
-    }
-  }
-  .arrow {
-    position: absolute;
-    bottom: 47rem;
-    right: 8.8rem;
-    height: 6.6rem;
-    .left-arrow {
-      width: 6rem;
-      height: 6rem;
-      background: #ffffff;
-      border: 0.1rem solid #f5f5f5;
-      box-sizing: border-box;
-      border-radius: 0.4rem;
-      float: left;
-      text-align: center;
-      margin-left: 1.2rem;
-      position: relative;
-      cursor: pointer;
-      img {
+  .rangers-info {
+    position: relative;
+    width: 115.2rem;
+    height: 56.6rem;
+    background: url(https://ambrus.s3.amazonaws.com/1654419946131_0.63_rangers-bg.png);
+    background-size: auto 100%;
+    background-position: right;
+    background-repeat: no-repeat;
+    margin: 17.8rem auto 15.4rem;
+    padding: 0 0 0 62.5rem;
+    /deep/.info-box {
+      .desc {
+        width: 44.8rem;
+        font-family: Montserrat;
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 3rem;
+        color: #ffffff;
+        margin-top: -2.4rem;
+        p {
+          margin-bottom: 2.4rem;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+      .rangers-img {
         position: absolute;
-        top: 1.8rem;
-        left: 1.8rem;
-        width: 2.1rem;
+        top: -11.8rem;
+        left: 6rem;
+        width: 55.1rem;
+      }
+      .rangers-mobile-img {
+        display: none;
+        width: 100%;
+        margin-top: 3.6rem;
       }
     }
-    .right-arrow {
-      width: 6rem;
-      height: 6rem;
-      background: #ffffff;
-      border: 0.1rem solid #f5f5f5;
-      box-sizing: border-box;
-      border-radius: 0.4rem;
-      float: left;
-      text-align: center;
-      margin-left: 1.2rem;
-      position: relative;
-      cursor: pointer;
-      img {
-        position: absolute;
-        top: 1.8rem;
-        right: 1.8rem;
-        width: 2.1rem;
-      }
-    }
-  }
-  .rangers-bg-box {
-    position: absolute;
-    bottom: 23rem;
-    left: 0;
-    width: 100%;
-    height: 1.2rem;
-    background: #ff4125;
-  }
-  .rangers-list {
-    position: absolute;
-    left: 0;
-    bottom: 7.2rem;
-    overflow: hidden;
-    white-space: nowrap;
-  }
 
-  .swiper {
-    width: 100%;
-    height: 36.2rem;
-    padding-right: 8.8rem;
-    padding-left: 8.8rem;
-  }
-  .swiper-slide {
-    width: 31.2rem;
-    img {
-      width: 31.2rem;
-    }
-    .ranger-name {
-      width: 31.2rem;
-      height: 5rem;
-      line-height: 5rem;
-      background: #2a2a2a;
-      border-radius: 0px;
-      font-family: Montserrat;
-      font-style: normal;
-      font-weight: 700;
-      font-size: 2.1rem;
+    .title {
+      width: 44.8rem;
+      font-family: Teko;
+      font-weight: 400;
+      font-size: 6.4rem;
+      line-height: 9.2rem;
       text-align: center;
-      color: #fff;
+      text-transform: uppercase;
+      color: #ffffff;
+      padding: 4.8rem 0;
+    }
+  }
+}
+.perks-box {
+  position: relative;
+  width: 100%;
+  height: 96rem;
+  padding-top: 12rem;
+  .background {
+    display: none;
+    background: url(https://ambrus.s3.amazonaws.com/1654419946128_0.91_perks.png);
+    background-size: auto 100%;
+    background-position: right;
+    background-repeat: no-repeat;
+  }
+  .perks-box-list {
+    position: relative;
+    width: 115.2rem;
+    height: 72rem;
+    margin: 0 auto;
+    padding: 0 3.6rem;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1.2rem;
+      height: 72rem;
+      background: #ff4125;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1.2rem;
+      height: 72rem;
+      background: #ff4125;
+    }
+    .perks {
+      width: 36rem;
+      height: 36rem;
+      float: left;
+      background-color: #fff;
+      padding: 4.8rem 3.6rem 0;
+      background-size: cover;
+      background-position: center;
+      &:nth-child(1) {
+        .title {
+          color: #ff4125;
+        }
+        .desc {
+          color: #000000;
+        }
+      }
+      .title {
+        font-family: Teko;
+        font-weight: 400;
+        font-size: 4.8rem;
+        line-height: 6.9rem;
+        text-align: center;
+        color: #ffffff;
+      }
+      .desc {
+        font-family: Montserrat;
+        font-weight: 500;
+        font-size: 1.6rem;
+        line-height: 3rem;
+        color: #ffffff;
+      }
     }
   }
 }
 
-.perks-box {
-  padding: 6rem 8.8rem 7.2rem;
-  .title {
-    font-family: Teko;
-    font-weight: 400;
-    font-size: 6.4rem;
-    line-height: 9.2rem;
-    text-transform: uppercase;
-    color: #000;
-    span {
-      color: #ff4125;
+.token-box {
+  position: relative;
+  width: 100%;
+  padding-top: 12rem;
+
+  .background {
+    background: url(https://ambrus.s3.amazonaws.com/1654419946142_0.16_token.png);
+    background-size: auto 100%;
+    background-position: right;
+    background-repeat: no-repeat;
+  }
+  .token-info-box {
+    width: 117.2rem;
+    margin: 0 auto;
+    > .title {
+      font-family: Teko;
+      font-weight: 400;
+      font-size: 6.4rem;
+      line-height: 9.2rem;
+      text-transform: uppercase;
+      color: #ffffff;
     }
-  }
-  .desc {
-    width: 73.2rem;
-    font-family: Montserrat;
-    font-weight: 400;
-    font-size: 1.4rem;
-    line-height: 2.4rem;
-    color: #000000;
-    margin: -0.8rem 0 1.2rem;
-  }
-  .perks-list {
-    .perk-box {
-      position: relative;
-      float: left;
-      width: 32%;
-      height: 20rem;
-      border-radius: 0.4rem 3.6rem 0.4rem 0.4rem;
-      margin-right: 2%;
-      margin-top: 2.4rem;
-      background: #fff;
-      overflow: hidden;
-      &:nth-child(3n + 3) {
-        margin-right: 0;
-      }
-      &:nth-child(1) {
-        background-image: url(https://ambrus.s3.amazonaws.com/1653214864737_0.50_perk-bg-1.png);
-        background-size: 100% auto;
-        background-position: right bottom;
-      }
-      &:nth-child(2) {
-        background-image: url(https://ambrus.s3.amazonaws.com/1653214899882_0.34_perk-bg-2.png);
-        background-size: 100% auto;
-        background-position: right bottom;
-      }
-      &:nth-child(3) {
-        background-image: url(https://ambrus.s3.amazonaws.com/1653214899888_0.10_perk-bg-3.png);
-        background-size: 100% auto;
-        background-position: right bottom;
-      }
-      &:nth-child(4) {
-        background-image: url(https://ambrus.s3.amazonaws.com/1653214899889_0.40_perk-bg-4.png);
-        background-size: 100% auto;
-        background-position: right bottom;
-      }
-      &:nth-child(5) {
-        background-image: url(https://ambrus.s3.amazonaws.com/1653214899890_0.84_perk-bg-5.png);
-        background-size: 100% auto;
-        background-position: right bottom;
-      }
-      .info {
-        position: absolute;
-        left: 0;
-        top: 7rem;
-        padding: 0 2.4rem;
-        .name {
+    .token-info-list {
+      padding-bottom: 6.1rem;
+      /deep/.token-info {
+        float: left;
+        width: 50%;
+        padding: 0 4.8rem;
+        .title {
           font-family: Montserrat;
-          font-weight: 600;
-          font-size: 2.1rem;
-          line-height: 2.6rem;
+          font-weight: 700;
+          font-size: 2.4rem;
+          line-height: 2.9rem;
           color: #ff4125;
-          margin-bottom: 0.4rem;
+          padding-left: 2rem;
+          margin: 3.6rem 0 1.6rem;
         }
-        .text {
+        .desc {
           font-family: Montserrat;
-          font-weight: 500;
+          font-weight: 400;
           font-size: 1.6rem;
-          line-height: 2.4rem;
-          color: #465358;
+          line-height: 3rem;
+          color: #ffffff;
+          li {
+            list-style-type: disc;
+            margin-left: 2rem;
+          }
         }
-      }
-    }
-    .card {
-      transition: transform 0.1s ease;
-      transform-style: preserve-3d;
-      will-change: transform;
-      box-shadow: rgba(0, 0, 0, 0.2) 0 0 0;
-      transition: box-shadow 0.3s ease-in-out;
-      &:hover {
-        box-shadow: rgba(0, 0, 0, 0.2) 0 0 1.2rem;
       }
     }
   }
@@ -979,47 +842,52 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #000;
+  max-height: 92.8rem;
+  transition: all 0.5s ease-in-out;
+  -webkit-mask: url(https://ambrus.s3.amazonaws.com/1654419946122_1.00_mask.png);
+  mask: url(https://ambrus.s3.amazonaws.com/1654419946122_1.00_mask.png);
+  -webkit-mask-size: auto 100%;
+  mask-size: auto 100%;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-position: top center;
+  mask-position: top center;
+  background-size: cover;
+  background-position: center;
   .roadmap-box-block {
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    .video-background {
-      position: absolute;
-      left: 50%;
-      top: 50vh;
-      transform: translate(-50%, -50vh);
-      width: 100%;
-      height: 100vh;
-      object-fit: cover;
-      min-height: 100vh;
-      opacity: 1;
-      transition: all 0.5s ease-in-out;
-    }
-    .video-background-mobile {
-      display: none;
-    }
     .roadmap-glitch {
-      z-index: 5;
+      z-index: 0;
       opacity: 0;
       display: none;
       position: absolute;
-      background-image: url(https://ambrus.s3.amazonaws.com/1653214899904_0.88_roadmap-glitch.jpg);
-      background-size: cover;
-      background-position: center;
       width: 100%;
       height: 100%;
       transition: all 0.3s;
+      background-size: cover;
+      background-position: center;
     }
     .roadmap-info-box {
       position: absolute;
       top: 0;
       left: 0;
-      width: 59.1rem;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       opacity: 1;
-      transition: all 0.2s ease-in-out;
+      background: url(https://ambrus.s3.amazonaws.com/1654419946139_0.17_roadmap-top.png);
+      background-size: auto 100%;
+      background-repeat: no-repeat;
+      background-position: left;
+      transition: all 0.5s ease-in-out;
       padding: 6rem 0 10.6rem 8.8rem;
+
+      #wrapper {
+        width: 66rem;
+      }
+
       .title {
         font-family: Teko;
         font-style: normal;
@@ -1027,7 +895,7 @@ export default defineComponent({
         font-size: 6.4rem;
         line-height: 9.2rem;
         text-transform: uppercase;
-        color: #ffffff;
+        color: #000;
         display: inline-block;
         border-bottom: 0.1rem solid #465358;
       }
@@ -1045,7 +913,7 @@ export default defineComponent({
           &:not(:first-child) {
             display: none;
           }
-          .header-info {
+          /deep/.header-info {
             .phase {
               margin-top: 2.4rem;
               font-family: Montserrat;
@@ -1061,10 +929,10 @@ export default defineComponent({
               font-weight: 500;
               font-size: 1.4rem;
               line-height: 2.4rem;
-              color: #fff;
+              color: #000;
             }
           }
-          .footer-info {
+          /deep/.footer-info {
             position: absolute;
             bottom: 10.6rem;
             .time {
@@ -1090,10 +958,7 @@ export default defineComponent({
               font-size: 2.4rem;
               line-height: 2.9rem;
               text-transform: uppercase;
-              color: #a0a4b0;
-              span {
-                color: #ff4125;
-              }
+              color: #ff4125;
             }
 
             .desc {
@@ -1103,7 +968,7 @@ export default defineComponent({
               font-weight: 500;
               font-size: 1.4rem;
               line-height: 2.4rem;
-              color: #ffffff;
+              color: #000;
             }
           }
         }
@@ -1118,6 +983,7 @@ export default defineComponent({
     bottom: 7.1rem;
     right: 8.8rem;
     height: 6rem;
+    z-index: 66;
     .left-arrow {
       width: 6rem;
       height: 6rem;
@@ -1161,7 +1027,8 @@ export default defineComponent({
     height: 1rem;
     left: 8.8rem;
     bottom: 7.2rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 64;
     .skip-has {
       position: absolute;
       width: 10%;
@@ -1177,186 +1044,15 @@ export default defineComponent({
       height: 0.2rem;
       left: 0.5%;
       top: 0.4rem;
-      background: #ffffff;
-      box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.25);
+      background: #2a2a2a;
+      box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
       transition: all 0.5s ease-in-out;
     }
   }
 }
-
-@keyframes glitch-anim-1-horizontal {
-  0% {
-    -webkit-clip-path: polygon(0 2%, 100% 2%, 100% 10%, 0 10%);
-    clip-path: polygon(0 2%, 100% 2%, 100% 10%, 0 10%);
-  }
-  6% {
-    -webkit-clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%);
-    clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%);
-  }
-  12% {
-    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
-    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
-  }
-  20% {
-    -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
-    clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
-  }
-  26% {
-    -webkit-clip-path: polygon(0 11%, 100% 11%, 100% 15%, 0 15%);
-    clip-path: polygon(0 11%, 100% 11%, 100% 15%, 0 15%);
-  }
-  32% {
-    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
-    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
-  }
-  40% {
-    -webkit-clip-path: polygon(0 33%, 100% 33%, 100% 53%, 0 53%);
-    clip-path: polygon(0 33%, 100% 33%, 100% 53%, 0 53%);
-  }
-  46% {
-    -webkit-clip-path: polygon(0 44%, 100% 44%, 100% 74%, 0 74%);
-    clip-path: polygon(0 44%, 100% 44%, 100% 74%, 0 74%);
-  }
-  52% {
-    -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-  }
-  60% {
-    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
-    clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
-  }
-  66% {
-    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 77%, 0 77%);
-    clip-path: polygon(0 70%, 100% 70%, 100% 77%, 0 77%);
-  }
-  72% {
-    -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
-    clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
-  }
-  80% {
-    -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-  }
-  86% {
-    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
-    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
-  }
-  100% {
-    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 95%, 0 95%);
-    clip-path: polygon(0 70%, 100% 70%, 100% 95%, 0 95%);
-  }
-}
-.tag-box {
-  position: relative;
-  padding: 6rem 8.8rem 7.2rem;
-  background: #ffffff;
-  .title {
-    font-family: Teko;
-    font-weight: 400;
-    font-size: 6.4rem;
-    line-height: 9.2rem;
-    text-transform: uppercase;
-    span {
-      color: #ff4125;
-    }
-  }
-
-  .desc {
-    width: 68.8rem;
-    font-family: Montserrat;
-    font-weight: 400;
-    font-size: 1.4rem;
-    line-height: 2.4rem;
-    color: #465358;
-    margin-top: -3.6rem;
-    p {
-      color: #ff4125;
-      margin-top: 2.4rem;
-    }
-    li {
-      list-style-type: disc;
-      margin-left: 2rem;
-    }
-  }
-  .btn-box {
-    position: absolute;
-    right: 8.8rem;
-    bottom: 19.9rem;
-    .text {
-      font-family: Montserrat;
-      font-weight: 400;
-      font-size: 1.2rem;
-      line-height: 1.5rem;
-      text-align: right;
-      color: #465358;
-      padding-bottom: 1.2rem;
-    }
-
-    .btn {
-      padding: 1.7rem 3.5rem;
-      border-radius: 0.4rem;
-      font-family: Montserrat;
-      font-weight: 600;
-      font-size: 1.6rem;
-      text-align: center;
-      text-transform: uppercase;
-      color: #ffffff;
-      display: block;
-    }
-  }
-}
-
-.battlegrounds-box {
-  padding: 6rem 8.8rem 7.2rem;
-  .title {
-    font-family: Teko;
-    font-style: normal;
-    font-size: 6.4rem;
-    line-height: 9.2rem;
-    text-align: center;
-    text-transform: uppercase;
-    color: #000000;
-    margin-bottom: 1.2rem;
-    span {
-      color: #ff4125;
-    }
-  }
-  .battlegrounds-box-list {
-    .battleground-box {
-      float: left;
-      width: 32%;
-      height: 24rem;
-      line-height: 24rem;
-      background: #c4c4c4;
-      font-family: Montserrat;
-      font-weight: 400;
-      font-size: 1.6rem;
-      text-align: center;
-      color: #000000;
-      margin-right: 2%;
-      border: 0.2rem solid rgba(160, 164, 176, 0.2);
-      box-sizing: border-box;
-      border-radius: 0.4rem;
-      &:nth-child(3n + 3) {
-        margin-right: 0;
-      }
-      &:nth-child(2) {
-        background-color: #fff;
-      }
-      img {
-        vertical-align: top;
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
-}
-
 .team-box {
   position: relative;
-  /* padding: 6rem 8.8rem 7.2rem; */
-  padding: 6rem 8.8rem 3.2rem;
-  background: #ffffff;
+  padding: 12rem 8.8rem 6rem;
   .title {
     font-family: Teko;
     font-style: normal;
@@ -1364,8 +1060,8 @@ export default defineComponent({
     font-size: 6.4rem;
     line-height: 9.2rem;
     text-transform: uppercase;
-    color: #000;
     margin-bottom: -1.2rem;
+    float: left;
     span {
       color: #ff4125;
     }
@@ -1375,18 +1071,18 @@ export default defineComponent({
     font-weight: 400;
     font-size: 1.4rem;
     line-height: 2.4rem;
-    color: #465358;
-    padding-bottom: 43.1rem;
+    color: #fff;
+    padding-bottom: 40rem;
+    margin-top: 8rem;
   }
   .arrow {
     position: absolute;
-    top: 10rem;
+    top: 16rem;
     right: 8.8rem;
     height: 6rem;
     .left-arrow {
       width: 6rem;
       height: 6rem;
-      border: 0.1rem solid #f5f5f5;
       box-sizing: border-box;
       border-radius: 0.4rem;
       float: left;
@@ -1394,7 +1090,7 @@ export default defineComponent({
       margin-left: 1.2rem;
       position: relative;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(0, 0, 0, 0.5);
       img {
         position: absolute;
         top: 1.8rem;
@@ -1405,7 +1101,6 @@ export default defineComponent({
     .right-arrow {
       width: 6rem;
       height: 6rem;
-      border: 0.1rem solid #f5f5f5;
       box-sizing: border-box;
       border-radius: 0.4rem;
       float: left;
@@ -1413,7 +1108,7 @@ export default defineComponent({
       margin-left: 1.2rem;
       position: relative;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(0, 0, 0, 0.5);
       img {
         position: absolute;
         top: 1.8rem;
@@ -1425,33 +1120,31 @@ export default defineComponent({
   .team-box-list {
     position: absolute;
     /* top: 0; */
-    top: 19.2rem;
+    top: 25.2rem;
     left: 0;
     overflow: hidden;
     .team-info-box {
       width: 23.3rem;
-      min-height: 35.9rem;
-      filter: drop-shadow(0 0.2rem 0.6rem rgba(0, 0, 0, 0.1));
-      border-radius: 0.4rem 3.6rem 0 0;
-      .team-member-avatar-box {
+      min-height: 38.2rem;
+      filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1));
+      /deep/.team-member-avatar-box {
         position: relative;
+        max-height: 23.3rem;
+        overflow: hidden;
         > img {
           width: 100%;
-          max-height: 21rem;
           overflow: hidden;
-          border-radius: 0.4rem 3.6rem 0 0;
         }
       }
 
-      .team-member-info {
+      /deep/.team-member-info {
         position: absolute;
         bottom: 0;
         left: 0;
         width: 23.3rem;
-        min-height: 14.9rem;
+        height: 14.9rem;
         padding: 1.6rem 1.6rem 0;
-        background: #ffffff;
-        border-radius: 0px 0px 0.4rem 1.2rem;
+        background: rgba(0, 0, 0, 0.5);
         .link {
           position: absolute;
           right: 1.6rem;
@@ -1469,21 +1162,21 @@ export default defineComponent({
           font-weight: 600;
           font-size: 1.6rem;
           line-height: 2rem;
-          color: #000000;
+          color: #fff;
         }
-        .edu {
+        .post {
           font-family: Montserrat;
           font-weight: 600;
           font-size: 1.4rem;
           line-height: 2.1rem;
           color: #ff4125;
         }
-        .post {
+        .desc {
           font-family: Montserrat;
           font-weight: 400;
           font-size: 1.4rem;
           line-height: 2.1rem;
-          color: #000000;
+          color: #fff;
           flex: none;
           order: 1;
           align-self: stretch;
@@ -1551,82 +1244,88 @@ export default defineComponent({
 
 .faq-box {
   position: relative;
-  padding: 6rem 8.8rem 7.2rem;
-  .title {
-    font-family: Teko;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 6.4rem;
-    line-height: 9.2rem;
-    text-transform: uppercase;
-    color: #000000;
-  }
-  .desc {
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.6rem;
-    line-height: 2.8rem;
-    color: #000000;
-    margin-top: -1.2rem;
-    margin-bottom: 2rem;
-  }
-  .faq-box-info-list {
-    float: left;
-    width: 49%;
-    margin-right: 2%;
-    &:nth-child(2) {
-      margin-right: 0;
+  padding: 6rem 0 16rem;
+  .faq-info-box {
+    width: 125.2rem;
+    margin: 0 auto;
+    .title {
+      font-family: Teko;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 6.4rem;
+      line-height: 9.2rem;
+      text-transform: uppercase;
+      color: #fff;
+      text-align: center;
     }
-    .faq-box-info {
-      margin-top: 1.6rem;
-      .faq-question {
-        position: relative;
-        background: #ffffff;
-        border-radius: 4rem;
-        border-radius: 0.4rem 0.4rem 0 0;
-        width: 100%;
-        height: 4.8rem;
-        line-height: 4.8rem;
-        font-family: Montserrat;
-        font-weight: 500;
-        font-size: 1.4rem;
-        color: #2a2a2a;
-        padding: 0 1.2rem;
-        cursor: pointer;
-        &::before {
-          content: '';
-          display: block;
-          width: 1.2rem;
-          height: 1.2rem;
-          background-image: url(https://ambrus.s3.amazonaws.com/1653214783660_0.56_faq-top.png);
-          background-size: 100% auto;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        &.active {
-          color: #ffffff;
-          background: #ff4125;
+    .desc {
+      font-family: Montserrat;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.6rem;
+      line-height: 2.8rem;
+      color: #fff;
+      margin-top: -1.2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .faq-box-info-list {
+      float: left;
+      width: 62rem;
+      margin-right: 1.2rem;
+      &:nth-child(2) {
+        margin-right: 0;
+      }
+      .faq-box-info {
+        margin-top: 1.6rem;
+        .faq-question {
+          position: relative;
+          background: #000;
+          border-radius: 4rem;
           border-radius: 0.4rem 0.4rem 0 0;
+          width: 100%;
+          height: 4.8rem;
+          line-height: 4.8rem;
+          font-family: Montserrat;
+          font-weight: 500;
+          font-size: 1.4rem;
+          color: #fff;
+          padding: 0 1.2rem;
+          cursor: pointer;
           &::before {
-            background-image: url(https://ambrus.s3.amazonaws.com/1653214783659_0.48_faq-active.png);
+            content: '';
+            display: block;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-image: url(https://ambrus.s3.amazonaws.com/1653214783660_0.56_faq-top.png);
+            background-size: 100% auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+          &.active {
+            color: #ffffff;
+            background: #ff4125;
+            border-radius: 0.4rem 0.4rem 0 0;
+            &::before {
+              background-image: url(https://ambrus.s3.amazonaws.com/1653214783659_0.48_faq-active.png);
+            }
           }
         }
-      }
-      .faq-reply {
-        padding: 2.4rem;
-        font-family: Montserrat;
-        font-weight: 500;
-        font-size: 1.4rem;
-        line-height: 2.4rem;
-        color: #ffffff;
-        background: #465358;
-        border-radius: 0px 0px 4px 4px;
-        display: none;
-        li {
-          list-style-type: disc;
-          margin-left: 2rem;
+        /deep/.faq-reply {
+          padding: 2.4rem;
+          font-family: Montserrat;
+          font-weight: 500;
+          font-size: 1.4rem;
+          line-height: 2.4rem;
+          color: #ffffff;
+          background: #465358;
+          border-radius: 0px 0px 4px 4px;
+          display: none;
+          li {
+            list-style-type: disc;
+            margin-left: 2rem;
+          }
         }
       }
     }
@@ -1635,132 +1334,112 @@ export default defineComponent({
 
 @media screen and (max-width: 960px) {
   .banner-box {
-    .banner-info {
-      margin-top: 0;
-      height: 100vh;
-      .desc {
-        top: 16.8vh;
-        left: 3.2rem;
-        height: 2.6rem;
-        line-height: 2.6rem;
-        font-size: 1.2rem;
-      }
-      .text-logo {
-        position: absolute;
-        top: 21vh;
-        left: 3.2rem;
-        width: 83%;
-      }
-      .content {
-        top: unset;
-        bottom: 25vh;
-        left: 3.2rem;
-      }
-      .btn {
-        position: absolute;
-        top: unset;
-        bottom: 8vh;
-        left: 3.2rem;
-        width: calc(100vw - 6.4rem);
-        height: 5.4rem;
-        line-height: 5.4rem;
-        padding: 0;
-        text-align: center;
-      }
+    overflow: hidden;
+    /deep/.rin {
+      width: 145%;
+      height: 110%;
+      background-size: auto 80%;
+      background-position: right;
+      background-repeat: no-repeat;
+      z-index: 1;
+    }
+
+    /deep/.title {
+      transform: rotate(270deg);
+      top: 34vh;
+      right: 0;
+      left: -5vw;
     }
   }
   .rangers-box {
-    padding: 3.6rem 2.4rem 42rem;
-    .bg {
-      right: -74rem;
-    }
-    .title {
-      font-size: 3.6rem;
-      line-height: 5.2rem;
-      margin-bottom: -0.4rem;
-    }
-    .desc {
-      width: unset;
-    }
-    .arrow {
-      display: none;
-    }
-    .rangers-list {
-      left: 0;
-      bottom: 6rem;
-      padding-left: 2.4rem;
-      width: 100%;
-    }
-    .rangers-box {
-      .swiper {
-        height: 32.6rem;
-        padding-right: 2.4rem;
-      }
-      .swiper-slide {
-        width: 28rem;
-        img {
-          width: 28rem;
-        }
-        .ranger-name {
-          width: 28rem;
-          height: 4.6rem;
-          line-height: 4.6rem;
-          font-size: 1.8rem;
-        }
-      }
-    }
-  }
-
-  .perks-box {
+    position: relative;
     width: 100%;
-    padding: 3.6rem 2.4rem;
-    .title {
-      font-size: 3.6rem;
-      line-height: 5.2rem;
-    }
-    .desc {
-      width: unset;
-      margin: -0.4rem 0 3.6rem;
-    }
-    .perks-list {
-      .perk-box {
-        float: unset;
-        width: 100%;
-        height: 16rem;
-        margin-right: 0;
-        margin-top: 0;
-        margin-bottom: 1.2rem;
-        .info {
-          position: absolute;
-          left: 0;
-          top: 5rem;
-          padding: 0 1.2rem;
-          .name {
-            font-size: 1.8rem;
-            line-height: 2.2rem;
-            margin-bottom: 0.4rem;
-          }
-          .text {
-            font-size: 1.4rem;
+    .rangers-info {
+      position: relative;
+      width: 100%;
+      height: unset;
+      background: unset;
+      margin: 8rem auto 0;
+      padding: 0;
+      /deep/.info-box {
+        .desc {
+          width: unset;
+          margin-top: -2.4rem;
+          font-size: 1.4rem;
+          line-height: 2.4rem;
+          padding: 0 3.6rem 0;
+          p {
+            margin-bottom: 2.4rem;
+            &:last-child {
+              margin-bottom: 0;
+            }
           }
         }
-        .card {
-          transition: unset;
-          transform-style: unset;
-          will-change: unset;
-          box-shadow: unset;
-          transition: unset;
-          &:hover {
-            box-shadow: unset;
+        .rangers-img {
+          display: none;
+        }
+        .rangers-mobile-img {
+          display: block;
+        }
+      }
+
+      .title {
+        width: unset;
+        font-size: 3.6rem;
+        line-height: 5.2rem;
+        padding: 0;
+        margin-bottom: 3.6rem;
+      }
+    }
+  }
+  .perks-box {
+    position: relative;
+    width: 100%;
+    height: unset;
+    padding-top: 0;
+    .perks-box-list {
+      position: relative;
+      width: 100%;
+      height: unset;
+      margin: 0 auto;
+      padding: 0;
+      &::before {
+        display: none;
+      }
+      &::after {
+        display: none;
+      }
+      .perks {
+        width: 100%;
+        height: 27.5rem;
+        float: unset;
+        background-color: #fff;
+        padding: 4.8rem 3.6rem 0;
+        &:nth-child(1) {
+          height: 30rem;
+          .title {
+            color: #ff4125;
           }
+          .desc {
+            color: #000000;
+          }
+        }
+        .title {
+          font-size: 3.6rem;
+          line-height: 5.2rem;
+        }
+        .desc {
+          font-size: 1.4rem;
+          line-height: 2.4rem;
         }
       }
     }
   }
-
   .roadmap-box {
     width: 100%;
     height: 62.4rem;
+    -webkit-mask: unset;
+    mask: unset;
     .roadmap-box-block {
       .video-background {
         display: none;
@@ -1781,19 +1460,29 @@ export default defineComponent({
       .roadmap-info-box {
         padding: 3.6rem 2.4rem;
         width: 100%;
+        background: unset;
+        #wrapper {
+          width: unset;
+        }
         .title {
           font-size: 3.6rem;
           line-height: 5.2rem;
           padding-bottom: 1.2rem;
           padding-right: 8.4rem;
+          color: #fff;
         }
         .roadmap-info-list {
           width: unset;
           height: 52.4rem;
           .roadmap-info {
-            width: unset;
+            width: 100%;
             height: 52.4rem;
-            .footer-info {
+            /deep/.header-info {
+              .desc {
+                color: #fff;
+              }
+            }
+            /deep/.footer-info {
               left: 0;
               bottom: 3.4rem;
               .time {
@@ -1807,6 +1496,7 @@ export default defineComponent({
                 margin-bottom: 0.9rem;
               }
               .desc {
+                color: #fff;
                 margin-top: unset;
                 width: unset;
               }
@@ -1822,71 +1512,47 @@ export default defineComponent({
       width: 100%;
       left: 0;
       bottom: 0;
+      background: rgba(255, 255, 255, 0.5);
       .skip-has {
         width: 4.1rem;
+        background: #000000;
       }
       .skip-bot {
         width: 7.5rem;
+        background: #ffffff;
+        box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
       }
     }
   }
 
-  .tag-box {
-    padding: 3.6rem 2.4rem 4.8rem;
+  .token-box {
+    position: relative;
     width: 100%;
-
-    .title {
-      font-size: 3.6rem;
-      line-height: 5.2rem;
-    }
-    .desc {
+    padding-top: 8rem;
+    .token-info-box {
       width: unset;
-      margin-top: -0.4rem;
-    }
-    .btn-box {
-      position: unset;
-      right: unset;
-      bottom: unset;
-      .text {
-        text-align: center;
-        padding-top: 3.6rem;
+      margin: 0 auto;
+      > .title {
+        font-size: 3.6rem;
+        line-height: 5.2rem;
       }
-      .btn {
-        width: 60.26vw;
-        /* background: #ff4125; */
-        height: 5.4rem;
-        line-height: 5.4rem;
-        margin-left: calc(19.87vw - 2.4rem);
-        padding: 0;
-      }
-    }
-  }
-
-  .battlegrounds-box {
-    padding: 3.6rem 2.4rem 4.8rem;
-    width: 100%;
-    .title {
-      font-size: 3.6rem;
-      line-height: 5.2rem;
-      margin-bottom: 0;
-    }
-    .battlegrounds-box-list {
-      .battleground-box {
-        float: unset;
-        width: 100%;
-        height: 17.4rem;
-        line-height: 17.4rem;
-        margin-top: 1.2rem;
-        margin-right: 0;
-        img {
-          height: 17.4rem;
+      .token-info-list {
+        padding-bottom: 4.2rem;
+        /deep/.token-info {
+          float: unset;
+          width: unset;
+          padding: 0 3.6rem;
+          .title {
+            font-size: 2.4rem;
+            text-align: center;
+          }
         }
       }
     }
   }
 
   .team-box {
-    padding: 3.6rem 2.4rem 4.8rem;
+    padding: 3.6rem 2.4rem 2.8rem;
     width: 100%;
     .title {
       font-size: 3.6rem;
@@ -1895,6 +1561,7 @@ export default defineComponent({
     }
     .desc {
       padding-bottom: 43.1rem;
+      margin-top: 6rem;
     }
     .arrow {
       display: none;
@@ -1929,28 +1596,101 @@ export default defineComponent({
   .faq-box {
     padding: 3.6rem 2.4rem 4.8rem;
     width: 100%;
-    .title {
-      font-size: 3.6rem;
-      line-height: 5.2rem;
-    }
-    .desc {
-      margin-top: -0.4rem;
-      margin-bottom: 3.6rem;
-    }
-    .faq-box-info-list {
-      float: unset;
-      width: 100%;
-      margin-right: 0;
-      .faq-box-info {
-        margin-top: 1.2rem;
-        .faq-question {
-          width: 100%;
-          height: unset;
-          line-height: 2.4rem;
-          padding: 1.2rem;
+    .faq-info-box {
+      width: unset;
+      .title {
+        font-size: 3.6rem;
+        line-height: 5.2rem;
+      }
+      .desc {
+        margin-top: 0;
+        margin-bottom: 3.2rem;
+      }
+      .faq-box-info-list {
+        float: unset;
+        width: 100%;
+        margin-right: 0;
+        .faq-box-info {
+          margin-top: 1.2rem;
+          .faq-question {
+            width: 100%;
+            height: unset;
+            line-height: 2.4rem;
+            padding: 1.2rem;
+          }
         }
       }
     }
+  }
+  .rotating-box {
+    width: 12rem;
+    height: 12rem;
+    bottom: 3.6rem;
+    right: 1.6rem;
+  }
+}
+</style>
+<style>
+@keyframes glitch-anim-1-horizontal {
+  0% {
+    -webkit-clip-path: polygon(0 2%, 100% 2%, 100% 10%, 0 10%);
+    clip-path: polygon(0 2%, 100% 2%, 100% 10%, 0 10%);
+  }
+  6% {
+    -webkit-clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%);
+    clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%);
+  }
+  12% {
+    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+  }
+  20% {
+    -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
+    clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
+  }
+  26% {
+    -webkit-clip-path: polygon(0 11%, 100% 11%, 100% 15%, 0 15%);
+    clip-path: polygon(0 11%, 100% 11%, 100% 15%, 0 15%);
+  }
+  32% {
+    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+  }
+  40% {
+    -webkit-clip-path: polygon(0 33%, 100% 33%, 100% 53%, 0 53%);
+    clip-path: polygon(0 33%, 100% 33%, 100% 53%, 0 53%);
+  }
+  46% {
+    -webkit-clip-path: polygon(0 44%, 100% 44%, 100% 74%, 0 74%);
+    clip-path: polygon(0 44%, 100% 44%, 100% 74%, 0 74%);
+  }
+  52% {
+    -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+  }
+  60% {
+    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
+    clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
+  }
+  66% {
+    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 77%, 0 77%);
+    clip-path: polygon(0 70%, 100% 70%, 100% 77%, 0 77%);
+  }
+  72% {
+    -webkit-clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
+    clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
+  }
+  80% {
+    -webkit-clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+  }
+  86% {
+    -webkit-clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+  }
+  100% {
+    -webkit-clip-path: polygon(0 70%, 100% 70%, 100% 95%, 0 95%);
+    clip-path: polygon(0 70%, 100% 70%, 100% 95%, 0 95%);
   }
 }
 </style>

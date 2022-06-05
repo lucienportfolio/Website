@@ -2,7 +2,7 @@
  * @Author       : hwl
  * @Date         : 2022-05-11 16:36:23
  * @LastEditors  : hwl
- * @LastEditTime : 2022-05-14 20:36:30
+ * @LastEditTime : 2022-05-23 16:16:34
  * @Description  :
  */
 import { defineConfig } from 'vite'
@@ -20,19 +20,20 @@ export default defineConfig({
   },
   base: './', // 设置打包路径
   server: {
-    port: 4000, // 设置服务启动端口号
+    host: '0.0.0.0',
+    port: 82,
     open: true, // 设置服务启动时是否自动打开浏览器
-    cors: true // 允许跨域
-
-    // 设置代理，根据我们项目实际情况配置
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://xxx.xxx.xxx.xxx:8000',
-    //     changeOrigin: true,
-    //     secure: false,
-    //     rewrite: (path) => path.replace('/api/', '/')
-    //   }
-    // }
+    https: false,
+    cors: true, // 允许跨域
+    // 设置代理，根据项目实际情况配置
+    proxy: {
+      '/NFT-API/': {
+        // target: 'http://api.ambrus.studio/api/v1/',
+        target: 'http://api.nft.com/api/v1/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/NFT-API/, '')
+      }
+    }
   },
   productionSourceMap: false
 })

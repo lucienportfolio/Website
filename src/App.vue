@@ -15,54 +15,49 @@
     <div class="loading-box">
       <div class="loading-info">
         <div class="loading-text">
-          <span>E4C:</span> Loading
+          <span>Ambrus Studio</span> Loading
           <span class="pro">(0%)</span>
         </div>
         <div class="loading-skip" id="loading-skip"></div>
       </div>
     </div>
   </div>
-  -->
   <header>
     <div class="info">
-      <img
-        src="https://ambrus.s3.amazonaws.com/1653214835451_0.00_header-logo.png"
-        alt=""
-        class="logo"
-      />
+      <img src="https://ambrus.s3.amazonaws.com/1654419946121_0.88_logo.png" alt="" class="logo" />
       <div class="middle-box">
         <nav>
-          <router-link to="/" :class="routeName === 'IndexIndex' ? 'active' : ''">HOME</router-link>
-          <router-link to="aboutus" :class="routeName === 'IndexAboutus' ? 'active' : ''"
+          <router-link to="/" :class="routeName === 'IndexIndex' ? 'has-act active' : 'has-act'"
+            >HOME</router-link
+          >
+          <div class="show-games">
+            <div class="show-info">
+              E4C: GAMES
+              <img
+                src="https://ambrus.s3.amazonaws.com/1654419946109_0.85_header-arrow-1.png"
+                alt=""
+              />
+              <span class="soon">soon</span>
+            </div>
+          </div>
+          <a href="javascript:;">E4C: VERSE <span class="soon">soon</span></a>
+          <router-link
+            to="aboutus"
+            :class="routeName === 'IndexAboutus' ? 'has-act active' : 'has-act'"
             >ABOUT US</router-link
           >
         </nav>
         <div class="top-right clearfix">
           <div class="link-list">
-            <a href="https://discord.gg/e4c" target="_blank">
-              <img
-                src="https://ambrus.s3.amazonaws.com/1653214835443_0.02_header-link-1.png"
-                alt=""
-              />
+            <a :href="v.url" target="_blank" v-for="(v, i) in headerLink" :key="i">
+              <img :src="v.material_list.material.url" alt="" />
             </a>
             <!-- <a href="javascript:;">
-                <img src="https://ambrus.s3.amazonaws.com/1653214835444_0.10_header-link-2.png" alt="" />
+                <img src="https://ambrus.s3.amazonaws.com/1654419946116_0.54_link-2.png" alt="" />
               </a> -->
-            <a href="https://twitter.com/AmbrusStudio" target="_blank">
-              <img
-                src="https://ambrus.s3.amazonaws.com/1653214835446_0.37_header-link-3.png"
-                alt=""
-              />
-            </a>
             <!-- <a href="javascript:;">
-                <img src="https://ambrus.s3.amazonaws.com/1653214835447_0.57_header-link-4.png" alt="" />
+                <img src="https://ambrus.s3.amazonaws.com/1654419946119_0.41_link-4.png" alt="" />
               </a> -->
-            <a href="https://medium.com/@AmbrusStudio" target="_blank">
-              <img
-                src="https://ambrus.s3.amazonaws.com/1653214835448_0.81_header-link-5.png"
-                alt=""
-              />
-            </a>
           </div>
           <div class="language">Eng</div>
           <div class="user-btn-box">
@@ -104,21 +99,15 @@
           </div> -->
       </div>
       <div class="link-list">
-        <a href="https://discord.gg/e4c" target="_blank">
-          <img src="	https://ambrus.s3.amazonaws.com/1653214783661_0.71_footer-link-1.png" alt="" />
+        <a :href="v.url" target="_blank" v-for="(v, i) in footerLink" :key="i">
+          <img :src="v.material_list.material.url" alt="" />
         </a>
         <!-- <a href="javascript:;">
             <img src="https://ambrus.s3.amazonaws.com/1653214783662_0.80_footer-link-2.png" alt="" />
           </a> -->
-        <a href="https://twitter.com/AmbrusStudio" target="_blank">
-          <img src="https://ambrus.s3.amazonaws.com/1653214783663_0.58_footer-link-3.png" alt="" />
-        </a>
         <!-- <a href="javascript:;">
             <img src="https://ambrus.s3.amazonaws.com/1653214783664_0.75_footer-link-4.png" alt="" />
           </a> -->
-        <a href="https://medium.com/@AmbrusStudio" target="_blank">
-          <img src="https://ambrus.s3.amazonaws.com/1653214783665_0.92_footer-link-5.png" alt="" />
-        </a>
       </div>
       <div class="footer-logo">
         <img src="https://ambrus.s3.amazonaws.com/1653214835436_0.79_footer-logo-2.png" alt="" />
@@ -138,6 +127,8 @@ import { useRouter, useRoute } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import $ from 'jquery'
+import { onCheckMaterial } from '@/utils/index.js'
+import { getBlockInfoApi } from '@/api/block/index'
 
 export default defineComponent({
   name: 'App',
@@ -164,8 +155,10 @@ export default defineComponent({
         }
       }, 150)
     }
+    const headerLink = ref([])
+    const footerLink = ref([])
     const isWap = ref(false)
-    onMounted(() => {
+    onMounted(async () => {
       window.onload = () => {
         clearInterval(setSkip)
         pagePg(skip + (1 - skip) / 2)
@@ -175,6 +168,29 @@ export default defineComponent({
           // pagePg(1)
           loading.value = false
         }, 300)
+      }
+
+      const headerLinkRes = await getBlockInfoApi('headerIcon')
+      if (headerLinkRes.code === 200) {
+        headerLink.value = []
+        headerLinkRes.data.forEach((v) => {
+          headerLink.value.push({
+            url: v.url,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+        console.log(headerLink)
+      }
+
+      const footerLinkRes = await getBlockInfoApi('footerIcon')
+      if (footerLinkRes.code === 200) {
+        footerLink.value = []
+        footerLinkRes.data.forEach((v) => {
+          footerLink.value.push({
+            url: v.url,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
       }
 
       $('.menu-box').bind('click', () => {
@@ -224,7 +240,9 @@ export default defineComponent({
     )
     return {
       loading,
-      routeName
+      routeName,
+      headerLink,
+      footerLink
     }
   }
 })
@@ -271,12 +289,12 @@ html {
 }
 @font-face {
   font-family: 'Montserrat';
-  src: url(@/assets/fonts/Montserrat/Montserrat-Regular-8.otf);
+  src: url(https://ambrus.s3.amazonaws.com/1653215851675_0.59_Montserrat-Regular-8.otf);
   font-weight: 400;
 }
 @font-face {
   font-family: 'Teko';
-  src: url(@/assets/fonts/Teko/Teko-Regular-2.ttf);
+  src: url(https://ambrus.s3.amazonaws.com/1653215921732_0.59_Teko-Regular-2.ttf);
   font-weight: 400;
 }
 body {
@@ -285,13 +303,17 @@ body {
   font-size: 1.4rem;
   -webkit-font-smoothing: antialiased;
   font-style: normal;
-  color: #000;
   background: #f0f0f0;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  color: white;
+  background-color: #2a2a2a;
+  background-image: url(https://ambrus.s3.amazonaws.com/1654419946099_0.06_bg-pattern.png);
+  background-size: 100% auto;
+  background-position: top;
 }
 .clearfix {
   display: block;
@@ -463,37 +485,60 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  height: 6.4rem;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(10px);
+  height: 9.9rem;
   z-index: 99999999;
   .info {
     position: relative;
-    height: 6.4rem;
+    height: 9.9rem;
     .logo {
       position: absolute;
       width: 4rem;
       height: 4rem;
-      top: 1.2rem;
+      top: 3rem;
       left: 3.2rem;
     }
     .middle-box {
       nav {
         margin-left: 8.8rem;
-        > a {
+        > a,
+        .show-info {
+          position: relative;
+          font-size: 1.4rem;
           font-family: Montserrat;
           font-weight: 400;
           text-align: center;
           text-transform: uppercase;
-          color: #465358;
+          color: #fff;
           flex: none;
           order: 0;
           flex-grow: 0;
           padding: 0 2.4rem;
-          line-height: 6.4rem;
+          line-height: 9.9rem;
           display: block;
           float: left;
-          &:not(.active):hover {
+          cursor: pointer;
+          > img {
+            width: 0.8rem;
+            margin-left: 0.8rem;
+          }
+          .soon {
+            display: block;
+            position: absolute;
+            top: 6.8rem;
+            left: 50%;
+            margin-left: -2.45rem;
+            width: 4.9rem;
+            height: 1.4rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 0.4rem;
+            font-family: Montserrat;
+            font-weight: 500;
+            font-size: 0.8rem;
+            line-height: 1.4rem;
+            text-align: center;
+            text-transform: uppercase;
+          }
+          &.has-act:not(.active):hover {
             font-weight: 600;
             color: #ff4125;
           }
@@ -503,11 +548,13 @@ header {
             font-weight: 600;
             text-align: center;
             text-transform: uppercase;
-            color: #000;
+            > img {
+              transform: rotate(180deg);
+            }
             &::before {
               content: '';
               position: absolute;
-              top: 3.1rem;
+              top: 4.85rem;
               left: 0;
               width: 100%;
               height: 0.2rem;
@@ -524,15 +571,10 @@ header {
         right: 3.2rem;
         .link-list {
           float: left;
-          /* position: absolute;
-  top: 0;
-  right: 29.8rem;
-  right: 23rem; */
-          /* margin-right: 1.2rem; */
           a {
             padding: 0 1.35rem;
-            height: 6.4rem;
-            line-height: 6.4rem;
+            height: 9.9rem;
+            line-height: 9.9rem;
             img {
               width: 2.4rem;
             }
@@ -541,9 +583,6 @@ header {
         .language {
           display: none;
           float: left;
-          /* position: absolute;
-  top: 1.4rem;
-  right: 22.9rem; */
           width: 5.7rem;
           height: 3.6rem;
           line-height: 3.6rem;
@@ -554,14 +593,13 @@ header {
           text-align: center;
           color: #465358;
           cursor: pointer;
-          margin-top: 1.4rem;
-          margin-right: 1.2rem;
+          margin: 3.15rem 1.2rem 0 1.35rem;
         }
         .user-btn-box {
-          float: left;
-          margin-top: 1.4rem;
-          position: relative;
           display: none;
+          float: left;
+          margin-top: 3.15rem;
+          position: relative;
           .login-btn,
           .user-btn {
             display: block;
@@ -747,7 +785,10 @@ footer {
     }
   }
   header {
+    width: 100vw;
     height: 5.2rem;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
     .info {
       width: 100%;
       height: 5.2rem;
@@ -764,21 +805,24 @@ footer {
           position: fixed;
           top: 5.2rem;
           left: 0;
-          /* height: calc(100vh - 5.2rem); */
           width: 100%;
           overflow-y: auto;
           overflow-x: hidden;
           background: rgba(255, 255, 255, 0.75);
           backdrop-filter: blur(1rem);
-          /* height: calc(100vh - 5.2rem - 17.5rem); */
           height: calc(100vh - 5.2rem - 8.7rem);
-          > a {
+          > a,
+          .show-info {
             float: unset;
             margin: 0 32%;
             font-weight: 400;
             font-size: 1.4rem;
             line-height: 5.6rem;
             color: #465358;
+            padding: 0;
+            .soon {
+              top: 4.2rem;
+            }
             &.active::before {
               top: 2.7rem;
             }
@@ -931,6 +975,50 @@ footer {
         }
       }
     }
+  }
+}
+
+.inside {
+  position: relative;
+  text-align: center;
+  font-family: Teko, sans-serif;
+  font-size: 6.4rem;
+  filter: grayscale(100%);
+  transition: all 0.3s;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -99;
+    background: url(https://ambrus.s3.amazonaws.com/1654419946140_0.44_Square.png);
+    background-size: auto 60px;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: square infinite 1s;
+  }
+}
+
+@keyframes square {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
   }
 }
 @media screen and (min-width: 640px) and (max-width: 960px) {

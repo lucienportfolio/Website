@@ -2,9 +2,11 @@
  * @Author       : hwl
  * @Date         : 2022-05-14 18:06:33
  * @LastEditors  : hwl
- * @LastEditTime : 2022-05-14 18:13:34
+ * @LastEditTime : 2022-06-05 21:44:52
  * @Description  :
  */
+import $ from 'jquery'
+
 export const isMobile = () => {
   if (
     navigator.userAgent.match(
@@ -17,3 +19,17 @@ export const isMobile = () => {
 }
 
 export const isPad = () => {}
+
+export const onCheckMaterial = (pcUrl, mobUrl) => {
+  const data = {
+    material: { type: '', url: '' },
+    material_pc: { type: '', url: '' },
+    material_mob: { type: '', url: '' }
+  }
+  data.material_pc.type = pcUrl && pcUrl.split('|')[0] ? pcUrl.split('|')[0] : ''
+  data.material_pc.url = pcUrl && pcUrl.split('|')[1] ? pcUrl.split('|')[1] : pcUrl
+  data.material_mob.type = mobUrl && mobUrl.split('|')[0] ? mobUrl.split('|')[0] : ''
+  data.material_mob.url = mobUrl && mobUrl.split('|')[1] ? mobUrl.split('|')[1] : mobUrl
+  data.material = $(window).width() <= 960 && mobUrl ? data.material_mob : data.material_pc
+  return data
+}
