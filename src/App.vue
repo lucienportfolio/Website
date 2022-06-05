@@ -167,7 +167,7 @@ export default defineComponent({
           $('html').css('overflow-y', 'auto')
           // pagePg(1)
           loading.value = false
-        }, 300)
+        }, 2000)
       }
 
       const headerLinkRes = await getBlockInfoApi('headerIcon')

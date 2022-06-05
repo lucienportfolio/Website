@@ -624,7 +624,6 @@ export default defineComponent({
 }
 
 .rotating-box {
-  display: none;
   width: 24rem;
   height: 24rem;
   background: url(https://ambrus.s3.amazonaws.com/1654419946103_0.07_cs.png);
