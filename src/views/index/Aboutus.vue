@@ -119,6 +119,7 @@ export default defineComponent({
     })
     onMounted(async () => {
       document.addEventListener('scroll', scrollFun, false)
+      $('html').attr({ style: 'overflow-y:auto' })
 
       const bannerInfoRes = await getBlockInfoApi('aboutusBanner')
       if (bannerInfoRes.code === 200) {

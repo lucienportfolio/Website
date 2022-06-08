@@ -157,7 +157,7 @@ export default defineComponent({
         const width = $(window).width()
         if (width > 960 && width < 1440) {
           $('html').css({ 'font-size': `${(width / 1440) * 62.5}%` })
-        } else if (!$('.loading-main').is(':hidden')) {
+        } else if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
           $('html').attr({ style: '' })
         } else {
           $('html').attr({ style: 'overflow-y:auto' })
