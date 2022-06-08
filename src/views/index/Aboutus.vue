@@ -532,6 +532,7 @@ export default defineComponent({
         padding-bottom: 0;
         .team-info-box {
           float: unset;
+          position: relative;
           width: 100%;
           height: calc(100vw - 7.2rem + 14.9rem);
           margin-right: 0;
