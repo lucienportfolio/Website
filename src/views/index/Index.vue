@@ -34,6 +34,7 @@
     <section class="roadmap-box sect" :style="`background-image:url(${roadMapBg})`">
       <div class="roadmap-box-block">
         <div class="roadmap-glitch"></div>
+        <div class="roadmap-mobile-bg"></div>
         <div
           class="roadmap-info-box"
           @touchstart.stop="onRoadmapTouchStart"
@@ -52,6 +53,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="hidden">
+        <img :src="v.material_list.material.url" v-for="(v, i) in roadMapInfo" :key="i" />
       </div>
       <div class="arrow">
         <div class="left-arrow" id="roadmap-left-arrow" @click="onRoadLeft(0)">
@@ -132,7 +136,7 @@
   </section>
 </template>
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { Navigation, Pagination, A11y } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
@@ -193,50 +197,47 @@ export default defineComponent({
       }
     ])
     const faqInfo = ref([[{ name: '', introduction: '' }], [], []])
+    const scrollFun = (e) => {
+      console.log(e)
+      const sections = document.getElementsByClassName('sect')
+      if (window.scrollY < sections[1].offsetTop - 480) {
+        sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+      }
 
+      if (window.scrollY > sections[1].offsetTop - 480) {
+        sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+      }
+
+      if (window.scrollY > sections[2].offsetTop - 480) {
+        sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+      }
+
+      if (window.scrollY > sections[3].offsetTop - 480) {
+        sections[4].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+      }
+
+      if (window.scrollY > sections[4].offsetTop - 480) {
+        sections[4].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+        sections[5].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+      }
+
+      if (window.scrollY > sections[5].offsetTop - 480) {
+        sections[4].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+        sections[5].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+        sections[6].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+      }
+
+      if (window.scrollY > sections[6].offsetTop - 480) {
+        sections[5].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+        sections[6].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+      }
+    }
+    onUnmounted(() => {
+      document.removeEventListener('scroll', scrollFun, false)
+    })
     onMounted(async () => {
-      // const sections = document.getElementsByClassName('sect')
+      document.addEventListener('scroll', scrollFun, false)
 
-      // document.addEventListener('scroll', (e) => {
-      //   if (window.scrollY < sections[1].offsetTop - 480) {
-      //     sections[1].children[0].style.filter = 'grayscale(100%)'
-      //   }
-
-      //   if (window.scrollY > sections[1].offsetTop - 480) {
-      //     sections[1].children[0].style.filter = 'grayscale(0%)'
-      //     sections[2].children[0].style.filter = 'grayscale(100%)'
-      //   }
-
-      //   if (window.scrollY > sections[2].offsetTop - 480) {
-      //     sections[1].children[0].style.filter = 'grayscale(100%)'
-      //     sections[3].children[0].style.filter = 'grayscale(100%)'
-      //     sections[2].children[0].style.filter = 'grayscale(0%)'
-      //   }
-
-      //   if (window.scrollY > sections[3].offsetTop - 480) {
-      //     sections[2].children[0].style.filter = 'grayscale(100%)'
-      //     sections[4].children[0].style.filter = 'grayscale(100%)'
-      //     sections[3].children[0].style.filter = 'grayscale(0%)'
-      //   }
-
-      //   if (window.scrollY > sections[4].offsetTop - 480) {
-      //     sections[3].children[0].style.filter = 'grayscale(100%)'
-      //     sections[5].children[0].style.filter = 'grayscale(100%)'
-      //     sections[4].children[0].style.filter = 'grayscale(0%)'
-      //   }
-
-      //   if (window.scrollY > sections[5].offsetTop - 480) {
-      //     sections[4].children[0].style.filter = 'grayscale(100%)'
-      //     sections[6].children[0].style.filter = 'grayscale(100%)'
-      //     sections[5].children[0].style.filter = 'grayscale(0%)'
-      //   }
-
-      //   if (window.scrollY > sections[6].offsetTop - 480) {
-      //     sections[5].children[0].style.filter = 'grayscale(100%)'
-      //     sections[7].children[0].style.filter = 'grayscale(100%)'
-      //     sections[6].children[0].style.filter = 'grayscale(0%)'
-      //   }
-      // })
       const bannerInfoRes = await getBlockInfoApi('indexBanner')
       if (bannerInfoRes.code === 200) {
         if (bannerInfoRes.data.length > 0) {
@@ -556,8 +557,8 @@ export default defineComponent({
     width: 100%;
     text-align: right;
     font-family: Teko, sans-serif;
-    font-size: 18rem;
-    line-height: 14rem;
+    font-size: 30vh;
+    line-height: 22vh;
     z-index: -1;
     text-shadow: 0.02em 0 0 rgba(255, 0, 0, 0.25), -0.02em 0 0 rgba(0, 0, 0, 0.3);
     animation: glitch-text infinite 0.8s linear;
@@ -624,8 +625,8 @@ export default defineComponent({
 }
 
 .rotating-box {
-  width: 24rem;
-  height: 24rem;
+  width: 15vh;
+  height: 15vh;
   background: url(https://ambrus.s3.amazonaws.com/1654419946103_0.07_cs.png);
   background-size: 100% 100%;
   background-position: center;
@@ -672,6 +673,7 @@ export default defineComponent({
     background-repeat: no-repeat;
     margin: 17.8rem auto 15.4rem;
     padding: 0 0 0 62.5rem;
+    box-shadow: 0 1.2rem 3.6rem rgba(0, 0, 0, 0.3);
     /deep/.info-box {
       .desc {
         width: 44.8rem;
@@ -853,6 +855,7 @@ export default defineComponent({
   mask-position: top center;
   background-size: cover;
   background-position: center;
+  z-index: 100;
   .roadmap-box-block {
     width: 100%;
     height: 100vh;
@@ -867,6 +870,16 @@ export default defineComponent({
       transition: all 0.3s;
       background-size: cover;
       background-position: center;
+    }
+    .roadmap-mobile-bg {
+      z-index: 0;
+      // opacity: 0.4;
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0.4rem 0px 1rem rgba(0, 0, 0, 0.15);
     }
     .roadmap-info-box {
       position: absolute;
@@ -885,6 +898,7 @@ export default defineComponent({
 
       #wrapper {
         width: 66rem;
+        height: 100%;
       }
 
       .title {
@@ -899,16 +913,16 @@ export default defineComponent({
         border-bottom: 0.1rem solid #465358;
       }
       .roadmap-info-list {
-        position: relative;
-        width: 59.1rem;
-        height: calc(100vh - 15.1rem);
+        // position: relative;
+        // width: 59.1rem;
+        height: calc(100% - 9.2rem);
         transition: all 0.2s ease-in-out;
         .roadmap-info {
-          position: absolute;
-          width: 59.1rem;
-          height: calc(100vh - 15.1rem);
-          top: 0;
-          left: 0;
+          // position: absolute;
+          // width: 59.1rem;
+          // height: calc(100% - 15.1rem);
+          // top: 0;
+          // left: 0;
           &:not(:first-child) {
             display: none;
           }
@@ -1026,7 +1040,7 @@ export default defineComponent({
     height: 1rem;
     left: 8.8rem;
     bottom: 7.2rem;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.2);
     z-index: 64;
     .skip-has {
       position: absolute;
@@ -1034,7 +1048,7 @@ export default defineComponent({
       height: 1rem;
       left: 0;
       top: 0;
-      background: #ff4125;
+      background: rgba(0, 0, 0, 0.5);
       opacity: 0.5;
     }
     .skip-bot {
@@ -1043,7 +1057,7 @@ export default defineComponent({
       height: 0.2rem;
       left: 0.5%;
       top: 0.4rem;
-      background: #2a2a2a;
+      background: #ffffff;
       box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
       transition: all 0.5s ease-in-out;
     }
@@ -1345,9 +1359,14 @@ export default defineComponent({
 
     /deep/.title {
       transform: rotate(270deg);
-      top: 34vh;
+      top: 25vh;
       right: 0;
-      left: -5vw;
+      left: -11vw;
+      font-size: 24vh;
+      line-height: 18vh;
+      span {
+        padding-left: 9vh;
+      }
     }
   }
   .rangers-box {
@@ -1456,6 +1475,9 @@ export default defineComponent({
         transition: all 0.5s ease-in-out;
         opacity: 1;
       }
+      .roadmap-mobile-bg {
+        display: block;
+      }
       .roadmap-info-box {
         padding: 3.6rem 2.4rem;
         width: 100%;
@@ -1472,10 +1494,11 @@ export default defineComponent({
         }
         .roadmap-info-list {
           width: unset;
-          height: 52.4rem;
+          height: calc(100% - 5.2rem);
           .roadmap-info {
             width: 100%;
-            height: 52.4rem;
+            height: 100%;
+            position: relative;
             /deep/.header-info {
               .desc {
                 color: #fff;

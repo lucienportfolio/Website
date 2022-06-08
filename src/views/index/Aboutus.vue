@@ -1,19 +1,19 @@
 <template>
   <section class="main">
     <section
-      class="banner-box"
+      class="banner-box sect"
       :style="`background-image: url(${bannerInfo.material_list.material.url})`"
     >
       <div class="title">{{ bannerInfo.name }}</div>
       <div class="desc" v-html="bannerInfo.html"></div>
     </section>
-    <section class="missions-box">
+    <section class="missions-box sect">
       <div class="missions-block">
         <div class="title inside">{{ missionsInfo.name }}</div>
         <div class="missions-info-box-list clearfix" v-html="missionsInfo.html"></div>
       </div>
     </section>
-    <section class="manifesto-box">
+    <section class="manifesto-box sect">
       <div
         class="manifesto-info-box-list clearfix"
         :style="
@@ -27,7 +27,7 @@
         </div>
       </div>
     </section>
-    <section class="team-box">
+    <section class="team-box sect">
       <div class="team-block">
         <div class="title inside">{{ teamInfo[0].name }}</div>
         <div class="desc">{{ teamInfo[0].introduction }}</div>
@@ -47,7 +47,7 @@
   </section>
 </template>
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import $ from 'jquery'
 import { onCheckMaterial } from '@/utils/index.js'
 import { getBlockInfoApi } from '@/api/block/index'
@@ -85,7 +85,33 @@ export default defineComponent({
         introduction: ''
       }
     ])
+    const scrollFun = (e) => {
+      const sections = document.getElementsByClassName('sect')
+      console.log(e)
+      console.log(sections[3].offsetTop)
+      if (window.scrollY < sections[1].offsetTop - 480) {
+        sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+      }
+
+      if (window.scrollY > sections[1].offsetTop - 480) {
+        sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+      }
+
+      if (window.scrollY > sections[2].offsetTop - 480) {
+        sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+        sections[3].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+      }
+
+      if (window.scrollY > sections[3].offsetTop - 480) {
+        sections[3].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+      }
+    }
+    onUnmounted(() => {
+      document.removeEventListener('scroll', scrollFun, false)
+    })
     onMounted(async () => {
+      document.addEventListener('scroll', scrollFun, false)
+
       const bannerInfoRes = await getBlockInfoApi('aboutusBanner')
       if (bannerInfoRes.code === 200) {
         if (bannerInfoRes.data.length > 0) {
@@ -211,12 +237,13 @@ export default defineComponent({
         margin-right: 0;
       }
       .title {
-        font-family: Montserrat;
-        font-weight: 600;
-        font-size: 1.6rem;
-        line-height: 2rem;
-        color: #ff4125;
         padding-bottom: 0.8rem;
+        color: #ff4125;
+        font-family: Montserrat;
+        font-weight: 700;
+        font-size: 3.2rem;
+        line-height: 3.9rem;
+        text-align: center;
       }
       .desc {
         font-family: Montserrat;
@@ -497,12 +524,13 @@ export default defineComponent({
         .team-info-box {
           float: unset;
           width: 100%;
-          min-height: 45.2rem;
+          height: calc(100vw - 7.2rem + 14.9rem);
           margin-right: 0;
           margin-top: 2.4rem;
           /deep/.team-member-avatar-box {
             position: relative;
             max-height: unset;
+            height: calc(100vw - 7.2rem);
             overflow: hidden;
             > img {
               width: 100%;
