@@ -200,8 +200,9 @@ export default defineComponent({
     const scrollFun = () => {
       const sections = document.getElementsByClassName('sect')
       if (
-        $(window).width() > 960 &&
-        window.scrollY > $('.banner-box').height() - $('header').height()
+        // $(window).width() > 960 &&
+        window.scrollY >
+        $('.banner-box').height() - $('header').height()
       ) {
         $('header').addClass('bg')
       } else {
@@ -257,7 +258,7 @@ export default defineComponent({
       }
       const rangerInfoRes = await getBlockInfoApi('indexRangers')
       if (rangerInfoRes.code === 200) {
-        if (bannerInfoRes.data.length > 0) {
+        if (rangerInfoRes.data.length > 0) {
           rangerInfo.value.name = rangerInfoRes.data[0].name
           rangerInfo.value.html = rangerInfoRes.data[0].html
           rangerInfo.value.material_list = onCheckMaterial(

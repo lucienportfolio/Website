@@ -88,8 +88,9 @@ export default defineComponent({
     const scrollFun = () => {
       const sections = document.getElementsByClassName('sect')
       if (
-        $(window).width() > 960 &&
-        window.scrollY > $('.banner-box').height() - $('header').height()
+        // $(window).width() > 960 &&
+        window.scrollY >
+        $('.banner-box').height() - $('header').height()
       ) {
         $('header').addClass('bg')
       } else {

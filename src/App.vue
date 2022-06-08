@@ -195,6 +195,11 @@ export default defineComponent({
 
       $('.menu-box').bind('click', () => {
         $('.middle-box').toggle()
+        if ($('.middle-box').is(':hidden')) {
+          $('header').removeClass('mob-bg')
+        } else {
+          $('header').addClass('mob-bg')
+        }
         $('.header-menu,.header-menu-close').toggle()
       })
       function checkFontSize() {
@@ -210,6 +215,7 @@ export default defineComponent({
           isWap.value = false
           $('.middle-box').attr('style', '')
           $('.header-menu').show()
+          $('header').removeClass('mob-bg')
           $('.header-menu-close').hide()
         } else {
           isWap.value = true
@@ -791,11 +797,15 @@ footer {
   header {
     width: 100vw;
     height: 6.8rem;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(1rem);
+    // background: rgba(0, 0, 0, 0.4);
+    // backdrop-filter: blur(1rem);
     &.bg {
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(1rem);
+    }
+    &.mob-bg {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: unset;
     }
     .info {
       width: 100%;
@@ -817,7 +827,7 @@ footer {
           overflow-y: auto;
           overflow-x: hidden;
           background: rgba(0, 0, 0, 0.4);
-          backdrop-filter: blur(1rem);
+          // backdrop-filter: blur(1rem);
           height: calc(100vh - 6.8rem - 8.7rem);
           > a,
           .show-info {
