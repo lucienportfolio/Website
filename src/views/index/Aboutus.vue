@@ -85,10 +85,17 @@ export default defineComponent({
         introduction: ''
       }
     ])
-    const scrollFun = (e) => {
+    const scrollFun = () => {
       const sections = document.getElementsByClassName('sect')
-      console.log(e)
-      console.log(sections[3].offsetTop)
+      if (
+        $(window).width() > 960 &&
+        window.scrollY > $('.banner-box').height() - $('header').height()
+      ) {
+        $('header').addClass('bg')
+      } else {
+        $('header').removeClass('bg')
+      }
+
       if (window.scrollY < sections[1].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
       }

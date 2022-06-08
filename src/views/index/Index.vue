@@ -197,9 +197,16 @@ export default defineComponent({
       }
     ])
     const faqInfo = ref([[{ name: '', introduction: '' }], [], []])
-    const scrollFun = (e) => {
-      console.log(e)
+    const scrollFun = () => {
       const sections = document.getElementsByClassName('sect')
+      if (
+        $(window).width() > 960 &&
+        window.scrollY > $('.banner-box').height() - $('header').height()
+      ) {
+        $('header').addClass('bg')
+      } else {
+        $('header').removeClass('bg')
+      }
       if (window.scrollY < sections[1].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
       }

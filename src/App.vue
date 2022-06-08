@@ -487,6 +487,10 @@ header {
   width: 100%;
   height: 9.9rem;
   z-index: 99999999;
+  &.bg {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(1rem);
+  }
   .info {
     position: relative;
     height: 9.9rem;
@@ -786,45 +790,49 @@ footer {
   }
   header {
     width: 100vw;
-    height: 5.2rem;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(10px);
+    height: 6.8rem;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(1rem);
+    &.bg {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(1rem);
+    }
     .info {
       width: 100%;
-      height: 5.2rem;
+      height: 6.8rem;
       .logo {
         position: unset;
         width: 4rem;
         height: 4rem;
-        margin: 0.6rem 1.2rem;
+        margin: 1.4rem;
       }
       .middle-box {
         display: none;
         nav {
           margin-left: 0;
           position: fixed;
-          top: 5.2rem;
+          top: 6.8rem;
           left: 0;
           width: 100%;
           overflow-y: auto;
           overflow-x: hidden;
-          background: rgba(255, 255, 255, 0.75);
+          background: rgba(0, 0, 0, 0.4);
           backdrop-filter: blur(1rem);
-          height: calc(100vh - 5.2rem - 8.7rem);
+          height: calc(100vh - 6.8rem - 8.7rem);
           > a,
           .show-info {
             float: unset;
             margin: 0 32%;
             font-weight: 400;
             font-size: 1.4rem;
-            line-height: 5.6rem;
-            color: #465358;
+            line-height: 8rem;
+            color: #fff;
             padding: 0;
             .soon {
-              top: 4.2rem;
+              top: 6rem;
             }
             &.active::before {
-              top: 2.7rem;
+              top: 3.9rem;
             }
           }
         }
@@ -834,11 +842,11 @@ footer {
           top: calc(100vh - 8.7rem);
           left: 0;
           right: unset;
-          background: #f0f0f0;
+          background: #2a2a2a;
           text-align: center;
           width: 100%;
           .link-list {
-            background: #f0f0f0;
+            background: #2a2a2a;
             position: unset;
             top: unset;
             right: unset;
@@ -886,12 +894,12 @@ footer {
         img {
           &.header-menu {
             width: 2.4rem;
-            margin-top: 1.6rem;
+            margin-top: 2.4rem;
             margin-right: 2.5rem;
           }
           &.header-menu-close {
             width: 2rem;
-            margin-top: 1.6rem;
+            margin-top: 2.4rem;
             margin-right: 2.5rem;
           }
         }
