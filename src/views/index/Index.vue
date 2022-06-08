@@ -1,10 +1,33 @@
 <template>
+  <div class="loading-main" v-show="loading">
+    <div class="video-box">
+      <video
+        class="video-background"
+        preload="auto"
+        loop
+        playsinline
+        autoplay
+        src="https://ambrus.s3.amazonaws.com/1653214988260_0.67_loading.mp4"
+        tabindex="-1"
+        muted="muted"
+      ></video>
+    </div>
+    <div class="loading-box">
+      <div class="loading-info">
+        <div class="loading-text">
+          <span>Ambrus Studio</span> Loading
+          <span class="pro">(0%)</span>
+        </div>
+        <div class="loading-skip" id="loading-skip"></div>
+      </div>
+    </div>
+  </div>
   <section class="main">
     <div class="rotating-box"></div>
     <div
       class="banner-box sect"
       v-html="bannerInfo.html"
-      :style="`background-image: url(${bannerInfo.material_list.material.url})`"
+      :style="`background-image: url(${bannerUrl})`"
     ></div>
     <div class="rangers-box sect">
       <div class="background"></div>
@@ -55,7 +78,13 @@
         </div>
       </div>
       <div class="hidden">
-        <img :src="v.material_list.material.url" v-for="(v, i) in roadMapInfo" :key="i" />
+        <img :src="bannerInfo.material_list.material.url" :onload="(e) => onLoadImg('banner', e)" />
+        <img
+          :src="v.material_list.material.url"
+          v-for="(v, i) in roadMapInfo"
+          :key="i"
+          :onload="(e) => onLoadImg(i, e)"
+        />
       </div>
       <div class="arrow">
         <div class="left-arrow" id="roadmap-left-arrow" @click="onRoadLeft(0)">
@@ -136,13 +165,17 @@
   </section>
 </template>
 <script>
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { Navigation, Pagination, A11y } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import $ from 'jquery'
+import NProgress from 'nprogress'
 import { onCheckMaterial } from '@/utils/index.js'
 import { getBlockInfoApi } from '@/api/block/index'
+import 'nprogress/nprogress.css'
+import store from '@/store/index'
 
 export default defineComponent({
   name: 'IndexIndex',
@@ -151,6 +184,43 @@ export default defineComponent({
     SwiperSlide
   },
   setup() {
+    const loading = ref(true)
+    const router = useRouter()
+    watch(
+      () => router.currentRoute.value.name,
+      (newValue, oldValue) => {
+        console.log('----------')
+        console.log(oldValue, newValue)
+        if (store.getters.path === undefined) {
+          loading.value = true
+        } else {
+          loading.value = false
+        }
+        // console.log(oldValue, loading.value)
+      },
+      { immediate: true }
+    )
+
+    NProgress.configure({ minimum: 0.1, parent: '#loading-skip' })
+    const pagePg = (skip) => {
+      NProgress.set(skip)
+      setTimeout(() => {
+        $('.loading-text .pro').html(`(${(skip * 100).toFixed(0)}%)`)
+      }, 30)
+    }
+    let skip = 0.1
+    let setSkip = null
+    if (loading.value) {
+      setSkip = setInterval(() => {
+        const ran = `${Math.random()}`.charAt(3)
+        skip += ran / 1000
+        if (skip < 0.65) {
+          pagePg(skip)
+        } else {
+          clearInterval(setSkip)
+        }
+      }, 150)
+    }
     const bannerInfo = ref({
       html: '',
       material_list: {
@@ -159,6 +229,7 @@ export default defineComponent({
         material_mob: { type: '', url: '' }
       }
     })
+    const bannerUrl = ref('')
     const rangerInfo = ref({
       name: '',
       html: '',
@@ -244,6 +315,15 @@ export default defineComponent({
       document.removeEventListener('scroll', scrollFun, false)
     })
     onMounted(async () => {
+      clearInterval(setSkip)
+      skip = 0.67
+      pagePg(skip)
+      // setTimeout(() => {
+      //   $('.loading-text .pro').html('(100%)')
+      //   $('html').css('overflow-y', 'auto')
+      //   loading.value = false
+      // }, 2000)
+
       document.addEventListener('scroll', scrollFun, false)
 
       const bannerInfoRes = await getBlockInfoApi('indexBanner')
@@ -339,6 +419,7 @@ export default defineComponent({
           }
         })
       }
+
       $('.faq-question').removeClass('active')
 
       $('.roadmap-info').eq(0).show().siblings().hide()
@@ -363,6 +444,27 @@ export default defineComponent({
         }
       )
     })
+    const onLoadImgList = []
+    const onLoadImg = (type, e) => {
+      console.log(e)
+      if (type === 'banner') {
+        bannerUrl.value = bannerInfo.value.material_list.material.url
+        skip += 0.05
+      } else {
+        skip += 0.02
+      }
+      pagePg(skip)
+      onLoadImgList.push(type)
+      // console.log(onLoadImgList, onLoadImgList.length, roadMapInfo.value.length)
+      if (roadMapInfo.value.length > 1 && onLoadImgList.length >= roadMapInfo.value.length) {
+        // console.log('xxx')
+        setTimeout(() => {
+          $('.loading-text .pro').html('(100%)')
+          $('html').css('overflow-y', 'auto')
+          loading.value = false
+        }, 200)
+      }
+    }
 
     // roadmap
     let roadmapIndex = 0
@@ -513,7 +615,9 @@ export default defineComponent({
         .slideToggle()
     }
     return {
+      loading,
       bannerInfo,
+      bannerUrl,
       rangerInfo,
       perkInfo,
       tokenInfo,
@@ -527,6 +631,7 @@ export default defineComponent({
       onRoadmapTouchStart,
       onRoadmapTouchMove,
       onRoadmapTouchEnd,
+      onLoadImg,
       swiperModules: [Navigation, Pagination, A11y]
     }
   }

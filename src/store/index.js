@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
 
 const defaultState = {
-  count: 0
+  count: 0,
+  path: ''
 }
 export default createStore({
   state() {
@@ -11,6 +12,9 @@ export default createStore({
     increment(state) {
       // eslint-disable-next-line no-param-reassign
       state.count += 1
+    },
+    SET_PATH: (state, path) => {
+      state.path = path
     }
   },
   actions: {
@@ -19,6 +23,9 @@ export default createStore({
     }
   },
   getters: {
+    path(state) {
+      return state.path
+    },
     double(state) {
       return 2 * state.count
     }

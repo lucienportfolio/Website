@@ -1,27 +1,4 @@
 <template>
-  <div class="loading-main" v-if="loading">
-    <div class="video-box">
-      <video
-        class="video-background"
-        preload="auto"
-        loop
-        playsinline
-        autoplay
-        src="https://ambrus.s3.amazonaws.com/1653214988260_0.67_loading.mp4"
-        tabindex="-1"
-        muted="muted"
-      ></video>
-    </div>
-    <div class="loading-box">
-      <div class="loading-info">
-        <div class="loading-text">
-          <span>Ambrus Studio</span> Loading
-          <span class="pro">(0%)</span>
-        </div>
-        <div class="loading-skip" id="loading-skip"></div>
-      </div>
-    </div>
-  </div>
   <header>
     <div class="info">
       <img src="https://ambrus.s3.amazonaws.com/1654419946121_0.88_logo.png" alt="" class="logo" />
@@ -83,6 +60,12 @@
   </header>
   <!-- <keep-alive> -->
   <router-view />
+  <!-- <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component" v-if="$route.meta.keepAlive" />
+    </keep-alive>
+    <component :is="Component" v-if="!$route.meta.keepAlive" />
+  </router-view> -->
   <!-- </keep-alive> -->
   <footer>
     <div class="info">
@@ -124,51 +107,19 @@
 <script>
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
 import $ from 'jquery'
 import { onCheckMaterial } from '@/utils/index.js'
 import { getBlockInfoApi } from '@/api/block/index'
+import store from '@/store/index'
 
 export default defineComponent({
   name: 'App',
   setup() {
-    const loading = ref(true)
-    console.log(loading.value)
-    NProgress.configure({ minimum: 0.1, parent: '#loading-skip' })
-    const pagePg = (skip) => {
-      NProgress.set(skip)
-      setTimeout(() => {
-        $('.loading-text .pro').html(`(${(skip * 100).toFixed(0)}%)`)
-      }, 30)
-    }
-    let skip = 0.1
-    let setSkip = null
-    if (loading.value) {
-      setSkip = setInterval(() => {
-        const ran = `${Math.random()}`.charAt(3)
-        skip += ran / 1000
-        if (skip < 0.89) {
-          pagePg(skip)
-        } else {
-          clearInterval(setSkip)
-        }
-      }, 150)
-    }
     const headerLink = ref([])
     const footerLink = ref([])
     const isWap = ref(false)
     onMounted(async () => {
-      window.onload = () => {
-        clearInterval(setSkip)
-        pagePg(skip + (1 - skip) / 2)
-        setTimeout(() => {
-          $('.loading-text .pro').html('(100%)')
-          $('html').css('overflow-y', 'auto')
-          // pagePg(1)
-          loading.value = false
-        }, 2000)
-      }
+      window.onload = () => {}
 
       const headerLinkRes = await getBlockInfoApi('headerIcon')
       if (headerLinkRes.code === 200) {
@@ -206,7 +157,7 @@ export default defineComponent({
         const width = $(window).width()
         if (width > 960 && width < 1440) {
           $('html').css({ 'font-size': `${(width / 1440) * 62.5}%` })
-        } else if (loading.value) {
+        } else if (!$('.loading-main').is(':hidden')) {
           $('html').attr({ style: '' })
         } else {
           $('html').attr({ style: 'overflow-y:auto' })
@@ -234,7 +185,7 @@ export default defineComponent({
     watch(
       () => router.currentRoute.value.name,
       (newValue, oldValue) => {
-        console.log(oldValue)
+        store.commit('SET_PATH', oldValue)
         routeName.value = newValue
         if (isWap.value) {
           $('.middle-box').hide()
@@ -245,7 +196,6 @@ export default defineComponent({
       { immediate: true }
     )
     return {
-      loading,
       routeName,
       headerLink,
       footerLink
@@ -285,7 +235,7 @@ a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   text-decoration: none;
   box-sizing: border-box;
-  touch-action: none;
+  // touch-action: none;
   margin: 0;
   padding: 0;
 }
