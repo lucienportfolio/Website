@@ -90,7 +90,7 @@
         <div class="left-arrow" id="roadmap-left-arrow" @click="onRoadLeft(0)">
           <img src="https://ambrus.s3.amazonaws.com/1654419946095_0.40_arrow-left.png" alt="" />
         </div>
-        <div class="right-arrow" id="roadmap-right-arrow" @click="onRoadRight">
+        <div class="right-arrow" id="roadmap-right-arrow" @click="onRoadRight(0)">
           <img src="https://ambrus.s3.amazonaws.com/1654419946096_0.14_arrow-right.png" alt="" />
         </div>
       </div>
@@ -470,6 +470,7 @@ export default defineComponent({
     let roadmapIndex = 0
     let roadmapFlag = true
     const onRoadLeft = (type) => {
+      console.log(type)
       const roadmapDiv = $('.roadmap-info')
       const roadmapListDiv = $('.roadmap-info-list')
       const roadmapBoxDiv = $('.roadmap-info-box')
@@ -480,11 +481,7 @@ export default defineComponent({
         // eslint-disable-next-line radix
         const roadmapRemove = Math.abs(parseInt(roadmapBoxDiv.innerWidth()))
         roadmapFlag = false
-        if (type === 1) {
-          roadmapListDiv.css('transform', `translateX(${roadmapRemove}px)`)
-        } else {
-          roadmapListDiv.css('transform', `translateX(-${roadmapRemove}px)`)
-        }
+        roadmapListDiv.css('transform', `translateX(-${roadmapRemove}px)`)
         roadmapBoxDiv.css('opacity', 0)
         roadmapIndex -= 1
         roadmapGlitchDiv
@@ -517,7 +514,7 @@ export default defineComponent({
       }
     }
 
-    const onRoadRight = () => {
+    const onRoadRight = (type) => {
       const roadmapDiv = $('.roadmap-info')
       const roadmapListDiv = $('.roadmap-info-list')
       const roadmapBoxDiv = $('.roadmap-info-box')
@@ -527,7 +524,12 @@ export default defineComponent({
         // eslint-disable-next-line radix
         const roadmapRemove = Math.abs(parseInt(roadmapBoxDiv.innerWidth()))
         roadmapFlag = false
-        roadmapListDiv.css('transform', `translateX(-${roadmapRemove}px)`)
+        if (type === 1) {
+          roadmapListDiv.css('transform', `translateX(${roadmapRemove}px)`)
+        } else {
+          roadmapListDiv.css('transform', `translateX(-${roadmapRemove}px)`)
+        }
+        // roadmapListDiv.css('transform', `translateX(-${roadmapRemove}px)`)
         roadmapBoxDiv.css('opacity', 0)
 
         roadmapIndex += 1
@@ -583,9 +585,9 @@ export default defineComponent({
       if (Math.abs(moveX - startX) > 30 && Math.abs(moveY - startY) < Math.abs(moveX - startX)) {
         e.preventDefault()
         if (moveX - startX <= 0) {
-          onRoadLeft(1)
+          onRoadRight(1)
         } else {
-          onRoadRight()
+          onRoadLeft(1)
         }
       }
     }
