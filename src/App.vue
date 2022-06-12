@@ -267,7 +267,7 @@ body {
   user-select: none;
   color: white;
   background-color: #2a2a2a;
-  background-image: url(https://ambrus.s3.amazonaws.com/1654419946099_0.06_bg-pattern.png);
+  background-image: url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png);
   background-size: 100% auto;
   background-position: top;
 }

@@ -1004,7 +1004,7 @@ export default defineComponent({
       height: 100%;
       z-index: 1;
       opacity: 1;
-      background: url(https://ambrus.s3.amazonaws.com/1654419946139_0.17_roadmap-top.png);
+      background: url(https://ambrus.s3.amazonaws.com/1654997771194_0.80_brushA.png);
       background-size: auto 100%;
       background-repeat: no-repeat;
       background-position: left;
