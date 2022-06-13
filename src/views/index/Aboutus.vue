@@ -368,6 +368,7 @@ export default defineComponent({
         float: left;
         width: 23.3rem;
         min-height: 38.2rem;
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1));
         margin-right: 2.4rem;
         margin-top: 2.1rem;
         &:nth-child(5n + 5) {
