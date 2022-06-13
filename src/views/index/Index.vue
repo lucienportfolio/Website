@@ -1,6 +1,6 @@
 <template>
   <div class="loading-main" v-show="loading">
-    <div class="video-box">
+    <!-- <div class="video-box">
       <video
         class="video-background"
         preload="auto"
@@ -11,7 +11,7 @@
         tabindex="-1"
         muted="muted"
       ></video>
-    </div>
+    </div> -->
     <div class="loading-box">
       <div class="loading-info">
         <div class="loading-text">
@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <section class="main">
+  <section class="main" :style="!loading ? 'display:block' : ''">
     <div class="rotating-box"></div>
     <div
       class="banner-box sect"
@@ -220,6 +220,8 @@ export default defineComponent({
           clearInterval(setSkip)
         }
       }, 150)
+    } else {
+      $('header,.main,footer').show()
     }
     const bannerInfo = ref({
       html: '',
@@ -449,18 +451,24 @@ export default defineComponent({
       console.log(e)
       if (type === 'banner') {
         bannerUrl.value = bannerInfo.value.material_list.material.url
-        skip += 0.05
+        // setTimeout(() => {
+        $('body').css({
+          backgroundImage: 'url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png)'
+        })
+        // }, 2000)
+        skip += 0.06
       } else {
-        skip += 0.02
+        skip += 0.04
       }
       pagePg(skip)
       onLoadImgList.push(type)
       // console.log(onLoadImgList, onLoadImgList.length, roadMapInfo.value.length)
-      if (roadMapInfo.value.length > 1 && onLoadImgList.length >= 3) {
+      if (roadMapInfo.value.length > 1 && onLoadImgList.length >= 2) {
         // console.log('xxx')
         setTimeout(() => {
           $('.loading-text .pro').html('(100%)')
           $('html').css('overflow-y', 'auto')
+          $('header,.main,footer').show()
           loading.value = false
         }, 200)
       }

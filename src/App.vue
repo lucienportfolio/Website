@@ -58,8 +58,13 @@
       </div>
     </div>
   </header>
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component" />
+    </keep-alive>
+  </router-view>
   <!-- <keep-alive> -->
-  <router-view />
+  <!-- <router-view /> -->
   <!-- <router-view v-slot="{ Component }">
     <keep-alive>
       <component :is="Component" v-if="$route.meta.keepAlive" />
@@ -203,9 +208,10 @@ export default defineComponent({
   }
 })
 </script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Teko:wght@300;400;500;600;700&display=swap');
+</style>
 <style lang="less">
-// @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Teko:wght@300;400;500;600;700&display=swap');
-
 header,
 section,
 footer,
@@ -246,16 +252,16 @@ html {
   overflow: hidden;
   // overflow-y: auto;
 }
-@font-face {
-  font-family: 'Montserrat';
-  src: url(https://ambrus.s3.amazonaws.com/1653215851675_0.59_Montserrat-Regular-8.otf);
-  font-weight: 400;
-}
-@font-face {
-  font-family: 'Teko';
-  src: url(https://ambrus.s3.amazonaws.com/1653215921732_0.59_Teko-Regular-2.ttf);
-  font-weight: 400;
-}
+// @font-face {
+//   font-family: 'Montserrat';
+//   src: url(https://ambrus.s3.amazonaws.com/1653215851675_0.59_Montserrat-Regular-8.otf);
+//   font-weight: 400;
+// }
+// @font-face {
+//   font-family: 'Teko';
+//   src: url(https://ambrus.s3.amazonaws.com/1653215921732_0.59_Teko-Regular-2.ttf);
+//   font-weight: 400;
+// }
 body {
   font-family: -apple-system, BlinkMacSystemFont, Montserrat, Teko, 'PingFang SC', 'Helvetica Neue',
     STHeiti, 'Microsoft Yahei', Tahoma, Simsun, sans-serif;
@@ -270,7 +276,7 @@ body {
   user-select: none;
   color: white;
   background-color: #2a2a2a;
-  background-image: url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png);
+  // background-image: url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png);
   background-size: 100% auto;
   background-position: top;
 }
@@ -364,9 +370,9 @@ body {
   height: 100%;
   background: #1c1a1c;
   z-index: 1000000000;
-  // background: url(https://ambrus.s3.amazonaws.com/1655095833723_0.31_%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220613124516.jpg);
-  // background-size: cover;
-  // background-position: bottom center;
+  background: url(https://ambrus.s3.amazonaws.com/1655095833723_0.31_%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220613124516.jpg);
+  background-size: cover;
+  background-position: bottom center;
   .video-box {
     position: relative;
     height: 100vh;
@@ -449,6 +455,7 @@ header {
   width: 100%;
   height: 9.9rem;
   z-index: 99999999;
+  display: none;
   &.bg {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(1rem);
@@ -608,11 +615,13 @@ header {
 }
 
 .main {
+  display: none;
   width: 100%;
   min-height: 60rem;
 }
 
 footer {
+  display: none;
   width: 100%;
   height: 40.1rem;
   background: #465358;

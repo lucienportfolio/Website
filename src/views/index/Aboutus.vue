@@ -118,8 +118,12 @@ export default defineComponent({
       document.removeEventListener('scroll', scrollFun, false)
     })
     onMounted(async () => {
+      $('body').css({
+        backgroundImage: 'url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png)'
+      })
       document.addEventListener('scroll', scrollFun, false)
       $('html').attr({ style: 'overflow-y:auto' })
+      $('header,.main,footer').show()
 
       const bannerInfoRes = await getBlockInfoApi('aboutusBanner')
       if (bannerInfoRes.code === 200) {
