@@ -184,7 +184,7 @@ export default defineComponent({
     SwiperSlide
   },
   setup() {
-    const loading = ref(true)
+    const loading = ref(false)
     const router = useRouter()
     watch(
       () => router.currentRoute.value.name,
@@ -192,7 +192,7 @@ export default defineComponent({
         console.log('----------')
         console.log(oldValue, newValue)
         if (store.getters.path === undefined) {
-          loading.value = true
+          loading.value = false
         } else {
           loading.value = false
         }
