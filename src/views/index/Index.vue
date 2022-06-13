@@ -1,6 +1,6 @@
 <template>
   <div class="loading-main" v-show="loading">
-    <div class="video-box">
+    <!-- <div class="video-box">
       <video
         class="video-background"
         preload="auto"
@@ -11,7 +11,7 @@
         tabindex="-1"
         muted="muted"
       ></video>
-    </div>
+    </div> -->
     <div class="loading-box">
       <div class="loading-info">
         <div class="loading-text">
@@ -456,7 +456,7 @@ export default defineComponent({
       pagePg(skip)
       onLoadImgList.push(type)
       // console.log(onLoadImgList, onLoadImgList.length, roadMapInfo.value.length)
-      if (roadMapInfo.value.length > 1 && onLoadImgList.length >= roadMapInfo.value.length) {
+      if (roadMapInfo.value.length > 1 && onLoadImgList.length >= 3) {
         // console.log('xxx')
         setTimeout(() => {
           $('.loading-text .pro').html('(100%)')
@@ -645,7 +645,7 @@ export default defineComponent({
   width: 100%;
   height: 100vh;
   background-size: cover;
-  background-position: center;
+  background-position: bottom center;
   -webkit-mask: url(https://ambrus.s3.amazonaws.com/1654419946111_0.20_header-mask.png);
   mask: url(https://ambrus.s3.amazonaws.com/1654419946111_0.20_header-mask.png);
   -webkit-mask-size: auto 100%;
