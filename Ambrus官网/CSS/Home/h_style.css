@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko&display=swap');
+
+body{
+	margin: 0;
+	padding: 0;
+	color: white;
+	font-size: 2em;
+	background-color: #2A2A2A;
+	background-image: url(./BG-PATTERN.png);
+	background-size: 100% auto;
+	background-position: top;
+}
+
+#header{
+  	position: relative;
+  	width: 100%;
+  	height: 100vh;
+  	background: url(./header-bg.jpg);
+	background-size: cover;
+	background-position: center;
+
+	-webkit-mask: url(./header-mask.png);
+    mask: url(./header-mask.png);
+    -webkit-mask-size: auto 100%;
+    mask-size: auto 100%;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+    -webkit-mask-position: top center;
+    mask-position: top center;
+}
+
+#rin{
+	width: 100%;
+	height: 100%;
+  	background: url(./header-rin.png);
+	background-size: auto 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 1;
+}
+
+#title{
+	position: fixed;
+	top: 30vh;
+	right: 46vw;
+	margin: 0;
+	width: 100%;
+	text-align: right;
+	font-family: 'Teko', sans-serif;
+	font-size: 18rem;
+	line-height: 14rem;
+	z-index: -1;
+
+	text-shadow: 
+		0.02em 0 0 rgba(255,0,0,0.25), 
+		-0.02em 0 0 rgba(0,0,0,0.3);
+	animation: glitch-text infinite 0.8s linear;
+}
+
+@keyframes glitch-text {
+	0%{
+		text-shadow: 
+			0.02em 0.03em 0 rgba(255,0,0,0.25), 
+			-0.02em -0.01em 0 rgba(0,0,0,0.3);
+	}
+	11%{
+		text-shadow: 
+			0.02em 0.03em 0 rgba(255,0,0,0.25), 
+			-0.02em -0.01em 0 rgba(0,0,0,0.3);
+	}
+	12%{
+		text-shadow: 
+			-0.03em -0.01em 0 rgba(255,0,0,0.25), 
+			0.01em 0.04em 0 rgba(0,0,0,0.3);
+	}
+	24%{
+		text-shadow: 
+			-0.03em -0.01em 0 rgba(255,0,0,0.25), 
+			0.01em 0.04em 0 rgba(0,0,0,0.3);
+	}
+	25%{
+		text-shadow: 
+			0.04em 0.03em 0 rgba(255,0,0,0.25), 
+			-0.03em -0.01em 0 rgba(0,0,0,0.3);
+	}
+	49%{
+		text-shadow: 
+			0.04em 0.03em 0 rgba(255,0,0,0.25), 
+			-0.03em -0.01em 0 rgba(0,0,0,0.3);
+	}
+	50% {
+		text-shadow: 
+			-0.01em 0 0 rgba(255,0,0,0.25), 
+			0.03em 0.01em 0 rgba(0,0,0,0.3);
+	}
+	59% {
+		text-shadow: 
+			-0.01em 0 0 rgba(255,0,0,0.25), 
+			0.03em 0.01em 0 rgba(0,0,0,0.3);
+	}
+	60% {
+		text-shadow: 
+			0.03em -0.04em 0 rgba(255,0,0,0.25), 
+			-0.02em 0.03em 0 rgba(0,0,0,0.3);
+	}
+	74% {
+		text-shadow: 
+			0.03em -0.04em 0 rgba(255,0,0,0.25), 
+			-0.02em 0.03em 0 rgba(0,0,0,0.3);
+	}
+	75% {
+		text-shadow: 
+			-0.02em 0.01em 0 rgba(255,0,0,0.25), 
+			0.01em 0.04em 0 rgba(0,0,0,0.3);
+	}
+	84% {
+		text-shadow: 
+			-0.02em 0.01em 0 rgba(255,0,0,0.25), 
+			0.01em 0.04em 0 rgba(0,0,0,0.3);
+	}
+	95% {
+		text-shadow: 
+			-0.03em -0.02em 0 rgba(255,0,0,0.25), 
+			-0.02em -0.01em 0 rgba(0,0,0,0.3);
+	}
+	99% {
+		text-shadow: 
+			-0.03em -0.02em 0 rgba(255,0,0,0.25), 
+			-0.02em -0.01em 0 rgba(0,0,0,0.3);
+	}
+	100% {
+		text-shadow: 
+			0 0 0 rgba(255,0,0,0.25), 
+			0 0 0 rgba(0,0,0,0.3);
+	}
+}
+
+.background{
+	z-index: -1;
+  	position: absolute;
+  	top: 0; left: 0;
+	width: 100%;
+	height: 100%;
+	filter: grayscale(100%);
+	transition: all 0.3s ease-out;
+}
+
+.inside{
+	position: relative;
+	text-align: center;
+	font-family: 'Teko', sans-serif;
+	font-size: 64px;
+	filter: grayscale(100%);
+	transition: all 0.3s;
+}
+
+.inside::before{
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -99;
+	background: url(./Square.png);
+	background-size: auto 60px;
+	background-position: center;
+	background-repeat: no-repeat;
+	animation: square infinite 1s;
+}
+
+@Keyframes square{
+	0%{
+		opacity: 1;
+	}
+	20%{
+		opacity: 1;
+	}
+	40%{
+		opacity: 0;
+	}
+	60%{
+		opacity: 0;
+	}
+	80%{
+		opacity: 1;
+	}
+	100%{
+		opacity: 1;
+	}
+}
+
+#rotating{
+	width: 240px;
+	height: 240px;
+	background: url(./cs.png);
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	position: fixed;
+	bottom: 88px;
+	right: 88px;
+	animation: circle infinite 5s linear;
+	z-index: 99;
+}
+
+#rotating:hover{
+	background: url(./cs2.png);
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+@Keyframes circle{
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(359deg);
+	}
+}
+
+#rangers{
+  	position: relative;
+	width: 100%;
+	height: 800px;
+}
+
+#rangers .background{
+	background: url(./rangers.png);
+	background-size: auto 100%;
+	background-position: right;
+	background-repeat: no-repeat;
+}
+
+
+#perks{
+  	position: relative;
+	width: 100%;
+	height: 720px;
+}
+
+#perks .background{
+	background: url(./perks.png);
+	background-size: auto 100%;
+	background-position: right;
+	background-repeat: no-repeat;
+}
+
+#roadmap{
+  	position: relative;
+	width: 100%;
+	height: 100vh;
+}
+
+#roadmap .background{
+	background: url(./roadmap.png);
+	background-size: cover;
+	background-position: center;
+}
+
+#token{
+  	position: relative;
+	width: 100%;
+	height: 480px;
+}
+
+#token .background{
+	background: url(./token.png);
+	background-size: auto 100%;
+	background-position: right;
+	background-repeat: no-repeat;
+}
+
+#team{
+  	position: relative;
+	width: 100%;
+	height: 640px;
+}
+
+#team .background{
+	background: url(./team.png);
+	background-size: auto 100%;
+	background-position: left;
+	background-repeat: no-repeat;
+}
+
+#faq{
+  	position: relative;
+	width: 100%;
+	height: 780px;
+}
+
+#faq .background{
+	background: url(./faq.png);
+	background-size: auto 60%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#footer{
+  	position: relative;
+	width: 100%;
+	height: 400px;
+	background: #465358;
+}
