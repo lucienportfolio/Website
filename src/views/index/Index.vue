@@ -463,7 +463,7 @@ export default defineComponent({
       pagePg(skip)
       onLoadImgList.push(type)
       // console.log(onLoadImgList, onLoadImgList.length, roadMapInfo.value.length)
-      if (roadMapInfo.value.length > 1 && onLoadImgList.length >= 2) {
+      if (roadMapInfo.value.length > 1 && onLoadImgList.length >= 4) {
         // console.log('xxx')
         setTimeout(() => {
           $('.loading-text .pro').html('(100%)')
