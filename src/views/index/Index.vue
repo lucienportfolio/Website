@@ -1,6 +1,6 @@
 <template>
   <div class="loading-main" v-show="loading">
-    <!-- <div class="video-box">
+    <div class="video-box">
       <video
         class="video-background"
         preload="auto"
@@ -11,7 +11,7 @@
         tabindex="-1"
         muted="muted"
       ></video>
-    </div> -->
+    </div>
     <div class="loading-box">
       <div class="loading-info">
         <div class="loading-text">
@@ -184,7 +184,7 @@ export default defineComponent({
     SwiperSlide
   },
   setup() {
-    const loading = ref(false)
+    const loading = ref(true)
     const router = useRouter()
     watch(
       () => router.currentRoute.value.name,
@@ -192,7 +192,7 @@ export default defineComponent({
         console.log('----------')
         console.log(oldValue, newValue)
         if (store.getters.path === undefined) {
-          loading.value = false
+          loading.value = true
         } else {
           loading.value = false
         }
