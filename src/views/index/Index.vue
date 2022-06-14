@@ -879,11 +879,12 @@ export default defineComponent({
       width: 36rem;
       height: 36rem;
       float: left;
-      background-color: #fff;
+      background-color: #2a2a2a;
       padding: 4.8rem 3.6rem 0;
       background-size: cover;
       background-position: center;
       &:nth-child(1) {
+        background-color: #fff;
         .title {
           color: #ff4125;
         }
@@ -1554,7 +1555,6 @@ export default defineComponent({
         width: 100%;
         height: 27.5rem;
         float: unset;
-        background-color: #fff;
         padding: 4.8rem 3.6rem 0;
         &:nth-child(1) {
           height: 30rem;
