@@ -4,23 +4,59 @@
       <img src="https://ambrus.s3.amazonaws.com/1654419946121_0.88_logo.png" alt="" class="logo" />
       <div class="middle-box">
         <nav>
-          <router-link to="/" :class="routeName === 'IndexIndex' ? 'has-act active' : 'has-act'"
+          <router-link to="/" :class="routeType === 'home' ? 'has-act active' : 'has-act'"
             >HOME</router-link
           >
           <div class="show-games">
-            <div class="show-info">
+            <div :class="routeType === 'game' ? 'show-info has-act active' : 'show-info has-act'">
               E4C: GAMES
               <img
                 src="https://ambrus.s3.amazonaws.com/1654419946109_0.85_header-arrow-1.png"
                 alt=""
               />
-              <span class="soon">soon</span>
+            </div>
+            <div class="games-list-box hidden">
+              <div class="games-list">
+                <div class="games-img-text">Games</div>
+                <div class="games-img-list clearfix">
+                  <div class="games-img-box">
+                    <img
+                      src="@/assets/images/header-games-img-1.png"
+                      alt=""
+                      @click="toUrl('/game/1')"
+                    />
+                  </div>
+                  <div class="games-img-box">
+                    <img
+                      src="@/assets/images/header-games-img-2.png"
+                      alt=""
+                      @click="toUrl('/game/1')"
+                    />
+                  </div>
+                  <div class="games-img-box">
+                    <img
+                      src="@/assets/images/header-games-img-3.png"
+                      alt=""
+                      @click="toUrl('/game/1')"
+                    />
+                  </div>
+                </div>
+                <div class="gaming-text">Gaming Experience</div>
+                <div class="gaming-list">
+                  <p @click="toUrl('/game/news/list/1')">News & Dev Blogs</p>
+                  <p @click="toUrl('/game/archive/1')">Archive</p>
+                  <p @click="toUrl('/game/1')">Esports</p>
+                  <p @click="toUrl('/game/1')">Leaderboards</p>
+                </div>
+              </div>
             </div>
           </div>
-          <a href="javascript:;">E4C: VERSE <span class="soon">soon</span></a>
           <router-link
-            to="aboutus"
-            :class="routeName === 'IndexAboutus' ? 'has-act active' : 'has-act'"
+            to="/worldview"
+            :class="routeType === 'worldview' ? 'has-act active' : 'has-act'"
+            >E4C: VERSE</router-link
+          >
+          <router-link to="/aboutus" :class="routeType === 'aboutus' ? 'has-act active' : 'has-act'"
             >ABOUT US</router-link
           >
         </nav>
@@ -111,7 +147,7 @@
 </template>
 <script>
 import { defineComponent, onMounted, ref, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import $ from 'jquery'
 import { onCheckMaterial } from '@/utils/index.js'
 import { getBlockInfoApi } from '@/api/block/index'
@@ -149,6 +185,23 @@ export default defineComponent({
         })
       }
 
+      $('.show-games .show-info').bind('click', () => {
+        $('.games-list-box').toggle()
+        if ($('.games-list-box').is(':visible')) {
+          $('header').addClass('games-bg')
+          $('.show-info img').addClass('show')
+        } else {
+          $('header').removeClass('games-bg')
+          $('.show-info img').removeClass('show')
+        }
+      })
+      $('.show-games').bind('mouseleave', () => {
+        if ($(window).width() > 960) {
+          $('.games-list-box').hide()
+        }
+        $('header').removeClass('games-bg')
+        $('.show-info img').removeClass('show')
+      })
       $('.menu-box').bind('click', () => {
         $('.middle-box').toggle()
         if ($('.middle-box').is(':hidden')) {
@@ -184,14 +237,14 @@ export default defineComponent({
       $(document).ready(htmlshow)
       $(window).resize(checkFontSize)
     })
-    const route = useRoute()
     const router = useRouter()
-    const routeName = ref(route.name)
+    const routeType = ref('')
     watch(
       () => router.currentRoute.value.name,
       (newValue, oldValue) => {
         store.commit('SET_PATH', oldValue)
-        routeName.value = newValue
+        routeType.value = router.currentRoute.value.meta.type
+        console.log(routeType.value)
         if (isWap.value) {
           $('.middle-box').hide()
           $('.header-menu').show()
@@ -200,8 +253,19 @@ export default defineComponent({
       },
       { immediate: true }
     )
+    const toUrl = (path) => {
+      router.push({
+        path
+      })
+      if ($(window).width() > 960) {
+        $('.games-list-box').hide()
+      }
+      $('header').removeClass('games-bg')
+      $('.show-info img').removeClass('show')
+    }
     return {
-      routeName,
+      toUrl,
+      routeType,
       headerLink,
       footerLink
     }
@@ -460,6 +524,11 @@ header {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(1rem);
   }
+  &.games-bg {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(1rem);
+    height: 58.9rem;
+  }
   .info {
     position: relative;
     height: 9.9rem;
@@ -493,6 +562,9 @@ header {
           > img {
             width: 0.8rem;
             margin-left: 0.8rem;
+            &.show {
+              transform: rotate(180deg);
+            }
           }
           .soon {
             display: block;
@@ -521,9 +593,9 @@ header {
             font-weight: 600;
             text-align: center;
             text-transform: uppercase;
-            > img {
-              transform: rotate(180deg);
-            }
+            // > img {
+            //   transform: rotate(180deg);
+            // }
             &::before {
               content: '';
               position: absolute;
@@ -608,6 +680,87 @@ header {
         }
       }
     }
+
+    .games-list-box {
+      position: absolute;
+      top: 9.9rem;
+      left: 0;
+      width: 100%;
+      height: 49rem;
+      text-align: left;
+      box-sizing: border-box;
+      .games-list {
+        // width: 144rem;
+        padding: 0 8.8rem;
+        height: 49rem;
+        margin: 0 auto;
+        .games-img-text {
+          margin: 4.8rem 0 1.2rem;
+          font-family: Montserrat;
+          font-weight: 500;
+          text-transform: uppercase;
+          color: #a0a4b0;
+          font-size: 1.4rem;
+          line-height: 1.7rem;
+        }
+        .games-img-list {
+          .games-img-box {
+            float: left;
+            position: relative;
+            width: 40.5rem;
+            background: #ffffff;
+            border: 0.2rem solid rgba(160, 164, 176, 0.2);
+            box-sizing: border-box;
+            border-radius: 0.4rem;
+            margin-right: 2.4rem;
+            box-sizing: border-box;
+            &:last-child {
+              margin-right: 0;
+            }
+            img {
+              width: 100%;
+              cursor: pointer;
+            }
+          }
+        }
+        .gaming-text {
+          margin: 3.6rem 0 1.2rem;
+          font-family: Montserrat;
+          font-weight: 500;
+          text-transform: uppercase;
+          color: #a0a4b0;
+          font-size: 1.4rem;
+          line-height: 1.7rem;
+        }
+        .gaming-list {
+          p {
+            display: block;
+            float: left;
+            padding: 0 3.6rem;
+            gap: 1rem;
+            height: 6rem;
+            background: #2a2a2a;
+            border-radius: 0.8rem;
+            font-family: Montserrat;
+            font-weight: 700;
+            font-size: 2rem;
+            line-height: 6rem;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ffffff;
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+            margin-right: 2.4rem;
+            cursor: pointer;
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+
     .menu-box {
       display: none;
     }
@@ -737,10 +890,21 @@ footer {
     }
   }
 }
-
+.empty-main {
+  width: 144rem;
+  height: 60vh;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 6rem;
+  margin: 10rem auto;
+  box-sizing: border-box;
+}
 @media screen and (max-width: 960px) {
   html {
     font-size: 62.5%;
+  }
+  .empty-main {
+    width: 100%;
+    padding: 0;
   }
   .loading-main {
     .loading-box {
@@ -861,6 +1025,48 @@ footer {
           }
         }
       }
+
+      .games-list-box {
+        position: unset;
+        top: unset;
+        height: unset;
+        .games-list {
+          height: unset;
+          width: unset;
+          padding: 0 2.4rem;
+          .games-img-text {
+            display: none;
+          }
+          .games-img-list {
+            .games-img-box {
+              width: calc(100vw - 4.8rem);
+              margin-bottom: 1.2rem;
+            }
+          }
+          .gaming-text {
+            margin: 0;
+            padding: 1.2rem 0 2.4rem;
+          }
+          .gaming-list {
+            margin-left: 0;
+            padding: 0;
+            p {
+              text-align: left;
+              margin: 0;
+              float: unset;
+              padding: 1.2rem 0;
+              background: unset;
+              height: unset;
+              line-height: unset;
+              font-family: Montserrat;
+              font-weight: 600;
+              font-size: 1.4rem;
+              line-height: 1.7rem;
+            }
+          }
+        }
+      }
+
       .menu-box {
         display: block;
         position: absolute;
