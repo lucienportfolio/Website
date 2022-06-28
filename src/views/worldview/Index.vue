@@ -1,5 +1,8 @@
 <template>
-  <section class="main empty-main">worldview</section>
+  <section class="main empty-main">
+    <router-link to="/worldview/ranger/1" style="color: #fff">ranger ></router-link><br /><br />
+    <router-link to="/worldview/organization/1" style="color: #fff">organiztion ></router-link>
+  </section>
 </template>
 <script>
 import { defineComponent, onMounted, ref } from 'vue'
