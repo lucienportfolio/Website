@@ -24,16 +24,18 @@ export default defineConfig({
               italic: true
             },
             teko: { name: 'Teko', weights: [300, 400, 500, 600, 700] },
-            'zen-kaku': { name: 'Zen Kaku Gothic New', weights: [300, 400, 500, 700] }
+            zenKaku: { name: 'Zen Kaku Gothic New', weights: [300, 400, 500, 700] }
           }
         })
       ],
-      transformers: [transformerDirective()]
+      transformers: [transformerDirective()],
+      theme: { colors: { rust: '#FF4125' } }
     })
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url))
     }
   }
   // base: './', // 设置打包路径
