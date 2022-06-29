@@ -3,10 +3,34 @@ import { fileURLToPath, URL } from 'url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
+import presetWebFonts from '@unocss/preset-web-fonts'
+import presetUno from '@unocss/preset-uno'
+import transformerDirective from '@unocss/transformer-directives'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), Unocss()],
+  plugins: [
+    vue(),
+    Unocss({
+      presets: [
+        presetUno(),
+        presetWebFonts({
+          provider: 'google',
+          fonts: {
+            sans: 'Montserrat',
+            montserrat: {
+              name: 'Montserrat',
+              weights: [300, 400, 500, 600, 700, 800],
+              italic: true
+            },
+            teko: { name: 'Teko', weights: [300, 400, 500, 600, 700] },
+            'zen-kaku': { name: 'Zen Kaku Gothic New', weights: [300, 400, 500, 700] }
+          }
+        })
+      ],
+      transformers: [transformerDirective()]
+    })
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

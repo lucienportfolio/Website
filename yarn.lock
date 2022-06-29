@@ -517,7 +517,7 @@
     "@unocss/preset-mini" "0.41.1"
     "@unocss/preset-wind" "0.41.1"
 
-"@unocss/preset-web-fonts@0.41.1":
+"@unocss/preset-web-fonts@0.41.1", "@unocss/preset-web-fonts@^0.41.1":
   version "0.41.1"
   resolved "https://registry.yarnpkg.com/@unocss/preset-web-fonts/-/preset-web-fonts-0.41.1.tgz#b60bd49ab8627d41215e50475f6fa13872ead130"
   integrity sha512-8uXoRskEgZI2TxfT7fNeZ8tgBYQoDjUDP/LX3YItjY1ggk14CfuJjvEjbEhFJ/Xh05MfljzuolqCHvjPGJQyig==
@@ -550,7 +550,7 @@
   dependencies:
     "@unocss/core" "0.41.1"
 
-"@unocss/transformer-directives@0.41.1":
+"@unocss/transformer-directives@0.41.1", "@unocss/transformer-directives@^0.41.1":
   version "0.41.1"
   resolved "https://registry.yarnpkg.com/@unocss/transformer-directives/-/transformer-directives-0.41.1.tgz#4e710e9250563e64f35027532d4bf32a3a02c95c"
   integrity sha512-w6/L648uGB3RgXcahGtEd7XokoZHcnCTNMukQpjVjfoeEfpscTQ2pN7P0afwB/GWjb0BHoU+rL6zT1SsErye5A==
