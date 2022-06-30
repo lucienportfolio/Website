@@ -9,7 +9,7 @@ import WalletButton from './WalletButton.vue'
   <header class="flex flex-row items-center h-100px px-32px">
     <LogoNav />
     <SiteNav />
-    <SocialNav />
+    <SocialNav className="px-26px" />
     <WalletButton connected>0x80 ... E417</WalletButton>
   </header>
 </template>
