@@ -29,7 +29,14 @@ export default defineConfig({
         })
       ],
       transformers: [transformerDirective()],
-      theme: { colors: { rust: '#FF4125' } }
+      theme: {
+        colors: {
+          rust: '#FF4125',
+          greyDark: '#465358',
+          greyLight: '#A8A8A8',
+          greyMedium: '#A0A4B0'
+        }
+      }
     })
   ],
   resolve: {
