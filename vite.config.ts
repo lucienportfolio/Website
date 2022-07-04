@@ -34,7 +34,8 @@ export default defineConfig({
           rust: '#FF4125',
           greyDark: '#465358',
           greyLight: '#A8A8A8',
-          greyMedium: '#A0A4B0'
+          greyMedium: '#A0A4B0',
+          blackBg: '#2A2A2A'
         }
       }
     })
@@ -42,7 +43,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@components': fileURLToPath(new URL('./src/components', import.meta.url))
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '~@': fileURLToPath(new URL('./src', import.meta.url)) // for css
     }
   }
   // base: './', // 设置打包路径
