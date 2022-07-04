@@ -6,7 +6,7 @@ import WalletButton from './WalletButton.vue'
 </script>
 
 <template>
-  <header class="flex flex-row items-center h-100px px-32px">
+  <header id="header" class="flex flex-row items-center h-100px px-32px">
     <LogoNav />
     <SiteNav />
     <SocialNav className="px-26px" />
