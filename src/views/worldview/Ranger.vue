@@ -24,11 +24,18 @@
         </div>
       </div>
       <div class="code-box">
+        <div class="before"></div>
         <div class="title">E4C Ranger <span>001</span></div>
         <div class="line"></div>
       </div>
-      <img src="@/assets/images/worldview-ranger-rin.png" class="ranger" />
-      <img src="@/assets/images/worldview-ranger-rate.png" class="rate" />
+      <div class="ranger"></div>
+      <div class="rotating-box"><div></div></div>
+    </section>
+    <section class="audio-box clearfix">
+      <div class="content">
+        Ranger’s Voice Ranger’s Voice Ranger’s Voice Ranger’s Voice Ranger’s Voice
+      </div>
+      <div class="audio"></div>
     </section>
     <section class="lines-box">
       “My katana is embossed in chaos, death, and soon… <br />
@@ -37,7 +44,7 @@
     <section class="basic-box clearfix">
       <div class="connections-box">
         <div class="title">Connections</div>
-        <div class="connections-list">
+        <div class="connections-list clearfix">
           <div class="connections-info-box">
             <img src="@/assets/images/worldview-ranger-rin-c1.png" alt="" />
             <div class="connections-info">
@@ -268,6 +275,15 @@ export default defineComponent({
       document.addEventListener('scroll', scrollFun, false)
       $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
+      $('.code-box .line').css(
+        'width',
+        $('.code-box').width() - $('.code-box .before').width() * 3 - $('.code-box .title').width()
+      )
+      console.log(
+        $('.code-box').width(),
+        $('.code-box .before').width(),
+        $('.code-box .title').width()
+      )
 
       function checkFontSize() {
         const oldIsWap = isWap.value
@@ -289,11 +305,12 @@ export default defineComponent({
   .banner-box {
     position: relative;
     width: 100%;
-    height: 102.4rem;
     background-image: url(@/assets/images/worldview-ranger-rin-bg.png);
+    height: 100vh;
     background-size: cover;
-    background-position: center;
+    background-position: bottom center;
     text-align: center;
+    overflow: hidden;
     .map-box {
       position: absolute;
       top: 12.4rem;
@@ -408,15 +425,16 @@ export default defineComponent({
       font-weight: 300;
       font-size: 3.6rem;
       line-height: 5.2rem;
+      width: calc(100vh - 20.1rem - 8.8rem);
 
       text-transform: uppercase;
       color: #ffffff;
 
       transform: rotate(-90deg);
       transform-origin: 0 0;
+      text-align: left;
 
-      &::before {
-        content: '';
+      .before {
         display: inline-block;
         width: 2.4rem;
         height: 2.4rem;
@@ -437,7 +455,7 @@ export default defineComponent({
         margin-bottom: 2.5rem;
         display: inline-block;
         height: 0.2rem;
-        width: 49.4rem;
+        width: 50%;
         background: rgba(255, 255, 255, 0.6);
         vertical-align: top;
         margin-top: 2.5rem;
@@ -445,13 +463,36 @@ export default defineComponent({
     }
     .ranger {
       width: 144rem;
+      height: 100vh;
+      margin: 0 auto;
+      background: url(@/assets/images/worldview-ranger-rin.png);
+      background-size: 100% auto;
+      background-position: center;
+      background-repeat: no-repeat;
     }
-    .rate {
-      position: absolute;
+    .rotating-box {
+      position: fixed;
       right: 8.8rem;
       bottom: 9.1rem;
       width: 14.4rem;
+      height: 14.4rem;
+      background: url(@/assets/images/worldview-ranger-rate.png);
+      background-size: 6.4rem 6.45rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      div {
+        animation: circle infinite 5s linear;
+        background: url(@/assets/images/worldview-ranger-rate-text.png);
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 14.4rem;
+        height: 14.4rem;
+      }
     }
+  }
+  .audio-box {
+    display: none;
   }
   .lines-box {
     width: 100%;
@@ -590,8 +631,8 @@ export default defineComponent({
           &:not(.line) {
             font-family: Montserrat;
             font-weight: 400;
-            font-size: 14px;
-            line-height: 17px;
+            font-size: 1.4rem;
+            line-height: 1.7rem;
             margin-bottom: 2.4rem;
             span {
               &:first-child {
@@ -671,6 +712,11 @@ export default defineComponent({
       }
       .content {
         p {
+          font-family: Montserrat;
+          font-weight: 400;
+          font-size: 1.4rem;
+          line-height: 2.4rem;
+          color: #ffffff;
           margin-bottom: 3.6rem;
           &:last-child {
             margin-bottom: 0;
@@ -678,6 +724,238 @@ export default defineComponent({
         }
       }
     }
+  }
+}
+@media screen and (max-width: 960px) {
+  .worldview-ranger-main {
+    width: 100%;
+    .banner-box {
+      background-image: url(@/assets/images/worldview-ranger-rin-mobile-bg.png);
+      .map-box {
+        top: 10.4rem;
+        left: 3.6rem;
+      }
+      .name-box {
+        top: 14.5rem;
+        left: 3.6rem;
+        .name {
+          font-size: 6.4rem;
+          line-height: 7.8rem;
+          margin-bottom: -1rem;
+        }
+        .title {
+          font-size: 2rem;
+          line-height: 2.4rem;
+        }
+      }
+      .powers-box {
+        left: 3.6rem;
+        bottom: 3.2rem;
+        .title {
+          font-size: 1.4rem;
+          line-height: 1.7rem;
+          span {
+            margin-left: 0.6rem;
+          }
+        }
+        .name {
+          margin: 0;
+          font-size: 3.6rem;
+          line-height: 4.4rem;
+          span {
+            display: block;
+            font-size: 3.6rem;
+            line-height: 5.2rem;
+            margin-left: 0;
+            margin-top: -0.8rem;
+          }
+        }
+        .desc {
+          width: calc(100vw - 7.2rem);
+          font-size: 1.4rem;
+          line-height: 2.4rem;
+          margin: 2.4rem 0 1.2rem;
+        }
+        .skip-list {
+          height: 1.6rem;
+          div {
+            width: 6rem;
+            height: 1.6rem;
+            margin-right: 0.4rem;
+          }
+        }
+      }
+      .code-box {
+        display: none;
+      }
+      .ranger {
+        width: 100%;
+        background-size: auto 100%;
+      }
+      .rotating-box {
+        display: none;
+      }
+    }
+    .audio-box {
+      display: block;
+      height: 6.4rem;
+      background: #2a2a2a;
+      overflow: hidden;
+      .content {
+        float: left;
+        width: calc(100vw - 6.4rem);
+        font-family: Montserrat;
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 6.4rem;
+        height: 6.4rem;
+        text-transform: uppercase;
+        color: #ffffff;
+        overflow: hidden;
+      }
+      .audio {
+        float: left;
+        width: 6.4rem;
+        height: 6.4rem;
+        background: #2a2a2a;
+        background-image: url(@/assets/images/worldview-audio.png);
+        background-size: 2.4rem 2.4rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 0 3.6rem rgba(0, 0, 0, 0.75));
+      }
+    }
+    .lines-box {
+      width: 100%;
+      height: unset;
+      background: #ffffff;
+      padding: 8rem 3.6rem;
+      font-size: 3.6rem;
+      line-height: 4rem;
+      display: flex;
+    }
+    .basic-box {
+      width: 100%;
+      height: unset;
+      margin: 0;
+      .connections-box {
+        float: unset;
+        width: 100%;
+        height: unset;
+        padding-bottom: 3.6rem;
+        .connections-list {
+          .connections-info-box {
+            position: relative;
+            float: left;
+            width: 14.5rem;
+            height: 20.5rem;
+            margin-right: 1.2rem;
+            margin-top: 3.6rem;
+            &:nth-child(2n + 2) {
+              margin-right: 0;
+            }
+            img {
+              width: 14.5rem;
+            }
+            .connections-info {
+              width: 14.5rem;
+              height: 6.1rem;
+              padding: 1.2rem 1rem;
+              .name {
+                font-size: 2rem;
+                line-height: 2.4rem;
+              }
+              .title {
+                font-size: 1.1rem;
+                line-height: 1.3rem;
+              }
+            }
+          }
+        }
+      }
+      .affiliation-box {
+        float: unset;
+        width: 100%;
+        height: 39.7rem;
+        background-image: url(@/assets/images/worldview-ranger-rin-affiliation-mobile.png);
+        .info-box {
+          img {
+            margin: 4.8rem 0 2.4rem;
+          }
+        }
+      }
+      .misc-info-box {
+        float: unset;
+        width: 100%;
+        height: unset;
+        padding-bottom: 1.2rem;
+        .title {
+          margin-bottom: 4.2rem;
+        }
+        .info-box {
+          div {
+            &.line {
+              margin: 0.8rem 9.1rem 3.1rem 9.2rem;
+            }
+          }
+        }
+      }
+    }
+    .info-list-box {
+      width: unset;
+      margin: 0;
+      .gallery-box {
+        float: unset;
+        width: unset;
+        .title {
+          margin: 3.6rem 3.6rem 1.2rem;
+        }
+        .gallery-list {
+          overflow: hidden;
+          height: 20rem;
+          width: 100%;
+          .gallery-info {
+            float: left;
+            position: relative;
+            width: 23.3rem;
+            height: 20rem;
+            margin-left: 1.2rem;
+            margin-bottom: 0;
+            img {
+              &.gallery {
+                width: 23.3rem;
+                height: 20rem;
+              }
+              &.big {
+                bottom: 1.6rem;
+                right: 1.6rem;
+              }
+            }
+          }
+        }
+      }
+      .biography-box {
+        float: unset;
+        width: 100%;
+        padding: 3.6rem;
+        .title {
+          margin-bottom: 1.2rem;
+        }
+        .content {
+          p {
+            margin-bottom: 2.4rem;
+          }
+        }
+      }
+    }
+  }
+}
+@keyframes circle {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
   }
 }
 </style>

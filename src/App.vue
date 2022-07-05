@@ -249,6 +249,7 @@ export default defineComponent({
           $('.middle-box').hide()
           $('.header-menu').show()
           $('.header-menu-close').hide()
+          $('header').removeClass('mob-bg')
         }
       },
       { immediate: true }
