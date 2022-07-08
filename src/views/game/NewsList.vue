@@ -60,14 +60,25 @@
   </section>
 </template>
 <script>
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import $ from 'jquery'
 
 export default defineComponent({
   name: 'GameNewsList',
   setup() {
     const isWap = ref(false)
+    const scrollFun = () => {
+      if (window.scrollY > $('.top-box').height()) {
+        $('header').addClass('bg')
+      } else {
+        $('header').removeClass('bg')
+      }
+    }
+    onUnmounted(() => {
+      document.removeEventListener('scroll', scrollFun, false)
+    })
     onMounted(async () => {
+      document.addEventListener('scroll', scrollFun, false)
       $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
       // $('header').css('background', '#000')
@@ -92,29 +103,31 @@ export default defineComponent({
   background: #fff;
 }
 .top-box {
-  padding-top: 7.6rem;
+  padding-top: 11.1rem;
   width: 100%;
-  height: 12.4rem;
-  background: #fff;
+  height: 15.9rem;
+  background: rgba(0, 0, 0, 0.5);
   text-align: center;
   > img {
     margin-right: 1.2rem;
+    width: 3.6rem;
   }
   .top-btn {
     height: 3.6rem;
     line-height: 3.6rem;
-    background: #ffffff;
     border: 0.1rem solid #ff4125;
     box-sizing: border-box;
     border-radius: 1.8rem;
+    background: rgba(0, 0, 0, 0.5);
     display: inline-block;
     font-family: Montserrat;
     font-weight: 400;
     font-size: 1.2rem;
     padding: 0 1.2rem;
-    color: #000000;
+    color: #fff;
     > img {
       margin-right: 1rem;
+      width: 1.6rem;
     }
   }
 }
