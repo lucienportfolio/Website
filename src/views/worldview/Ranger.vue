@@ -256,6 +256,7 @@ import $ from 'jquery'
 
 export default defineComponent({
   name: 'WorldviewRanger',
+  components: {},
   setup() {
     const isWap = ref(false)
     const scrollFun = () => {
@@ -847,10 +848,11 @@ export default defineComponent({
           .connections-info-box {
             position: relative;
             float: left;
-            width: 14.5rem;
+            width: calc((100% - 1.2rem) / 2);
             height: 20.5rem;
             margin-right: 1.2rem;
             margin-top: 3.6rem;
+            text-align: center;
             &:nth-child(2n + 2) {
               margin-right: 0;
             }
@@ -861,6 +863,9 @@ export default defineComponent({
               width: 14.5rem;
               height: 6.1rem;
               padding: 1.2rem 1rem;
+              left: 50%;
+              margin-left: -7.25rem;
+              text-align: left;
               .name {
                 font-size: 2rem;
                 line-height: 2.4rem;
