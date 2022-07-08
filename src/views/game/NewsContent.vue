@@ -1,5 +1,6 @@
 <template>
   <section class="main news-view-main">
+    <section class="top-box"></section>
     <section class="banner-box">
       <div class="text">Game Updates<span>E4C: Fallen Arena</span></div>
       <div class="title">E4C: Fallen Arena Patch 1.3 Notes</div>
@@ -49,14 +50,35 @@
   </section>
 </template>
 <script>
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import $ from 'jquery'
 
 export default defineComponent({
   name: 'GameNewsContent',
   setup() {
     const isWap = ref(false)
+    let navTop = 0
+    const scrollFun = () => {
+      if (window.scrollY > $('header').height()) {
+        $('header').addClass('bg')
+      } else {
+        $('header').removeClass('bg')
+      }
+      if (navTop === 0) {
+        navTop = $('.news-detail-nav').offset().top
+      }
+      console.log(window.scrollY + $('header').height(), navTop)
+      if (window.scrollY + $('header').height() >= navTop) {
+        $('.news-detail-nav').addClass('nav-top')
+      } else {
+        $('.news-detail-nav').removeClass('nav-top')
+      }
+    }
+    onUnmounted(() => {
+      document.removeEventListener('scroll', scrollFun, false)
+    })
     onMounted(async () => {
+      document.addEventListener('scroll', scrollFun, false)
       $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
 
@@ -79,8 +101,12 @@ export default defineComponent({
   width: 100%;
   background: #fff;
 }
+.top-box {
+  width: 100%;
+  height: 9.9rem;
+  background: rgba(0, 0, 0, 0.5);
+}
 .banner-box {
-  margin-top: 6.4rem;
   position: relative;
   width: 100%;
   height: 54rem;
@@ -156,6 +182,11 @@ export default defineComponent({
       }
     }
     .news-detail-nav {
+      background: #fff;
+      &.nav-top {
+        position: fixed;
+        top: 9.9rem;
+      }
       a {
         position: relative;
         display: block;
