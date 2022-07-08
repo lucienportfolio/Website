@@ -4,15 +4,16 @@
       <router-link to="/worldview">
         <div class="map-box">E4C: Verse<span>/</span>Organization - A.E.R.L</div></router-link
       >
-      <div class="info">
-        <img
-          src="@/assets/images/worldview-organization-aerl-logo-text.png"
-          class="organiztion-icon"
-        />
-        <div class="organiztion-desc">Animal Equal Rights League</div>
-        <button class="organiztion-btn">#Non-profit Organization</button>
+      <div class="img-box">
+        <img src="@/assets/images/worldview-organization-aerl-banner-logo.png" class="logo" />
+        <img src="@/assets/images/worldview-organization-aerl-banner-text.png" class="text" />
+      </div>
+      <div class="text-box">
+        <div class="desc">Animal Equal Rights League</div>
+        <button class="btn">#Non-profit Organization</button>
       </div>
       <div class="code-box">
+        <div class="before"></div>
         <div class="title">A.E.R.L</div>
         <div class="line"></div>
       </div>
@@ -22,14 +23,14 @@
         <div class="title">Members</div>
         <div class="member-box-list clearfix">
           <div class="member-box">
-            <img src="@/assets/images/worldview-organization-aerl-member-1.png" alt="" />
+            <img src="@/assets/images/worldview-ranger-rin-c1.png" alt="" />
             <div class="member-info">
               <div class="title">Kit</div>
               <div class="desc">Uncaged Reaper</div>
             </div>
           </div>
           <div class="member-box">
-            <img src="@/assets/images/worldview-organization-aerl-member-2.png" alt="" />
+            <img src="@/assets/images/worldview-ranger-rin-c3.png" alt="" />
             <div class="member-info">
               <div class="title">Rin</div>
               <div class="desc">Heir of Musashi</div>
@@ -196,6 +197,10 @@ export default defineComponent({
       document.addEventListener('scroll', scrollFun, false)
       $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
+      $('.code-box .line').css(
+        'width',
+        $('.code-box').width() - $('.code-box .before').width() * 3 - $('.code-box .title').width()
+      )
 
       function checkFontSize() {
         const oldIsWap = isWap.value
@@ -238,35 +243,50 @@ export default defineComponent({
         margin: 0 1.2rem;
       }
     }
-    .organiztion-icon {
-      width: 48.35rem;
-      margin: 18.9rem auto 0;
-    }
-    .organiztion-desc {
-      font-family: Montserrat;
-      font-style: italic;
-      font-weight: 500;
-      font-size: 2.4rem;
-      line-height: 2.9rem;
+    .img-box {
+      padding-top: 18.9rem;
       text-align: center;
-      color: #ffffff;
-      margin: 2.15rem 0 1.2rem;
+      .logo {
+        width: 10rem;
+      }
+      .text {
+        display: block;
+        width: 48.3rem;
+        margin: 5.8rem auto 0;
+      }
+    }
+    .text-box {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 6rem;
+      .desc {
+        font-family: Montserrat;
+        font-style: italic;
+        font-weight: 500;
+        font-size: 2.4rem;
+        line-height: 2.9rem;
+        text-align: center;
+        color: #ffffff;
+        margin: 0 0 1.2rem;
+      }
+
+      .btn {
+        width: 24rem;
+        height: 4.1rem;
+        line-height: 4.1rem;
+        background: rgba(255, 255, 255, 0.25);
+        outline: none;
+        border: none;
+        font-family: Montserrat;
+        font-weight: 500;
+        font-size: 1.4rem;
+        line-height: 1.7rem;
+        text-align: center;
+        color: #ffffff;
+      }
     }
 
-    .organiztion-btn {
-      width: 24rem;
-      height: 4.1rem;
-      line-height: 4.1rem;
-      background: rgba(255, 255, 255, 0.25);
-      outline: none;
-      border: none;
-      font-family: Montserrat;
-      font-weight: 500;
-      font-size: 1.4rem;
-      line-height: 1.7rem;
-      text-align: center;
-      color: #ffffff;
-    }
     .code-box {
       position: absolute;
       bottom: 0.8rem;
@@ -275,6 +295,7 @@ export default defineComponent({
       font-weight: 300;
       font-size: 3.6rem;
       line-height: 5.2rem;
+      width: calc(61.9rem - 18.9rem - 6rem);
 
       text-transform: uppercase;
       color: #ffffff;
@@ -282,8 +303,7 @@ export default defineComponent({
       transform: rotate(-90deg);
       transform-origin: 0 0;
 
-      &::before {
-        content: '';
+      .before {
         display: inline-block;
         width: 2.4rem;
         height: 2.4rem;
@@ -304,7 +324,7 @@ export default defineComponent({
         margin-bottom: 2.5rem;
         display: inline-block;
         height: 0.2rem;
-        width: 22.8rem;
+        width: 50%;
         background: rgba(255, 255, 255, 0.6);
         vertical-align: top;
         margin-top: 2.5rem;
@@ -619,6 +639,204 @@ export default defineComponent({
       &:last-child {
         margin-bottom: 0;
       }
+    }
+  }
+}
+@media screen and (max-width: 960px) {
+  .worldview-organization-main {
+    .banner-box {
+      height: 100vh;
+      background-image: url(@/assets/images/worldview-organization-aerl-banner-bg-mobile.png);
+      .map-box {
+        top: 10.4rem;
+        left: 3.6rem;
+      }
+      .img-box {
+        padding-top: 26.4rem;
+        .text {
+          width: 25.8rem;
+          margin: 2.4rem auto 0;
+        }
+      }
+      .text-box {
+        bottom: 3.6rem;
+        .desc {
+          font-size: 1.6rem;
+          line-height: 2rem;
+        }
+      }
+      .code-box {
+        display: none;
+      }
+    }
+    .info-box {
+      width: 100%;
+      margin: 0;
+      .members-box {
+        float: unset;
+        width: 100%;
+        height: unset;
+        padding: 3.6rem;
+        .member-box-list {
+          .member-box {
+            width: calc((100% - 1.2rem) / 2);
+            height: 20.5rem;
+            margin-right: 1.2rem;
+            text-align: center;
+            &:last-child {
+              margin-right: 0;
+            }
+            img {
+              width: 14.5rem;
+            }
+            .member-info {
+              width: 14.5rem;
+              height: 6.1rem;
+              padding: 1.2rem;
+              left: 50%;
+              margin-left: -7.25rem;
+              text-align: left;
+              .title {
+                font-size: 2rem;
+                line-height: 2.4rem;
+              }
+              .desc {
+                font-size: 1.1rem;
+                line-height: 1.3rem;
+              }
+            }
+          }
+        }
+      }
+      .philosophy-box {
+        float: unset;
+        width: 100%;
+        height: unset;
+        padding: 3.6rem;
+        .title {
+          margin-bottom: 2.4rem;
+        }
+      }
+      .income-box {
+        float: unset;
+        width: 100%;
+        height: unset;
+        padding: 3.6rem;
+        .title {
+          margin-bottom: 2.4rem;
+        }
+        .content {
+          ul {
+            li {
+              margin-left: 2rem;
+            }
+          }
+        }
+      }
+      .member-num-box {
+        float: unset;
+        width: 100%;
+        height: unset;
+        padding: 3.6rem;
+        .title {
+          margin-bottom: 1.2rem;
+        }
+        .content {
+          .num {
+            font-size: 7.2rem;
+            line-height: 8rem;
+          }
+        }
+      }
+      .location-box {
+        float: unset;
+        width: 100%;
+        height: unset;
+        .title {
+          position: absolute;
+          top: 3.6rem;
+          left: 3.6rem;
+          font-family: Montserrat;
+          font-style: normal;
+          font-weight: 700;
+          font-size: 2.4rem;
+          line-height: 2.9rem;
+          text-transform: uppercase;
+          color: #ffffff;
+          z-index: 1;
+        }
+
+        .location-box-list {
+          .location-box {
+            line-height: 26.6rem;
+            img {
+              width: 6rem;
+            }
+            .info {
+              bottom: 3.6rem;
+            }
+          }
+        }
+      }
+    }
+    .history-box {
+      width: 100%;
+      height: unset;
+      margin: 0 auto;
+      .title {
+        margin-bottom: 1.2rem;
+      }
+      .history-list {
+        .history-info-box {
+          width: 100%;
+          height: unset;
+          float: unset;
+          &:nth-child(2n + 2) {
+            .history-info {
+              top: unset;
+              bottom: unset;
+            }
+          }
+          &:first-child {
+            .line {
+              height: calc(100% - 2.7rem);
+              margin-top: 2.7rem;
+            }
+          }
+          &:last-child {
+            .history-info {
+              padding-bottom: 0;
+            }
+          }
+          .skip {
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            .square {
+              left: 0.4rem;
+              top: 1.7rem;
+            }
+            .line {
+              height: 100%;
+              width: 0.2rem;
+              margin-left: 1.1rem;
+            }
+          }
+          .history-info {
+            position: unset;
+            left: 0;
+            bottom: unset;
+            margin-left: unset;
+            padding-left: 3.6rem;
+            padding-bottom: 1.2rem;
+          }
+        }
+      }
+    }
+    .content-box {
+      width: 100%;
+      padding: 3.6rem;
     }
   }
 }
