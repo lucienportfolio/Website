@@ -1,20 +1,22 @@
 <template>
   <section class="main worldview-organization-main">
-    <section class="banner-box">
+    <section class="banner-box" :style="`background-image:url(${banner});`">
       <router-link to="/worldview">
-        <div class="map-box">E4C: Verse<span>/</span>Organization - A.E.R.L</div></router-link
+        <div class="map-box">
+          E4C: Verse<span>/</span>Organization - {{ organization.name }}
+        </div></router-link
       >
       <div class="img-box">
-        <img src="@/assets/images/worldview-organization-aerl-banner-logo.png" class="logo" />
-        <img src="@/assets/images/worldview-organization-aerl-banner-text.png" class="text" />
+        <img :src="organization.logo" class="logo" />
+        <img :src="organization.logo_text" class="text" />
       </div>
       <div class="text-box">
-        <div class="desc">Animal Equal Rights League</div>
-        <button class="btn">#Non-profit Organization</button>
+        <div class="desc">{{ organization.slogan }}</div>
+        <button class="btn">{{ organization.type }}</button>
       </div>
       <div class="code-box">
         <div class="before"></div>
-        <div class="title">A.E.R.L</div>
+        <div class="title">{{ organization.name }}</div>
         <div class="line"></div>
       </div>
     </section>
@@ -22,62 +24,45 @@
       <div class="members-box">
         <div class="title">Members</div>
         <div class="member-box-list clearfix">
-          <div class="member-box">
-            <img src="@/assets/images/worldview-ranger-rin-c1.png" alt="" />
-            <div class="member-info">
-              <div class="title">Kit</div>
-              <div class="desc">Uncaged Reaper</div>
-            </div>
-          </div>
-          <div class="member-box">
-            <img src="@/assets/images/worldview-ranger-rin-c3.png" alt="" />
-            <div class="member-info">
-              <div class="title">Rin</div>
-              <div class="desc">Heir of Musashi</div>
-            </div>
+          <div class="member-box" v-for="(v, i) in organization.ranger_list" :key="i">
+            <router-link :to="`/worldview/ranger/${v.id}`">
+              <img :src="v.thumbnail" alt="" />
+              <div class="member-info">
+                <div class="title">{{ v.name }}</div>
+                <div class="desc">{{ v.title }}</div>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>
       <div class="philosophy-box">
-        <div class="title">Philosophy</div>
-        <div class="content">
-          After mutation, animals, led by Kit, stand up (literally) against humans to protect their
-          home. They ask for equal rights as the humans to survive and to continue their own
-          reproduction.
-        </div>
+        <div class="title">{{ organization.philosophy_name }}</div>
+        <div class="content">{{ organization.philosophy_content }}</div>
       </div>
       <div class="income-box">
-        <div class="title">Income</div>
-        <div class="content">
-          <ul>
-            <li>Natural Resources Trading</li>
-            <li>Resource Processing</li>
-            <li>Public Donations</li>
-          </ul>
-        </div>
+        <div class="title">{{ organization.income_name }}</div>
+        <div class="content" v-html="organization.income_content"></div>
       </div>
       <div class="member-num-box">
         <div class="title">No. of Members</div>
         <div class="content">
-          <div class="num">556.3</div>
-          <div class="unit">K</div>
+          <div class="num">{{ organization.member_number }}</div>
+          <div class="unit">{{ organization.member_unit }}</div>
         </div>
       </div>
       <div class="location-box">
         <div class="title">Location(s)</div>
         <div class="location-box-list">
-          <div class="location-box">
-            <img src="@/assets/images/worldview-organization-aerl-location-1.png" alt="" />
+          <div
+            class="location-box"
+            v-for="(v, i) in organization.address"
+            :key="i"
+            :style="`width: ${locationWidth};`"
+          >
+            <img :src="v.logo" alt="" />
             <div class="info">
-              <div class="address">Tokyo, Japan</div>
-              <div class="desc">Headquarter</div>
-            </div>
-          </div>
-          <div class="location-box">
-            <img src="@/assets/images/worldview-organization-aerl-location-2.png" alt="" />
-            <div class="info">
-              <div class="address">Woodlands</div>
-              <div class="desc">Around the world</div>
+              <div class="address">{{ v.name }}</div>
+              <div class="desc">{{ v.type }}</div>
             </div>
           </div>
         </div>
@@ -86,100 +71,65 @@
     <section class="history-box">
       <div class="title">History</div>
       <div class="history-list clearfix">
-        <div class="history-info-box">
+        <div
+          class="history-info-box"
+          v-for="(v, i) in organization.history"
+          :key="i"
+          :style="`width:${historyWidth}`"
+        >
           <div class="skip">
             <div class="square"></div>
             <div class="line"></div>
           </div>
           <div class="history-info">
-            <div class="year">2082</div>
-            <div class="desc">A.E.R.L was founded by Kit and his fellow animals</div>
-          </div>
-        </div>
-        <div class="history-info-box">
-          <div class="skip">
-            <div class="square"></div>
-            <div class="line"></div>
-          </div>
-          <div class="history-info">
-            <div class="year">2088</div>
-            <div class="desc">
-              Rin joined A.E.R.L and started fighting alongside Kit to protect their home woodlands
-              from poachers and illegal logging operations
-            </div>
-          </div>
-        </div>
-        <div class="history-info-box">
-          <div class="skip">
-            <div class="square"></div>
-            <div class="line"></div>
-          </div>
-          <div class="history-info">
-            <div class="year">2095</div>
-            <div class="desc">
-              After years of fighting, World Parliament passed an act allowing mutant animals to be
-              able to get jobs and trade equally with the human society
-            </div>
-          </div>
-        </div>
-        <div class="history-info-box">
-          <div class="skip">
-            <div class="square"></div>
-            <div class="line"></div>
-          </div>
-          <div class="history-info">
-            <div class="year">2100</div>
-            <div class="desc">
-              Dr. Mannes founded Hive to manufacture robotic bees as a substitution of bees that
-              were endangered
-            </div>
+            <div class="year">{{ v.year }}</div>
+            <div class="desc">{{ v.content }}</div>
           </div>
         </div>
       </div>
     </section>
-    <section class="content-box">
-      <p>
-        Surrounded by treacherous seas, Ionia is composed of a number of allied provinces scattered
-        across a massive archipelago, known to many as the First Lands. Since Ionian culture has
-        long been shaped by the pursuit of balance in all things, the border between the material
-        and spirit realms tends to be more permeable here, especially in the wild forests and
-        mountains.
-      </p>
-
-      <p>
-        Although these lands’ enchantments can be fickle, its creatures dangerous and fae, for many
-        centuries most Ionians led lives of plenty. The warrior monasteries, provincial militias—and
-        even Ionia itself—had been enough to protect them.
-      </p>
-
-      <p>
-        But that ended twelve years ago, when Noxus attacked the First Lands. The empire’s seemingly
-        endless warhosts savaged Ionia, and were only defeated after many years, and at great cost.
-      </p>
-
-      <p>
-        Now, Ionia exists in an uneasy peace. Different reactions to the war have divided the
-        region—some groups, such as the Shojin monks or the Kinkou, seek a return to isolationist
-        pacifism, and pastoral traditions. Other more radical factions, such as the Navori
-        Brotherhood and the Order of Shadow, demand a militarization of the land’s magic, to create
-        a single, unified nation that can take vengeance on Noxus.
-      </p>
-
-      <p>
-        The fate of Ionia hangs in a delicate balance that few are willing to overturn, but all can
-        feel shifting uneasily beneath their feet.
-      </p>
-    </section>
+    <section class="content-box" v-html="organization.introduction"></section>
   </section>
 </template>
 <script>
+import { useRouter } from 'vue-router'
 import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import $ from 'jquery'
+import { getOrganizationInfoApi } from '@/api/organization/index'
 
 export default defineComponent({
   name: 'WorldviewOrganization',
   setup() {
     const isWap = ref(false)
+    const router = useRouter()
+    const { id } = router.currentRoute.value.params
+    const organization = ref({
+      address: [],
+      banner: '',
+      coordinate: '',
+      history: [],
+      income_content: '',
+      income_name: '',
+      introduction: '',
+      logo: '',
+      logo_text: '',
+      member_number: '',
+      member_unit: '',
+      mob_banner: '',
+      name: '',
+      philosophy_content: '',
+      philosophy_name: '',
+      ranger_list: [],
+      slogan: '',
+      type: ''
+    })
+    const banner = ref('')
+    const pcWidth = {
+      location: '',
+      history: ''
+    }
+    const locationWidth = ref('')
+    const historyWidth = ref('')
     const scrollFun = () => {
       if (window.scrollY > $('.banner-box').height() - $('header').height()) {
         $('header').addClass('bg')
@@ -197,22 +147,56 @@ export default defineComponent({
       document.addEventListener('scroll', scrollFun, false)
       $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
-      $('.code-box .line').css(
-        'width',
-        $('.code-box').width() - $('.code-box .before').width() * 3 - $('.code-box .title').width()
-      )
+
+      const organizationRes = await getOrganizationInfoApi(id)
+      if (organizationRes.code === 200) {
+        organization.value = organizationRes.data
+        pcWidth.location = `${(100 / organizationRes.data.address.length).toFixed(2)}%`
+        pcWidth.history = `${(100 / organizationRes.data.history.length).toFixed(2)}%`
+        if ($(window).width() > 960) {
+          banner.value = organizationRes.data.banner
+          locationWidth.value = pcWidth.location
+          historyWidth.value = pcWidth.history
+        } else {
+          banner.value = organizationRes.data.mob_banner
+            ? organizationRes.data.mob_banner
+            : organizationRes.data.banner
+          locationWidth.value = pcWidth.location
+          historyWidth.value = '100%'
+        }
+      }
+      setTimeout(() => {
+        $('.code-box .line').css(
+          'width',
+          $('.code-box').width() -
+            $('.code-box .before').width() * 3 -
+            $('.code-box .title').width()
+        )
+      }, 300)
+
+      console.log(organization)
 
       function checkFontSize() {
         const oldIsWap = isWap.value
         isWap.value = !($(window).width() > 960)
         if (isWap.value !== oldIsWap) {
-          console.log('change')
+          if ($(window).width() > 960) {
+            banner.value = organization.value.banner
+            locationWidth.value = pcWidth.location
+            historyWidth.value = pcWidth.history
+          } else {
+            banner.value = organization.value.mob_banner
+              ? organization.value.mob_banner
+              : organization.value.banner
+            locationWidth.value = pcWidth.location
+            historyWidth.value = '100%'
+          }
         }
       }
       $(document).ready(checkFontSize)
       $(window).resize(checkFontSize)
     })
-    return {}
+    return { organization, banner, locationWidth, historyWidth }
   }
 })
 </script>
@@ -223,7 +207,6 @@ export default defineComponent({
     position: relative;
     width: 100%;
     height: 61.9rem;
-    background-image: url(@/assets/images/worldview-organization-aerl-banner-bg.png);
     background-size: cover;
     background-position: center;
     text-align: center;
@@ -438,7 +421,7 @@ export default defineComponent({
         color: #ffffff;
         margin-bottom: 3.6rem;
       }
-      .content {
+      /deep/.content {
         ul {
           font-family: Montserrat;
           font-size: 1.6rem;
@@ -625,7 +608,7 @@ export default defineComponent({
       }
     }
   }
-  .content-box {
+  /deep/.content-box {
     width: 60rem;
     padding: 12rem 0;
     font-family: Montserrat;
@@ -646,7 +629,6 @@ export default defineComponent({
   .worldview-organization-main {
     .banner-box {
       height: 100vh;
-      background-image: url(@/assets/images/worldview-organization-aerl-banner-bg-mobile.png);
       .map-box {
         top: 10.4rem;
         left: 3.6rem;
@@ -725,7 +707,7 @@ export default defineComponent({
         .title {
           margin-bottom: 2.4rem;
         }
-        .content {
+        /deep/.content {
           ul {
             li {
               margin-left: 2rem;
@@ -834,7 +816,7 @@ export default defineComponent({
         }
       }
     }
-    .content-box {
+    /deep/.content-box {
       width: 100%;
       padding: 3.6rem;
     }

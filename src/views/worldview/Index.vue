@@ -1,7 +1,8 @@
 <template>
   <section class="main empty-main">
-    <router-link to="/worldview/ranger/1" style="color: #fff">ranger ></router-link><br /><br />
-    <router-link to="/worldview/organization/1" style="color: #fff">organiztion ></router-link>
+    <router-link to="/worldview/organization/16" style="color: #fff">organiztion ></router-link
+    ><br /><br />
+    <router-link to="/worldview/ranger/6" style="color: #fff">ranger ></router-link>
   </section>
 </template>
 <script>
