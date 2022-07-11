@@ -2,7 +2,7 @@
  * @Author       : hwl
  * @Date         : 2022-05-11 16:36:23
  * @LastEditors  : hwl
- * @LastEditTime : 2022-05-23 16:16:34
+ * @LastEditTime : 2022-07-11 20:46:10
  * @Description  :
  */
 import { defineConfig } from 'vite'
@@ -28,8 +28,8 @@ export default defineConfig({
     // 设置代理，根据项目实际情况配置
     proxy: {
       '/NFT-API/': {
-        // target: 'http://api.ambrus.studio/api/v1/',
-        target: 'http://api.nft.com/api/v1/',
+        target: 'http://api.ambrus.studio/api/v1/',
+        // target: 'http://api.nft.com/api/v1/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/NFT-API/, '')
       }
