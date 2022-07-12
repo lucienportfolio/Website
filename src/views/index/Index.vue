@@ -54,6 +54,37 @@
         </div>
       </div>
     </div>
+    <section class="nft-box">
+      <div class="background"></div>
+      <div class="nft-info">
+        <div class="title">E4C Rangers NFT <span>- Series 1</span></div>
+        <div class="desc">
+          E4C Rangers NFT - Series 1 contains two editions: <span>Ultimate Edition</span> &
+          <span>Legendary Edition</span> to be sold separately:
+        </div>
+        <div class="btn">Learn More</div>
+      </div>
+      <div class="img-list-box img-top-list">
+        <ul class="img-list" id="img-top-list">
+          <li><img src="@/assets/images/index-sneakpeek-1-1.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-1-2.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-1-3.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-1-4.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-1-5.png" alt="" srcset="" /></li>
+        </ul>
+      </div>
+
+      <div class="img-list-box img-bottom-list">
+        <div class="img-list" id="img-bottom-list">
+          <li><img src="@/assets/images/index-sneakpeek-2-1.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-2-2.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-2-3.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-2-4.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/images/index-sneakpeek-2-5.png" alt="" srcset="" /></li>
+        </div>
+      </div>
+      <div class="btn nft-box-btn">Learn More</div>
+    </section>
     <section class="roadmap-box sect" :style="`background-image:url(${roadMapBg})`">
       <div class="roadmap-box-block">
         <div class="roadmap-glitch"></div>
@@ -107,6 +138,10 @@
       <div class="token-info-box">
         <div class="title inside">{{ tokenInfo.name }}</div>
         <div class="token-info-list clearfix" v-html="tokenInfo.html"></div>
+        <div class="token-btn-box">
+          <div class="desc">Learn about our tokenomics and more:</div>
+          <div class="btn">E4C: Litepaper</div>
+        </div>
       </div>
     </section>
     <section class="team-box sect">
@@ -445,6 +480,54 @@ export default defineComponent({
           passive: false
         }
       )
+
+      const nftTopImgListDiv = $('#img-top-list')
+      nftTopImgListDiv.append(nftTopImgListDiv.html())
+
+      nftTopImgListDiv.width(
+        `${
+          nftTopImgListDiv.find('li').length *
+          (nftTopImgListDiv.find('li').eq(0).width() +
+            parseInt(nftTopImgListDiv.find('li').eq(0).css('marginLeft'), 10))
+        }px`
+      )
+      const nftTopImgTimer = setInterval(() => {
+        const oUl = document.getElementById('img-top-list')
+        const speed = 2
+        if (oUl.offsetLeft < -(oUl.offsetWidth / 2)) {
+          oUl.style.left = 0
+        }
+
+        if (oUl.offsetLeft > 0) {
+          oUl.style.left = `${-(oUl.offsetWidth / 2)}px`
+        }
+
+        oUl.style.left = `${oUl.offsetLeft + speed}px`
+      }, 30)
+
+      const nftBottomImgListDiv = $('#img-bottom-list')
+      nftBottomImgListDiv.append(nftBottomImgListDiv.html())
+      nftBottomImgListDiv.width(
+        `${
+          nftBottomImgListDiv.find('li').length *
+          (nftBottomImgListDiv.find('li').eq(0).width() +
+            parseInt(nftBottomImgListDiv.find('li').eq(0).css('marginLeft'), 10))
+        }px`
+      )
+      const nftBottomImgTimer = setInterval(() => {
+        const oUl = document.getElementById('img-bottom-list')
+        const speed = -2
+        if (oUl.offsetLeft < -(oUl.offsetWidth / 2)) {
+          oUl.style.left = 0
+        }
+
+        if (oUl.offsetLeft > 0) {
+          oUl.style.left = `${-(oUl.offsetWidth / 2)}px`
+        }
+
+        oUl.style.left = `${oUl.offsetLeft + speed}px`
+      }, 30)
+      console.log(nftTopImgTimer, nftBottomImgTimer)
     })
     const onLoadImgList = []
     const onLoadImg = (type, e) => {
@@ -934,7 +1017,7 @@ export default defineComponent({
       color: #ffffff;
     }
     .token-info-list {
-      padding-bottom: 6.1rem;
+      padding-bottom: 3.6rem;
       /deep/.token-info {
         float: left;
         width: 50%;
@@ -959,6 +1042,32 @@ export default defineComponent({
             margin-left: 2rem;
           }
         }
+      }
+    }
+
+    .token-btn-box {
+      text-align: center;
+      .desc {
+        font-family: Montserrat;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        text-align: center;
+        color: #ffffff;
+        margin-bottom: 1.2rem;
+      }
+      .btn {
+        width: 26rem;
+        height: 5.4rem;
+        border-radius: 0.4rem;
+        font-family: Montserrat;
+        font-weight: 600;
+        font-size: 1.6rem;
+        line-height: 5.4rem;
+        text-align: center;
+        text-transform: uppercase;
+        color: #ffffff;
+        margin: 0 auto;
       }
     }
   }
@@ -1468,7 +1577,89 @@ export default defineComponent({
     }
   }
 }
+.nft-box {
+  width: 100%;
+  .nft-info {
+    .title {
+      font-family: Teko;
+      font-weight: 400;
+      font-size: 6.4rem;
+      line-height: 9.2rem;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: -1.2rem;
+      span {
+        color: #ff4125;
+      }
+    }
+    .desc {
+      font-family: Montserrat;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.6rem;
+      line-height: 3rem;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 3.6rem;
+      span {
+        font-weight: 700;
+        text-transform: uppercase;
+        background-size: auto 1.2rem;
+        background-position: bottom;
+        background-repeat: no-repeat;
+        &:first-child {
+          background-image: url(@/assets/images/index-nft-desc-bg-1.png);
+        }
+        &:nth-child(2) {
+          background-image: url(@/assets/images/index-nft-desc-bg-2.png);
+        }
+      }
+    }
+    .btn {
+      display: none;
+    }
+  }
 
+  .img-list-box {
+    width: 100%;
+    height: 25vw;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2.4rem;
+    .img-list {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      li {
+        float: left;
+        width: 25vw;
+        height: 25vw;
+        list-style: none;
+        overflow: hidden;
+        margin-left: 2.4rem;
+        img {
+          width: 25vw;
+        }
+      }
+    }
+  }
+
+  .nft-box-btn {
+    width: 26rem;
+    line-height: 5.4rem;
+    border-radius: 0.4rem;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.6rem;
+    text-align: center;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 1.2rem auto 6rem;
+  }
+}
 @media screen and (max-width: 960px) {
   .banner-box {
     overflow: hidden;
@@ -1682,7 +1873,7 @@ export default defineComponent({
         line-height: 5.2rem;
       }
       .token-info-list {
-        padding-bottom: 4.2rem;
+        padding-bottom: 3.6rem;
         /deep/.token-info {
           float: unset;
           width: unset;
@@ -1693,11 +1884,19 @@ export default defineComponent({
           }
         }
       }
+
+      .token-btn-box {
+        text-align: center;
+        .btn {
+          width: 30.3rem;
+          margin: 0 auto;
+        }
+      }
     }
   }
 
   .team-box {
-    padding: 3.6rem 2.4rem 2.8rem;
+    padding: 8rem 2.4rem 2.8rem;
     width: 100%;
     .title {
       font-size: 3.6rem;
@@ -1772,6 +1971,76 @@ export default defineComponent({
     height: 12rem;
     bottom: 3.6rem;
     right: 1.6rem;
+  }
+
+  .nft-box {
+    width: 100%;
+    margin-top: 8rem;
+    .nft-info {
+      margin: 0 2.4rem 2.4rem;
+      background: #ffffff;
+      box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.25);
+      padding: 3rem 2.5rem 2.4rem;
+      .title {
+        font-family: Teko;
+        font-weight: 400;
+        font-size: 3.6rem;
+        line-height: 5.2rem;
+        margin-bottom: 1.2rem;
+        color: #ff4125;
+        span {
+          color: #000;
+        }
+      }
+      .desc {
+        color: #465358;
+        margin-bottom: 0;
+      }
+      .btn {
+        display: block;
+        margin-top: 1.2rem;
+        width: 100%;
+        height: 5.4rem;
+        line-height: 5.4rem;
+        border-radius: 0.4rem;
+        font-family: Montserrat;
+        font-weight: 600;
+        font-size: 1.6rem;
+        text-align: center;
+        text-transform: uppercase;
+        color: #ffffff;
+      }
+    }
+
+    .img-list-box {
+      width: 100%;
+      height: 64vw;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2.4rem;
+      .img-list {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        li {
+          float: left;
+          width: 64vw;
+          height: 64vw;
+          list-style: none;
+          overflow: hidden;
+          margin-left: 2.4rem;
+          img {
+            width: 64vw;
+          }
+        }
+      }
+    }
+
+    .nft-box-btn {
+      display: none;
+    }
   }
 }
 </style>
