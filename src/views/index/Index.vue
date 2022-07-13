@@ -57,33 +57,30 @@
     <section class="nft-box">
       <div class="background"></div>
       <div class="nft-info">
-        <div class="title">E4C Rangers NFT <span>- Series 1</span></div>
-        <div class="desc">
-          E4C Rangers NFT - Series 1 contains two editions: <span>Ultimate Edition</span> &
-          <span>Legendary Edition</span> to be sold separately:
-        </div>
-        <div class="btn">Learn More</div>
+        <div class="title" v-html="nftInfo[0].name"></div>
+        <div class="desc" v-html="nftInfo[0].introduction"></div>
+        <div class="nft-top-btn" v-html="nftInfo[0].html"></div>
       </div>
       <div class="img-list-box img-top-list">
         <ul class="img-list" id="img-top-list">
-          <li><img src="@/assets/images/index-sneakpeek-1-1.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-1-2.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-1-3.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-1-4.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-1-5.png" alt="" srcset="" /></li>
+          <template v-for="(v, i) in nftInfo">
+            <li :key="i" v-if="v.sort >= 100 && v.sort < 200">
+              <img :src="v.material_list.material.url" alt="" srcset="" />
+            </li>
+          </template>
         </ul>
       </div>
 
       <div class="img-list-box img-bottom-list">
         <div class="img-list" id="img-bottom-list">
-          <li><img src="@/assets/images/index-sneakpeek-2-1.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-2-2.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-2-3.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-2-4.png" alt="" srcset="" /></li>
-          <li><img src="@/assets/images/index-sneakpeek-2-5.png" alt="" srcset="" /></li>
+          <template v-for="(v, i) in nftInfo">
+            <li :key="i" v-if="v.sort >= 200 && v.sort < 300">
+              <img :src="v.material_list.material.url" alt="" srcset="" />
+            </li>
+          </template>
         </div>
       </div>
-      <div class="btn nft-box-btn">Learn More</div>
+      <div class="nft-box-btn" v-html="nftInfo[0].html"></div>
     </section>
     <section class="roadmap-box sect" :style="`background-image:url(${roadMapBg})`">
       <div class="roadmap-box-block">
@@ -278,6 +275,20 @@ export default defineComponent({
     })
     const perkInfo = ref([])
 
+    const nftInfo = ref([
+      {
+        name: '',
+        html: '',
+        introduction: '',
+        sort: 1,
+        material_list: {
+          material: { type: '', url: '' },
+          material_pc: { type: '', url: '' },
+          material_mob: { type: '', url: '' }
+        }
+      }
+    ])
+
     const tokenInfo = ref({
       name: '',
       html: '',
@@ -394,6 +405,21 @@ export default defineComponent({
             material_list: onCheckMaterial(v.material, v.material_mob)
           })
         })
+      }
+
+      const nftInfoRes = await getBlockInfoApi('indexRangerNFT')
+      if (nftInfoRes.code === 200) {
+        nftInfo.value = []
+        nftInfoRes.data.forEach((v) => {
+          nftInfo.value.push({
+            name: v.name,
+            html: v.html,
+            sort: v.sort,
+            introduction: v.introduction,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+        console.log(nftInfo.value)
       }
 
       const tokenInfoRes = await getBlockInfoApi('indexWhitePaper')
@@ -713,6 +739,7 @@ export default defineComponent({
       bannerUrl,
       rangerInfo,
       perkInfo,
+      nftInfo,
       tokenInfo,
       roadMapInfo,
       roadMapBg,
@@ -1580,7 +1607,7 @@ export default defineComponent({
 .nft-box {
   width: 100%;
   .nft-info {
-    .title {
+    /deep/.title {
       font-family: Teko;
       font-weight: 400;
       font-size: 6.4rem;
@@ -1592,7 +1619,7 @@ export default defineComponent({
         color: #ff4125;
       }
     }
-    .desc {
+    /deep/.desc {
       font-family: Montserrat;
       font-style: normal;
       font-weight: 400;
@@ -1615,7 +1642,7 @@ export default defineComponent({
         }
       }
     }
-    .btn {
+    /deep/.nft-top-btn {
       display: none;
     }
   }
@@ -1646,18 +1673,21 @@ export default defineComponent({
     }
   }
 
-  .nft-box-btn {
-    width: 26rem;
-    line-height: 5.4rem;
-    border-radius: 0.4rem;
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1.6rem;
-    text-align: center;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin: 1.2rem auto 6rem;
+  /deep/.nft-box-btn {
+    .btn {
+      display: block;
+      width: 26rem;
+      line-height: 5.4rem;
+      border-radius: 0.4rem;
+      font-family: Montserrat;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 1.6rem;
+      text-align: center;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin: 1.2rem auto 6rem;
+    }
   }
 }
 @media screen and (max-width: 960px) {
@@ -1981,7 +2011,7 @@ export default defineComponent({
       background: #ffffff;
       box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.25);
       padding: 3rem 2.5rem 2.4rem;
-      .title {
+      /deep/.title {
         font-family: Teko;
         font-weight: 400;
         font-size: 3.6rem;
@@ -1992,23 +2022,26 @@ export default defineComponent({
           color: #000;
         }
       }
-      .desc {
+      /deep/.desc {
         color: #465358;
         margin-bottom: 0;
       }
-      .btn {
+      /deep/.nft-top-btn {
         display: block;
-        margin-top: 1.2rem;
-        width: 100%;
-        height: 5.4rem;
-        line-height: 5.4rem;
-        border-radius: 0.4rem;
-        font-family: Montserrat;
-        font-weight: 600;
-        font-size: 1.6rem;
-        text-align: center;
-        text-transform: uppercase;
-        color: #ffffff;
+        .btn {
+          display: block;
+          margin-top: 1.2rem;
+          width: 100%;
+          height: 5.4rem;
+          line-height: 5.4rem;
+          border-radius: 0.4rem;
+          font-family: Montserrat;
+          font-weight: 600;
+          font-size: 1.6rem;
+          text-align: center;
+          text-transform: uppercase;
+          color: #ffffff;
+        }
       }
     }
 
@@ -2038,7 +2071,7 @@ export default defineComponent({
       }
     }
 
-    .nft-box-btn {
+    /deep/.nft-box-btn {
       display: none;
     }
   }
