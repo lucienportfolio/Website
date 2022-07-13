@@ -1,264 +1,189 @@
 <template>
   <section class="main worldview-ranger-main">
-    <section class="banner-box">
+    <section class="banner-box" :style="`background-image:url(${banner});`">
       <router-link to="/worldview">
-        <div class="map-box">E4C: Verse<span>/</span>Rangers - Rin</div></router-link
+        <div class="map-box">E4C: Verse<span>/</span>Rangers - {{ ranger.name }}</div></router-link
       >
       <div class="name-box">
-        <div class="name">Rin</div>
-        <div class="title">Heir of Musashi</div>
+        <div class="name">{{ ranger.name }}</div>
+        <div class="title">{{ ranger.title }}</div>
       </div>
       <div class="powers-box">
-        <div class="title">Abilities + Powers<span>1/4</span></div>
-        <div class="name">Kendo<span>劍道</span></div>
-        <div class="desc">
-          Rin is from a traditional samurai family. When training with her father as a child, she
-          showed great talent while her father was the only person she was unable to beat in duels.
-          However, she didn’t get a chance to beat him before his death.
+        <div class="title">
+          Abilities + Powers<span class="swiper-pagination"
+            >{{ renderIndex }}/{{ ranger.ability.length }}</span
+          >
         </div>
-        <div class="skip-list">
-          <div class="active"></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+        <swiper
+          :modules="swiperModules"
+          :auto-height="true"
+          slides-per-view="auto"
+          @slideChange="slideChange"
+          :pagination="{
+            el: '.skip-list',
+            clickable: true,
+            renderBullet
+          }"
+          :autoplay="{
+            delay: 5000,
+            disableOnInteraction: false
+          }"
+          :simulate-touch="false"
+        >
+          <swiper-slide class="ability" v-for="(v, i) in ranger.ability" :key="i">
+            <div class="name">
+              {{ v.en }}<span>{{ v.tw }}</span>
+            </div>
+            <div class="desc">{{ v.desc }}</div>
+          </swiper-slide>
+        </swiper>
+        <div class="skip-list"></div>
       </div>
       <div class="code-box">
         <div class="before"></div>
-        <div class="title">E4C Ranger <span>001</span></div>
+        <div class="title">
+          E4C Ranger <span>{{ ranger.code }}</span>
+        </div>
         <div class="line"></div>
       </div>
-      <div class="ranger"></div>
-      <div class="rotating-box"><div></div></div>
+      <div class="ranger" :style="`background-image:url(${ranger.avatar});`"></div>
+      <div class="rotating-box" @click="onDoAudio"><div></div></div>
     </section>
     <section class="audio-box clearfix">
       <div class="content">
-        Ranger’s Voice Ranger’s Voice Ranger’s Voice Ranger’s Voice Ranger’s Voice
+        <div class="text"><span>Ranger’s Voice</span></div>
       </div>
-      <div class="audio"></div>
+      <div class="audio" @click="onDoAudio"></div>
     </section>
-    <section class="lines-box">
-      “My katana is embossed in chaos, death, and soon… <br />
-      your blood and the tears of your worst nightmare. ”
-    </section>
+    <section class="lines-box" v-html="ranger.dialogue"></section>
     <section class="basic-box clearfix">
       <div class="connections-box">
         <div class="title">Connections</div>
         <div class="connections-list clearfix">
-          <div class="connections-info-box">
-            <img src="@/assets/images/worldview-ranger-rin-c1.png" alt="" />
-            <div class="connections-info">
-              <div class="name">Kit</div>
-              <div class="title">Uncaged Reaper</div>
-            </div>
-          </div>
-          <div class="connections-info-box">
-            <img src="@/assets/images/worldview-ranger-rin-c2.png" alt="" />
-            <div class="connections-info">
-              <div class="name">Thorn</div>
-              <div class="title">Bumble Fighter</div>
-            </div>
-          </div>
-          <div class="connections-info-box">
-            <img src="@/assets/images/worldview-ranger-rin-c3.png" alt="" />
-            <div class="connections-info">
-              <div class="name">Rin</div>
-              <div class="title">Heir of Musashi</div>
-            </div>
-          </div>
-          <div class="connections-info-box">
-            <img src="@/assets/images/worldview-ranger-rin-c4.png" alt="" />
-            <div class="connections-info">
-              <div class="name">Buzz</div>
-              <div class="title">Powerful Pong Pong</div>
-            </div>
+          <div class="connections-info-box" v-for="(v, i) in ranger.connections_list" :key="i">
+            <router-link :to="`/worldview/ranger/${v.id}`">
+              <img :src="v.thumbnail" alt="" />
+              <div class="connections-info">
+                <div class="name">{{ v.name }}</div>
+                <div class="title">{{ v.title }}</div>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>
       <div class="affiliation-box">
-        <div class="title">Affiliation</div>
-        <div class="info-box">
-          <img src="@/assets/images/worldview-ranger-rin-affiliation-icon.png" alt="" />
-          <div class="name">A.E.R.L</div>
-        </div>
+        <router-link :to="`/worldview/organization/${ranger.organization_info.id}`">
+          <div class="title">Affiliation</div>
+          <div class="info-box">
+            <img :src="ranger.organization_info.logo" alt="" />
+            <div class="name">{{ ranger.organization_info.name }}</div>
+          </div>
+        </router-link>
       </div>
       <div class="misc-info-box">
         <div class="title">Misc Info</div>
-        <div class="info-box">
-          <div>
-            <span>Full Name</span>
-            <span>Rin Musashi</span>
-          </div>
-          <div>
-            <span>Species</span>
-            <span>Human Cyborg</span>
-          </div>
-          <div>
-            <span>Birth Year</span>
-            <span>2069</span>
-          </div>
-          <div>
-            <span>Origin</span>
-            <span>Yokohama, Japan</span>
-          </div>
-          <div>
-            <span>Weapons</span>
-            <span>Katana</span>
-          </div>
-          <div class="line"></div>
-          <div>
-            <span>Gender</span>
-            <span>Female</span>
-          </div>
-          <div>
-            <span>Height</span>
-            <span>174cm (5'8½")</span>
-          </div>
-          <div>
-            <span>EYe Color</span>
-            <span>Brown</span>
-          </div>
-          <div>
-            <span>Hair Color</span>
-            <span>Black</span>
-          </div>
-          <div>
-            <span>Zodiac Sign</span>
-            <span>Sagittarius</span>
-          </div>
-          <div class="line"></div>
-          <div>
-            <span>Favorite Food</span>
-            <span>Tofu</span>
-          </div>
-          <div>
-            <span>Occupation</span>
-            <span>Ronin</span>
-          </div>
-        </div>
+        <div class="info-box" v-html="ranger.misc_info"></div>
       </div>
     </section>
     <section class="info-list-box clearfix">
       <div class="gallery-box">
         <div class="title">Gallery</div>
-        <div class="gallery-list">
-          <div class="gallery-info">
-            <img src="@/assets/images/worldview-ranger-rin-gallery-1.png" alt="" class="gallery" />
-            <img src="@/assets/images/worldview-ranger-gallery-big.png" alt="" class="big" />
-          </div>
-          <div class="gallery-info">
-            <img src="@/assets/images/worldview-ranger-rin-gallery-2.png" alt="" class="gallery" />
-            <img src="@/assets/images/worldview-ranger-gallery-big.png" alt="" class="big" />
-          </div>
-          <div class="gallery-info">
-            <img src="@/assets/images/worldview-ranger-rin-gallery-3.png" alt="" class="gallery" />
-            <img src="@/assets/images/worldview-ranger-gallery-big.png" alt="" class="big" />
+        <div class="gallery-list gallery-pc-list">
+          <div class="gallery-info" v-for="(v, i) in ranger.gallery" :key="i">
+            <img :src="v" alt="" class="gallery" />
+            <img
+              src="@/assets/images/worldview-ranger-gallery-big.png"
+              alt=""
+              class="big"
+              @click="onShowBigGallery(i)"
+            />
           </div>
         </div>
+        <swiper
+          :modules="swiperModules"
+          slides-per-view="auto"
+          :simulate-touch="false"
+          class="gallery-list gallery-mob-list"
+        >
+          <swiper-slide class="gallery-info" v-for="(v, i) in ranger.gallery" :key="i">
+            <img :src="v" alt="" class="gallery" />
+            <img
+              src="@/assets/images/worldview-ranger-gallery-big.png"
+              alt=""
+              class="big"
+              @click="onShowBigGallery(i)"
+            />
+          </swiper-slide>
+        </swiper>
       </div>
       <div class="biography-box">
         <div class="title">Biography</div>
-        <div class="content">
-          <p>
-            Rin was born in 2063 in Yokohama. Her family celebrated the existence of samurai
-            ancestors, with pictures, statues, and decorations all over the house referencing this
-            connection. An only child, her father taught her the samurai moral code at a young age
-            and trained her in how to use a katana. By the time she turned 16, her katana skills
-            were extremely advanced. However, at this age, she also developed an aggressive form of
-            cancer, which, doctors told her and her parents, was untreatable. Distraught, her father
-            sought the help of his colleague, Akira Ishiguro, a renowned robotic engineer who was
-            known to be working on cyborg technology. Ishiguro, although initially reluctant to work
-            on a live person, agreed to help.
-          </p>
+        <div class="content" v-html="ranger.biography"></div>
+      </div>
+    </section>
 
-          <p>
-            Thus Lady Samurai, a female combat mecha with advanced AI capabilities, was born in the
-            year 2079.
-          </p>
-
-          <p>
-            On the day that Ishiguro finally completed work on Lady Samurai, tropical storm
-            Shinigami tore through his retreat in the forests of Yamanashi in the country’s Chubu
-            region and killed him and Rin’s parents, destroying almost everything in the home except
-            for Lady Samurai, who woke to a chaotic scene of death and destruction, and watched as
-            scavengers ransacked her Ishiguro’s home before fighting them off. The memory of what
-            Ishiguro had done for her, as well as the memories of her parents, who were killed in
-            the storm are strong forces that led Lady Samurai forward.
-          </p>
-
-          <p>
-            Thereafter she became an itinerant warrior, carrying two razor-sharp katana swords and
-            scaled samurai armor, moving from town to town in Chubu region and nearby Kanto region
-            fighting gangs of scavengers, and learning more about the fate of the world in the
-            aftermath of the storm, while also becoming an infamous spectral force among criminal
-            forces throughout the central areas of Japan’s Honshu island.
-          </p>
-
-          <p>
-            While she acted as a solitary force for years, Lady Samurai ultimately crossed paths
-            with Kit and his Animal Equal Rights League (AERL), as they fought against a gang of
-            petty criminals. Lady Samurai initially thought Kit and his group were malevolent forces
-            causing havoc in the region, but after a brief scuffle, Kit was able to convince Lady
-            Samurai that they were on the same side, seeking to help normal people rebuild their
-            lives and maintain the natural beauty of rural Japan from being harmed further.
-          </p>
-
-          <p>
-            Kit asked Lady Samurai to join him as part of the Animal Equal Rights Front, which
-            operated out of Chubu and Kanto regions, and has gathered a huge amount of supporters in
-            the country. She quickly became the beating heart and the face of this organization,
-            sharing leadership duties with Kit as they continue to fight against corruption, crime,
-            and the spread of eco-terrorism.
-          </p>
-
-          <p>Personality:</p>
-
-          <p>
-            Lady Samurai has a deep understanding of samurai culture and the Shogun era, having
-            grown up reading historical documents, hearing fictional retellings, and learning
-            stories about the honor, fighting prowess, and loyalty of samurai.
-          </p>
-
-          <p>
-            Her sense of honor endears her to all of her followers, who adore her like something of
-            a demigod. She embraces the trust of the people but can shy away from adoration, as she
-            believes that any kind of worship will only encourage corruption.
-          </p>
-
-          <p>
-            Lady Samurai is quiet and reserved and is someone who leads by example. This personality
-            trait is balanced by Miyamoto, who is a more charismatic and extroverted leader, who
-            speaks with the Nature Liberation Front’s members as a friend, whereas Lady Samurai
-            prefers to keep a distance from her underlings.
-          </p>
-
-          <p>
-            In appearance, Lady Samurai is a beautiful, muscular female cyborg, standing at 6 feet
-            tall, with long black hair that is often tied up in a ponytail. She wears samurai armor
-            and carries two long Katana blades, which are her primary weapons, but also has two
-            extra robotic arms, which are equipped with long dagger-like blades.
-          </p>
-
-          <p>
-            She suffers nightmares about the night that the storm killed her parents, but she has
-            never actually told anyone the full story about that night. She was “reborn” on the same
-            night that the AERL was founded and some see her as a messianic figure, created to lead
-            humanity back to nature and to begin again.
-          </p>
+    <section class="shadow-box" v-show="shadowShow">
+      <div class="shadow-info">
+        <div class="shadow">
+          <img :src="shadowImg" alt="" class="shadow-img" />
+          <img
+            src="@/assets/images/archive-gallery-close.png"
+            alt=""
+            class="shadow-close"
+            @click="shadowShow = fasle"
+          />
         </div>
       </div>
     </section>
+    <audio loop preload="auto" id="audio" :src="audioUrl"></audio>
   </section>
 </template>
 <script>
+import { useRouter } from 'vue-router'
 import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { Navigation, Pagination, A11y, Autoplay } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
 import $ from 'jquery'
+import { getRangerInfoApi } from '@/api/ranger/index'
 
 export default defineComponent({
   name: 'WorldviewRanger',
-  components: {},
+  components: {
+    Swiper,
+    SwiperSlide
+  },
   setup() {
     const isWap = ref(false)
+    const router = useRouter()
+    const shadowShow = ref(false)
+    const shadowImg = ref('')
+    const audioUrl = ref('')
+    const { id } = router.currentRoute.value.params
+    const ranger = ref({
+      banner: '',
+      mob_banner: '',
+      avatar: '',
+      thumbnail: '',
+      name: '',
+      title: '',
+      code: '',
+      ability: [],
+      dialogue: '',
+      misc_info: '',
+      gallery: [],
+      biography: '',
+      audio: [],
+      organization_info: {
+        id: '',
+        logo: '',
+        name: '',
+        slogan: ''
+      },
+      connections_list: []
+    })
+
+    const banner = ref('')
     const scrollFun = () => {
       if (window.scrollY > $('.banner-box').height() - $('header').height()) {
         $('header').addClass('bg')
@@ -266,6 +191,10 @@ export default defineComponent({
         $('header').removeClass('bg')
       }
     }
+    const randomNumber = (min, max) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+
     onUnmounted(() => {
       document.removeEventListener('scroll', scrollFun, false)
     })
@@ -276,27 +205,87 @@ export default defineComponent({
       document.addEventListener('scroll', scrollFun, false)
       $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
-      $('.code-box .line').css(
-        'width',
-        $('.code-box').width() - $('.code-box .before').width() * 3 - $('.code-box .title').width()
-      )
-      console.log(
-        $('.code-box').width(),
-        $('.code-box .before').width(),
-        $('.code-box .title').width()
-      )
+
+      const rangerRes = await getRangerInfoApi(id)
+      if (rangerRes.code === 200) {
+        ranger.value = rangerRes.data
+        if (rangerRes.data.audio.length > 0) {
+          const audioIndex = randomNumber(0, rangerRes.data.audio.length - 1)
+          console.log(`随机${audioIndex}`)
+          audioUrl.value = rangerRes.data.audio[audioIndex]
+        }
+        if ($(window).width() > 960) {
+          banner.value = rangerRes.data.banner
+        } else {
+          banner.value = rangerRes.data.mob_banner
+            ? rangerRes.data.mob_banner
+            : rangerRes.data.banner
+        }
+      }
+
+      setTimeout(() => {
+        $('.code-box .line').css(
+          'width',
+          $('.code-box').width() -
+            $('.code-box .before').width() * 3 -
+            $('.code-box .title').width()
+        )
+      }, 300)
+
+      console.log(ranger)
 
       function checkFontSize() {
         const oldIsWap = isWap.value
         isWap.value = !($(window).width() > 960)
         if (isWap.value !== oldIsWap) {
-          console.log('change')
+          if ($(window).width() > 960) {
+            banner.value = ranger.value.banner
+            // locationWidth.value = pcWidth.location
+            // historyWidth.value = pcWidth.history
+          } else {
+            banner.value = ranger.value.mob_banner ? ranger.value.mob_banner : ranger.value.banner
+            // locationWidth.value = pcWidth.location
+            // historyWidth.value = '100%'
+          }
         }
       }
       $(document).ready(checkFontSize)
       $(window).resize(checkFontSize)
     })
-    return {}
+
+    const onShowBigGallery = (i) => {
+      shadowImg.value = ranger.value.gallery[i]
+      shadowShow.value = true
+    }
+
+    const onDoAudio = () => {
+      console.log($('#audio')[0].paused)
+      if ($('#audio')[0].paused) {
+        $('#audio')[0].play()
+      } else {
+        $('#audio')[0].pause()
+      }
+    }
+    const renderIndex = ref(1)
+    const renderBullet = (index, className) => {
+      return `<div class="${className}"></div>`
+    }
+    const slideChange = (x) => {
+      renderIndex.value = x.activeIndex + 1
+    }
+    return {
+      ranger,
+      banner,
+      shadowShow,
+      shadowImg,
+      onShowBigGallery,
+      audioUrl,
+      onDoAudio,
+      renderBullet,
+      renderIndex,
+      slideChange,
+      swiperModules: [Navigation, Pagination, A11y, Autoplay]
+    }
   }
 })
 </script>
@@ -306,7 +295,6 @@ export default defineComponent({
   .banner-box {
     position: relative;
     width: 100%;
-    background-image: url(@/assets/images/worldview-ranger-rin-bg.png);
     height: 100vh;
     background-size: cover;
     background-position: bottom center;
@@ -403,20 +391,6 @@ export default defineComponent({
         color: #ffffff;
         margin-bottom: 5.6rem;
       }
-      .skip-list {
-        height: 2.4rem;
-        vertical-align: bottom;
-        div {
-          display: inline-block;
-          width: 8rem;
-          height: 2.4rem;
-          background: rgba(255, 255, 255, 0.4);
-          margin-right: 1.2rem;
-          &.active {
-            background: #ffffff;
-          }
-        }
-      }
     }
     .code-box {
       position: absolute;
@@ -466,7 +440,6 @@ export default defineComponent({
       width: 144rem;
       height: 100vh;
       margin: 0 auto;
-      background: url(@/assets/images/worldview-ranger-rin.png);
       background-size: 100% auto;
       background-position: center;
       background-repeat: no-repeat;
@@ -481,6 +454,7 @@ export default defineComponent({
       background-size: 6.4rem 6.45rem;
       background-position: center;
       background-repeat: no-repeat;
+      cursor: pointer;
       div {
         animation: circle infinite 5s linear;
         background: url(@/assets/images/worldview-ranger-rate-text.png);
@@ -627,7 +601,7 @@ export default defineComponent({
         color: #ffffff;
         margin-bottom: 3.6rem;
       }
-      .info-box {
+      /deep/.info-box {
         div {
           &:not(.line) {
             font-family: Montserrat;
@@ -677,6 +651,12 @@ export default defineComponent({
         margin-bottom: 3.6rem;
       }
       .gallery-list {
+        &.gallery-pc-list {
+          display: block;
+        }
+        &.gallery-mob-list {
+          display: none;
+        }
         .gallery-info {
           position: relative;
           margin-bottom: 3.6rem;
@@ -690,6 +670,7 @@ export default defineComponent({
               bottom: 2.4rem;
               right: 2.4rem;
               width: 2.4rem;
+              cursor: pointer;
             }
           }
         }
@@ -711,7 +692,7 @@ export default defineComponent({
         color: #ffffff;
         margin-bottom: 3.6rem;
       }
-      .content {
+      /deep/.content {
         p {
           font-family: Montserrat;
           font-weight: 400;
@@ -726,12 +707,45 @@ export default defineComponent({
       }
     }
   }
+  .shadow-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100000000;
+    .shadow-info {
+      width: 144rem;
+      margin: 0 auto;
+      padding: 10vh 0;
+      height: 100vh;
+      text-align: center;
+      .shadow {
+        background: green;
+        position: relative;
+        display: inline-block;
+        height: 100%;
+        img {
+          &.shadow-img {
+            height: 100%;
+          }
+          &.shadow-close {
+            position: absolute;
+            top: 2.4rem;
+            right: 2.4rem;
+            cursor: pointer;
+            width: 5.4rem;
+          }
+        }
+      }
+    }
+  }
 }
 @media screen and (max-width: 960px) {
   .worldview-ranger-main {
     width: 100%;
     .banner-box {
-      background-image: url(@/assets/images/worldview-ranger-rin-mobile-bg.png);
       .map-box {
         top: 10.4rem;
         left: 3.6rem;
@@ -777,14 +791,6 @@ export default defineComponent({
           line-height: 2.4rem;
           margin: 2.4rem 0 1.2rem;
         }
-        .skip-list {
-          height: 1.6rem;
-          div {
-            width: 6rem;
-            height: 1.6rem;
-            margin-right: 0.4rem;
-          }
-        }
       }
       .code-box {
         display: none;
@@ -813,6 +819,24 @@ export default defineComponent({
         text-transform: uppercase;
         color: #ffffff;
         overflow: hidden;
+        .text {
+          width: fit-content;
+          display: flex;
+          position: relative;
+          -webkit-animation: marquee 5s linear infinite;
+          animation: marquee 5s linear infinite;
+          span {
+            width: 16rem;
+            text-shadow: 16rem 0 currentColor, calc(16rem * 2) 0 currentColor,
+              calc(16rem * 3) 0 currentColor, calc(16rem * 4) 0 currentColor,
+              calc(16rem * 5) 0 currentColor, calc(16rem * 6) 0 currentColor,
+              calc(16rem * 7) 0 currentColor, calc(16rem * 8) 0 currentColor,
+              calc(16rem * 9) 0 currentColor, calc(16rem * 10) 0 currentColor;
+            -webkit-animation: marquee 5s linear infinite;
+            animation: marquee 5s linear infinite;
+            padding-left: 2rem;
+          }
+        }
       }
       .audio {
         float: left;
@@ -824,6 +848,7 @@ export default defineComponent({
         background-position: center;
         background-repeat: no-repeat;
         filter: drop-shadow(0 0 3.6rem rgba(0, 0, 0, 0.75));
+        cursor: pointer;
       }
     }
     .lines-box {
@@ -897,7 +922,7 @@ export default defineComponent({
         .title {
           margin-bottom: 4.2rem;
         }
-        .info-box {
+        /deep/.info-box {
           div {
             &.line {
               margin: 0.8rem 9.1rem 3.1rem 9.2rem;
@@ -919,6 +944,13 @@ export default defineComponent({
           overflow: hidden;
           height: 20rem;
           width: 100%;
+          &.gallery-pc-list {
+            display: none;
+          }
+          &.gallery-mob-list {
+            padding-right: 1.2rem;
+            display: block;
+          }
           .gallery-info {
             float: left;
             position: relative;
@@ -946,14 +978,54 @@ export default defineComponent({
         .title {
           margin-bottom: 1.2rem;
         }
-        .content {
+        /deep/.content {
           p {
             margin-bottom: 2.4rem;
           }
         }
       }
     }
+    .shadow-box {
+      .shadow-info {
+        width: 100%;
+        margin: 0 auto;
+        padding: 10vh 0;
+        height: 100vh;
+        text-align: center;
+        .shadow {
+          background: green;
+          position: relative;
+          display: inline-block;
+          width: unset;
+          height: unset;
+          max-width: 90%;
+          max-height: 90%;
+          img {
+            &.shadow-img {
+              width: unset;
+              height: unset;
+              max-width: 100%;
+              max-height: 100%;
+            }
+            &.shadow-close {
+              position: absolute;
+              top: 2.4rem;
+              right: 2.4rem;
+              cursor: pointer;
+              width: 3.6rem;
+            }
+          }
+        }
+      }
+    }
   }
+}
+#audio {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  left: -10px;
+  top: -10px;
 }
 @keyframes circle {
   0% {
@@ -961,6 +1033,46 @@ export default defineComponent({
   }
   100% {
     transform: rotate(359deg);
+  }
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+</style>
+<style lang="less">
+.worldview-ranger-main {
+  .skip-list {
+    height: 2.4rem;
+    vertical-align: bottom;
+    .swiper-pagination-bullet {
+      display: inline-block;
+      width: 8rem;
+      height: 2.4rem;
+      background: rgba(255, 255, 255, 0.4);
+      margin-right: 1.2rem;
+      cursor: pointer;
+      &.swiper-pagination-bullet-active {
+        background: #ffffff;
+      }
+    }
+  }
+}
+@media screen and (max-width: 960px) {
+  .worldview-ranger-main {
+    .skip-list {
+      height: 1.6rem;
+      .swiper-pagination-bullet {
+        width: 6rem;
+        height: 1.6rem;
+        margin-right: 0.4rem;
+      }
+    }
   }
 }
 </style>
