@@ -554,6 +554,17 @@ export default defineComponent({
         oUl.style.left = `${oUl.offsetLeft + speed}px`
       }, 30)
       console.log(nftTopImgTimer, nftBottomImgTimer)
+
+      function checkFontSize() {
+        if ($(window).width() <= 960) {
+          $('.banner-box').css('height', `${window.innerHeight}px`)
+        }
+      }
+      $(document).ready(checkFontSize)
+      $(window).resize(checkFontSize)
+      if ($(window).width() <= 960) {
+        $('.banner-box').css('height', `${window.innerHeight}px`)
+      }
     })
     const onLoadImgList = []
     const onLoadImg = (type, e) => {

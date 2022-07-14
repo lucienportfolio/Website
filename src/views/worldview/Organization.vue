@@ -3,7 +3,7 @@
     <section class="banner-box" :style="`background-image:url(${banner});`">
       <router-link to="/worldview">
         <div class="map-box">
-          E4C: Verse<span>/</span>Organization - {{ organization.name }}
+          <span>E4C: Verse</span><span>/</span>Organization - {{ organization.name }}
         </div></router-link
       >
       <div class="img-box">
@@ -192,9 +192,15 @@ export default defineComponent({
             historyWidth.value = '100%'
           }
         }
+        if ($(window).width() <= 960) {
+          $('.banner-box').css('height', `${window.innerHeight}px`)
+        }
       }
       $(document).ready(checkFontSize)
       $(window).resize(checkFontSize)
+      if ($(window).width() <= 960) {
+        $('.banner-box').css('height', `${window.innerHeight}px`)
+      }
     })
     return { organization, banner, locationWidth, historyWidth }
   }
@@ -222,12 +228,13 @@ export default defineComponent({
       line-height: 1.7rem;
       color: #ffffff;
       padding: 1.2rem 2.4rem;
-      span {
+      span:nth-child(2) {
         margin: 0 1.2rem;
       }
-
       &:hover {
-        font-weight: 800;
+        span:nth-child(1) {
+          text-decoration: underline;
+        }
       }
     }
     .img-box {
@@ -357,6 +364,8 @@ export default defineComponent({
             height: 9.4rem;
             background: #ffffff;
             padding: 2.4rem;
+            transition: all 0.5s;
+            color: #000000;
             .title {
               font-family: Montserrat;
               font-style: italic;
@@ -364,8 +373,6 @@ export default defineComponent({
               font-size: 2.4rem;
               line-height: 2.9rem;
               text-transform: uppercase;
-
-              color: #000000;
             }
             .desc {
               font-family: Montserrat;
@@ -373,9 +380,12 @@ export default defineComponent({
               font-weight: 300;
               font-size: 1.4rem;
               line-height: 1.7rem;
-              /* identical to box height */
-
-              color: #000000;
+            }
+          }
+          &:hover {
+            .member-info {
+              background: #2a2a2a;
+              color: #fff;
             }
           }
         }
