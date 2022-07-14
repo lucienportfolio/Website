@@ -12,7 +12,7 @@
       </div>
       <div class="text-box">
         <div class="desc">{{ organization.slogan }}</div>
-        <button class="btn">{{ organization.type }}</button>
+        <button class="type-btn">{{ organization.type }}</button>
       </div>
       <div class="code-box">
         <div class="before"></div>
@@ -225,6 +225,10 @@ export default defineComponent({
       span {
         margin: 0 1.2rem;
       }
+
+      &:hover {
+        font-weight: 800;
+      }
     }
     .img-box {
       padding-top: 18.9rem;
@@ -254,7 +258,7 @@ export default defineComponent({
         margin: 0 0 1.2rem;
       }
 
-      .btn {
+      .type-btn {
         width: 24rem;
         height: 4.1rem;
         line-height: 4.1rem;

@@ -51,4 +51,10 @@ export default defineComponent({
   border: none;
   margin-top: 9.9rem;
 }
+@media screen and (max-width: 960px) {
+  .worldview {
+    height: calc(100vh - 6.8rem);
+    margin-top: 6.8rem;
+  }
+}
 </style>

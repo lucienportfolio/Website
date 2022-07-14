@@ -137,7 +137,7 @@
         <div class="token-info-list clearfix" v-html="tokenInfo.html"></div>
         <div class="token-btn-box">
           <div class="desc">Learn about our tokenomics and more:</div>
-          <div class="btn">E4C: Litepaper</div>
+          <a href="https://litepaper.ambrus.studio/" target="_blank" class="btn">E4C: Litepaper</a>
         </div>
       </div>
     </section>
@@ -1084,6 +1084,7 @@ export default defineComponent({
         margin-bottom: 1.2rem;
       }
       .btn {
+        display: block;
         width: 26rem;
         height: 5.4rem;
         border-radius: 0.4rem;

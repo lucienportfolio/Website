@@ -47,9 +47,9 @@
         <div class="line"></div>
       </div>
       <div class="ranger" :style="`background-image:url(${ranger.avatar});`"></div>
-      <div class="rotating-box" @click="onDoAudio"><div></div></div>
+      <div class="rotating-box" @click="onDoAudio" v-if="ranger.audio.length > 0"><div></div></div>
     </section>
-    <section class="audio-box clearfix">
+    <section class="audio-box clearfix" v-if="ranger.audio.length > 0">
       <div class="content">
         <div class="text"><span>Ranger’s Voice</span></div>
       </div>
@@ -135,7 +135,7 @@
         </div>
       </div>
     </section>
-    <audio loop preload="auto" id="audio" :src="audioUrl"></audio>
+    <audio preload="auto" id="audio" :src="audioUrl"></audio>
   </section>
 </template>
 <script>
@@ -260,11 +260,19 @@ export default defineComponent({
 
     const onDoAudio = () => {
       console.log($('#audio')[0].paused)
-      if ($('#audio')[0].paused) {
+      if ($('#audio')[0].paused || $('#audio')[0].ended) {
+        if (ranger.value.audio.length > 0) {
+          const audioIndex = randomNumber(0, ranger.value.audio.length - 1)
+          console.log(`随机${audioIndex}`)
+          audioUrl.value = ranger.value.audio[audioIndex]
+        }
         $('#audio')[0].play()
-      } else {
-        $('#audio')[0].pause()
       }
+      // if ($('#audio')[0].paused) {
+      //   $('#audio')[0].play()
+      // } else {
+      //   $('#audio')[0].pause()
+      // }
     }
     const renderIndex = ref(1)
     const renderBullet = (index, className) => {
@@ -314,6 +322,9 @@ export default defineComponent({
       padding: 1.2rem 2.4rem;
       span {
         margin: 0 1.2rem;
+      }
+      &:hover {
+        font-weight: 800;
       }
     }
     .name-box {
@@ -529,6 +540,7 @@ export default defineComponent({
             font-family: Montserrat;
             font-style: italic;
             color: #000000;
+            transition: all 0.5s;
             .name {
               font-weight: 700;
               font-size: 2.4rem;
@@ -540,6 +552,13 @@ export default defineComponent({
               font-size: 1.4rem;
               line-height: 1.7rem;
               /* identical to box height */
+            }
+          }
+
+          &:hover {
+            .connections-info {
+              background: #2a2a2a;
+              color: #fff;
             }
           }
         }
