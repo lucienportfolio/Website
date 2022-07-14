@@ -2,7 +2,9 @@
   <section class="main worldview-ranger-main">
     <section class="banner-box" :style="`background-image:url(${banner});`">
       <router-link to="/worldview">
-        <div class="map-box">E4C: Verse<span>/</span>Rangers - {{ ranger.name }}</div></router-link
+        <div class="map-box">
+          <span>E4C: Verse</span><span>/</span>Rangers - {{ ranger.name }}
+        </div></router-link
       >
       <div class="name-box">
         <div class="name">{{ ranger.name }}</div>
@@ -16,7 +18,6 @@
         </div>
         <swiper
           :modules="swiperModules"
-          :auto-height="true"
           slides-per-view="auto"
           @slideChange="slideChange"
           :pagination="{
@@ -25,7 +26,7 @@
             renderBullet
           }"
           :autoplay="{
-            delay: 5000,
+            delay: 15000,
             disableOnInteraction: false
           }"
           :simulate-touch="false"
@@ -46,7 +47,7 @@
         </div>
         <div class="line"></div>
       </div>
-      <div class="ranger" :style="`background-image:url(${ranger.avatar});`"></div>
+      <!-- <div class="ranger" :style="`background-image:url(${ranger.avatar});`"></div> -->
       <div class="rotating-box" @click="onDoAudio" v-if="ranger.audio.length > 0"><div></div></div>
     </section>
     <section class="audio-box clearfix" v-if="ranger.audio.length > 0">
@@ -89,14 +90,14 @@
       <div class="gallery-box">
         <div class="title">Gallery</div>
         <div class="gallery-list gallery-pc-list">
-          <div class="gallery-info" v-for="(v, i) in ranger.gallery" :key="i">
+          <div
+            class="gallery-info"
+            v-for="(v, i) in ranger.gallery"
+            :key="i"
+            @click="onShowBigGallery('gallery-pc-list', i)"
+          >
             <img :src="v" alt="" class="gallery" />
-            <img
-              src="@/assets/images/worldview-ranger-gallery-big.png"
-              alt=""
-              class="big"
-              @click="onShowBigGallery(i)"
-            />
+            <img src="@/assets/images/worldview-ranger-gallery-big.png" alt="" class="big" />
           </div>
         </div>
         <swiper
@@ -105,14 +106,14 @@
           :simulate-touch="false"
           class="gallery-list gallery-mob-list"
         >
-          <swiper-slide class="gallery-info" v-for="(v, i) in ranger.gallery" :key="i">
+          <swiper-slide
+            class="gallery-info"
+            v-for="(v, i) in ranger.gallery"
+            :key="i"
+            @click="onShowBigGallery('gallery-mob-list', i)"
+          >
             <img :src="v" alt="" class="gallery" />
-            <img
-              src="@/assets/images/worldview-ranger-gallery-big.png"
-              alt=""
-              class="big"
-              @click="onShowBigGallery(i)"
-            />
+            <img src="@/assets/images/worldview-ranger-gallery-big.png" alt="" class="big" />
           </swiper-slide>
         </swiper>
       </div>
@@ -122,17 +123,9 @@
       </div>
     </section>
 
-    <section class="shadow-box" v-show="shadowShow">
+    <section class="shadow-box modal-content" v-show="shadowShow">
       <div class="shadow-info">
-        <div class="shadow">
-          <img :src="shadowImg" alt="" class="shadow-img" />
-          <img
-            src="@/assets/images/archive-gallery-close.png"
-            alt=""
-            class="shadow-close"
-            @click="shadowShow = fasle"
-          />
-        </div>
+        <img :src="shadowImg" alt="" class="shadow-img" />
       </div>
     </section>
     <audio preload="auto" id="audio" :src="audioUrl"></audio>
@@ -206,6 +199,12 @@ export default defineComponent({
       $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
 
+      document.onclick = (e) => {
+        if (e.target.classList[0] !== 'gallery' && e.target.classList[0] !== 'big') {
+          shadowShow.value = false
+        }
+      }
+
       const rangerRes = await getRangerInfoApi(id)
       if (rangerRes.code === 200) {
         ranger.value = rangerRes.data
@@ -253,9 +252,23 @@ export default defineComponent({
       $(window).resize(checkFontSize)
     })
 
-    const onShowBigGallery = (i) => {
+    const onShowBigGallery = (type, i) => {
       shadowImg.value = ranger.value.gallery[i]
       shadowShow.value = true
+      const imgWidth = $(`.${type} .gallery-info`).eq(i).find('img').width()
+      const imgHeight = $(`.${type} .gallery-info`).eq(i).find('img').height()
+      if ($(window).width() / ($(window).height() * 0.8) > imgWidth / imgHeight) {
+        $('.shadow-box .shadow-info')
+          .css('height', '80vh')
+          .css('width', `${($(window).height() * 0.8 * imgWidth) / imgHeight}px`)
+          .css('margin', '10vh auto')
+      } else {
+        const top = ($(window).height() - ($(window).width() * imgHeight) / imgWidth) / 2
+        $('.shadow-box .shadow-info')
+          .css('width', '100%')
+          .css('height', `${($(window).width() * imgHeight) / imgWidth}px`)
+          .css('margin-top', `${top}px`)
+      }
     }
 
     const onDoAudio = () => {
@@ -320,11 +333,13 @@ export default defineComponent({
       line-height: 1.7rem;
       color: #ffffff;
       padding: 1.2rem 2.4rem;
-      span {
+      span:nth-child(2) {
         margin: 0 1.2rem;
       }
       &:hover {
-        font-weight: 800;
+        span:nth-child(1) {
+          text-decoration: underline;
+        }
       }
     }
     .name-box {
@@ -397,8 +412,7 @@ export default defineComponent({
         font-family: Montserrat;
         font-weight: 400;
         font-size: 1.6rem;
-        line-height: 2rem;
-
+        line-height: 3rem;
         color: #ffffff;
         margin-bottom: 5.6rem;
       }
@@ -461,19 +475,35 @@ export default defineComponent({
       bottom: 9.1rem;
       width: 14.4rem;
       height: 14.4rem;
-      background: url(@/assets/images/worldview-ranger-rate.png);
-      background-size: 6.4rem 6.45rem;
+      background: url(@/assets/images/play-icon.png);
+      background-size: 6.4rem 6.4rem;
       background-position: center;
       background-repeat: no-repeat;
       cursor: pointer;
       div {
         animation: circle infinite 5s linear;
-        background: url(@/assets/images/worldview-ranger-rate-text.png);
+        background: url(@/assets/images/play-text.png);
         background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;
         width: 14.4rem;
         height: 14.4rem;
+      }
+      &:hover {
+        background: url(@/assets/images/play-icon-hover.png);
+        width: 14.4rem;
+        height: 14.4rem;
+        background-size: 6.4rem 6.4rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        div {
+          background: url(@/assets/images/play-text-hover.png);
+          background-size: 100% 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          width: 14.4rem;
+          height: 14.4rem;
+        }
       }
     }
   }
@@ -601,6 +631,18 @@ export default defineComponent({
           color: #ffffff;
         }
       }
+      &:hover {
+        .info-box {
+          img {
+            width: 11rem;
+            margin: 20.4rem 0 1.8rem;
+          }
+          .name {
+            font-size: 7rem;
+            line-height: 9.2rem;
+          }
+        }
+      }
     }
     .misc-info-box {
       float: left;
@@ -683,6 +725,7 @@ export default defineComponent({
             &.gallery {
               width: 100%;
               border: 0.2rem solid rgba(255, 255, 255, 0.2);
+              cursor: pointer;
             }
             &.big {
               position: absolute;
@@ -690,6 +733,11 @@ export default defineComponent({
               right: 2.4rem;
               width: 2.4rem;
               cursor: pointer;
+            }
+          }
+          &:hover {
+            img.gallery {
+              border: 0.4rem solid #fff;
             }
           }
         }
@@ -728,38 +776,59 @@ export default defineComponent({
   }
   .shadow-box {
     position: fixed;
-    top: 0;
+    z-index: 100000000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 100000000;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
     .shadow-info {
-      width: 144rem;
-      margin: 0 auto;
-      padding: 10vh 0;
-      height: 100vh;
-      text-align: center;
-      .shadow {
-        background: green;
-        position: relative;
-        display: inline-block;
+      img {
+        margin: auto;
+        display: block;
+        width: 100%;
         height: 100%;
-        img {
-          &.shadow-img {
-            height: 100%;
-          }
-          &.shadow-close {
-            position: absolute;
-            top: 2.4rem;
-            right: 2.4rem;
-            cursor: pointer;
-            width: 5.4rem;
-          }
-        }
       }
     }
   }
+  // .shadow-box {
+  //   position: fixed;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   background: rgba(0, 0, 0, 0.5);
+  //   z-index: 100000000;
+  //   .shadow-info {
+  //     // max-width: 144rem;
+  //     width: 144rem;
+  //     margin: 0 auto;
+  //     padding: 10vh 0;
+  //     height: 100vh;
+  //     text-align: center;
+
+  //     .shadow {
+  //       position: relative;
+  //       display: inline-block;
+  //       height: 100%;
+  //       width: 100%;
+  //       img {
+  //         &.shadow-img {
+  //           max-height: 100%;
+  //           max-width: 100%;
+  //         }
+  //         &.shadow-close {
+  //           position: absolute;
+  //           top: 2.4rem;
+  //           right: 2.4rem;
+  //           cursor: pointer;
+  //           width: 5.4rem;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }
 @media screen and (max-width: 960px) {
   .worldview-ranger-main {
@@ -932,6 +1001,13 @@ export default defineComponent({
             margin: 4.8rem 0 2.4rem;
           }
         }
+        &:hover {
+          .info-box {
+            img {
+              margin: 4.2rem 0 1.8rem;
+            }
+          }
+        }
       }
       .misc-info-box {
         float: unset;
@@ -975,16 +1051,28 @@ export default defineComponent({
             position: relative;
             width: 23.3rem;
             height: 20rem;
+
             margin-left: 1.2rem;
             margin-bottom: 0;
+            vertical-align: middle;
+            line-height: 20rem;
+            background: #333;
+            border: 0.2rem solid rgba(255, 255, 255, 0.2);
             img {
               &.gallery {
-                width: 23.3rem;
-                height: 20rem;
+                width: 100%;
+                height: auto;
+                border: unset;
+                vertical-align: top;
               }
               &.big {
                 bottom: 1.6rem;
                 right: 1.6rem;
+              }
+            }
+            &:hover {
+              img.gallery {
+                border: unset;
               }
             }
           }
@@ -1006,34 +1094,7 @@ export default defineComponent({
     }
     .shadow-box {
       .shadow-info {
-        width: 100%;
-        margin: 0 auto;
-        padding: 10vh 0;
-        height: 100vh;
-        text-align: center;
-        .shadow {
-          background: green;
-          position: relative;
-          display: inline-block;
-          width: unset;
-          height: unset;
-          max-width: 90%;
-          max-height: 90%;
-          img {
-            &.shadow-img {
-              width: unset;
-              height: unset;
-              max-width: 100%;
-              max-height: 100%;
-            }
-            &.shadow-close {
-              position: absolute;
-              top: 2.4rem;
-              right: 2.4rem;
-              cursor: pointer;
-              width: 3.6rem;
-            }
-          }
+        img {
         }
       }
     }
@@ -1076,6 +1137,9 @@ export default defineComponent({
       background: rgba(255, 255, 255, 0.4);
       margin-right: 1.2rem;
       cursor: pointer;
+      &:hover {
+        background: #ffffff;
+      }
       &.swiper-pagination-bullet-active {
         background: #ffffff;
       }

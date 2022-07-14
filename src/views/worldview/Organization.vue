@@ -3,7 +3,7 @@
     <section class="banner-box" :style="`background-image:url(${banner});`">
       <router-link to="/worldview">
         <div class="map-box">
-          E4C: Verse<span>/</span>Organization - {{ organization.name }}
+          <span>E4C: Verse</span><span>/</span>Organization - {{ organization.name }}
         </div></router-link
       >
       <div class="img-box">
@@ -222,12 +222,13 @@ export default defineComponent({
       line-height: 1.7rem;
       color: #ffffff;
       padding: 1.2rem 2.4rem;
-      span {
+      span:nth-child(2) {
         margin: 0 1.2rem;
       }
-
       &:hover {
-        font-weight: 800;
+        span:nth-child(1) {
+          text-decoration: underline;
+        }
       }
     }
     .img-box {
