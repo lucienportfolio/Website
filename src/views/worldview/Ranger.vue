@@ -247,9 +247,15 @@ export default defineComponent({
             // historyWidth.value = '100%'
           }
         }
+        if ($(window).width() <= 960) {
+          $('.banner-box').css('height', `${window.innerHeight}px`)
+        }
       }
       $(document).ready(checkFontSize)
       $(window).resize(checkFontSize)
+      if ($(window).width() <= 960) {
+        $('.banner-box').css('height', `${window.innerHeight}px`)
+      }
     })
 
     const onShowBigGallery = (type, i) => {
@@ -834,6 +840,7 @@ export default defineComponent({
   .worldview-ranger-main {
     width: 100%;
     .banner-box {
+      // height: calc(100vh - 7.5rem);
       .map-box {
         top: 10.4rem;
         left: 3.6rem;

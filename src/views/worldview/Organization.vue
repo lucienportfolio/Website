@@ -192,9 +192,15 @@ export default defineComponent({
             historyWidth.value = '100%'
           }
         }
+        if ($(window).width() <= 960) {
+          $('.banner-box').css('height', `${window.innerHeight}px`)
+        }
       }
       $(document).ready(checkFontSize)
       $(window).resize(checkFontSize)
+      if ($(window).width() <= 960) {
+        $('.banner-box').css('height', `${window.innerHeight}px`)
+      }
     })
     return { organization, banner, locationWidth, historyWidth }
   }

@@ -231,6 +231,9 @@ export default defineComponent({
         } else {
           isWap.value = true
         }
+        if ($(window).width() <= 960) {
+          $('.top-right').css('top', `${window.innerHeight - 87}px`)
+        }
       }
       function htmlshow() {
         checkFontSize()
@@ -238,6 +241,9 @@ export default defineComponent({
       }
       $(document).ready(htmlshow)
       $(window).resize(checkFontSize)
+      if ($(window).width() <= 960) {
+        $('.top-right').css('top', `${window.innerHeight - 87}px`)
+      }
     })
     const router = useRouter()
     const routeType = ref('')
@@ -526,11 +532,13 @@ header {
   &.bg {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
   }
   &.games-bg {
+    height: 58.9rem;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(1rem);
-    height: 58.9rem;
+    -webkit-backdrop-filter: blur(1rem);
   }
   .info {
     position: relative;
@@ -938,6 +946,7 @@ footer {
     &.mob-bg {
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(1rem);
+      -webkit-backdrop-filter: blur(1rem);
       height: 100vh;
     }
     .info {
