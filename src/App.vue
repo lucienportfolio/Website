@@ -8,12 +8,14 @@
             >HOME</router-link
           >
           <div class="show-games">
-            <div :class="routeType === 'game' ? 'show-info has-act active' : 'show-info has-act'">
+            <!-- <div :class="routeType === 'game' ? 'show-info has-act active' : 'show-info has-act'"> -->
+            <div class="show-info">
               E4C: GAMES
               <img
                 src="https://ambrus.s3.amazonaws.com/1654419946109_0.85_header-arrow-1.png"
                 alt=""
               />
+              <span class="soon">soon</span>
             </div>
             <div class="games-list-box hidden">
               <div class="games-list">
@@ -185,23 +187,23 @@ export default defineComponent({
         })
       }
 
-      $('.show-games .show-info').bind('click', () => {
-        $('.games-list-box').toggle()
-        if ($('.games-list-box').is(':visible')) {
-          $('header').addClass('games-bg')
-          $('.show-info img').addClass('show')
-        } else {
-          $('header').removeClass('games-bg')
-          $('.show-info img').removeClass('show')
-        }
-      })
-      $('.show-games').bind('mouseleave', () => {
-        if ($(window).width() > 960) {
-          $('.games-list-box').hide()
-        }
-        $('header').removeClass('games-bg')
-        $('.show-info img').removeClass('show')
-      })
+      // $('.show-games .show-info').bind('click', () => {
+      //   $('.games-list-box').toggle()
+      //   if ($('.games-list-box').is(':visible')) {
+      //     $('header').addClass('games-bg')
+      //     $('.show-info img').addClass('show')
+      //   } else {
+      //     $('header').removeClass('games-bg')
+      //     $('.show-info img').removeClass('show')
+      //   }
+      // })
+      // $('.show-games').bind('mouseleave', () => {
+      //   if ($(window).width() > 960) {
+      //     $('.games-list-box').hide()
+      //   }
+      //   $('header').removeClass('games-bg')
+      //   $('.show-info img').removeClass('show')
+      // })
       $('.menu-box').bind('click', () => {
         $('.middle-box').toggle()
         if ($('.middle-box').is(':hidden')) {
@@ -935,7 +937,8 @@ footer {
     }
     &.mob-bg {
       background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: unset;
+      backdrop-filter: blur(1rem);
+      height: 100vh;
     }
     .info {
       width: 100%;
@@ -956,7 +959,7 @@ footer {
           width: 100%;
           overflow-y: auto;
           overflow-x: hidden;
-          background: rgba(0, 0, 0, 0.4);
+          // background: rgba(0, 0, 0, 0.4);
           // backdrop-filter: blur(1rem);
           height: calc(100vh - 6.8rem - 8.7rem);
           > a,
