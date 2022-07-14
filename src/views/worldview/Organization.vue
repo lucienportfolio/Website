@@ -357,6 +357,8 @@ export default defineComponent({
             height: 9.4rem;
             background: #ffffff;
             padding: 2.4rem;
+            transition: all 0.5s;
+            color: #000000;
             .title {
               font-family: Montserrat;
               font-style: italic;
@@ -364,8 +366,6 @@ export default defineComponent({
               font-size: 2.4rem;
               line-height: 2.9rem;
               text-transform: uppercase;
-
-              color: #000000;
             }
             .desc {
               font-family: Montserrat;
@@ -373,9 +373,12 @@ export default defineComponent({
               font-weight: 300;
               font-size: 1.4rem;
               line-height: 1.7rem;
-              /* identical to box height */
-
-              color: #000000;
+            }
+          }
+          &:hover {
+            .member-info {
+              background: #2a2a2a;
+              color: #fff;
             }
           }
         }
