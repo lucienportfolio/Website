@@ -136,7 +136,7 @@
 </template>
 <script>
 import { useRouter } from 'vue-router'
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
@@ -155,7 +155,7 @@ export default defineComponent({
     const shadowShow = ref(false)
     const shadowImg = ref('')
     const audioUrl = ref('')
-    const { id } = router.currentRoute.value.params
+    let { id } = router.currentRoute.value.params
     const ranger = ref({
       banner: '',
       mob_banner: '',
@@ -191,23 +191,7 @@ export default defineComponent({
       return Math.floor(Math.random() * (max - min + 1)) + min
     }
 
-    onUnmounted(() => {
-      document.removeEventListener('scroll', scrollFun, false)
-    })
-    onMounted(async () => {
-      $('body').css({
-        backgroundImage: 'url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png)'
-      })
-      document.addEventListener('scroll', scrollFun, false)
-      $('html').attr({ style: 'overflow-y:auto' })
-      $('header,.main,footer').show()
-
-      document.onclick = (e) => {
-        if (e.target.classList[0] !== 'gallery' && e.target.classList[0] !== 'big') {
-          shadowShow.value = false
-        }
-      }
-
+    const init = async () => {
       const rangerRes = await getRangerInfoApi(id)
       if (rangerRes.code === 200) {
         ranger.value = rangerRes.data
@@ -233,8 +217,35 @@ export default defineComponent({
             $('.code-box .title').width()
         )
       }, 300)
+    }
 
-      console.log(ranger)
+    watch(
+      () => router.currentRoute.value.params.id,
+      (newValue, oldValue) => {
+        id = newValue
+        console.log(newValue, oldValue)
+        init()
+      },
+      { immediate: true }
+    )
+
+    onUnmounted(() => {
+      document.removeEventListener('scroll', scrollFun, false)
+    })
+    onMounted(async () => {
+      $('body').css({
+        backgroundImage: 'url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png)'
+      })
+      document.addEventListener('scroll', scrollFun, false)
+      $('html').attr({ style: 'overflow-y:auto' })
+      $('header,.main,footer').show()
+
+      document.onclick = (e) => {
+        if (e.target.classList[0] !== 'gallery' && e.target.classList[0] !== 'big') {
+          shadowShow.value = false
+        }
+      }
+      init()
 
       function checkFontSize() {
         const oldIsWap = isWap.value
