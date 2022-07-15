@@ -9,4 +9,6 @@ platform:
 steps:
 - name: greeting
   commands:
-  - echo hello world
+  - cd /mnt/website-dev
+  - yarn
+  - yarn build
