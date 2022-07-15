@@ -56,7 +56,7 @@
       </div>
       <div class="audio" @click="onDoAudio"></div>
     </section>
-    <section class="lines-box" v-html="ranger.dialogue"></section>
+    <section class="lines-box"><div class="dialogue" v-html="ranger.dialogue"></div></section>
     <section class="basic-box clearfix">
       <div class="connections-box">
         <div class="title">Connections</div>
@@ -129,6 +129,9 @@
       </div>
     </section>
     <audio preload="auto" id="audio" :src="audioUrl"></audio>
+    <div class="audio_list">
+      <audio preload="auto" class="audio" v-for="(v, i) in ranger.audio" :src="v" :key="i"></audio>
+    </div>
   </section>
 </template>
 <script>
@@ -278,15 +281,32 @@ export default defineComponent({
     }
 
     const onDoAudio = () => {
-      console.log($('#audio')[0].paused)
-      if ($('#audio')[0].paused || $('#audio')[0].ended) {
-        if (ranger.value.audio.length > 0) {
-          const audioIndex = randomNumber(0, ranger.value.audio.length - 1)
-          console.log(`随机${audioIndex}`)
-          audioUrl.value = ranger.value.audio[audioIndex]
+      let cando = 0
+      for (let i = 0; i < ranger.value.audio.length; i += 1) {
+        const div = $('.audio_list .audio').eq(i)[0]
+        if (div.paused || div.ended) {
+          cando += 1
         }
-        $('#audio')[0].play()
       }
+      console.log(cando)
+      if (cando === ranger.value.audio.length) {
+        const audioIndex = randomNumber(0, ranger.value.audio.length - 1)
+        $('.audio_list .audio').eq(audioIndex)[0].play()
+      }
+      // $('.audio_list .audio').each((index, element) => {
+      //   if (element.paused || element.ended) {
+      //     cando += 1
+      //   }
+      // })
+      // console.log(cando)
+      // if ($('#audio')[0].paused || $('#audio')[0].ended) {
+      //   if (ranger.value.audio.length > 0) {
+      //     const audioIndex = randomNumber(0, ranger.value.audio.length - 1)
+      //     console.log(`随机${audioIndex}`)
+      //     audioUrl.value = ranger.value.audio[audioIndex]
+      //   }
+      //   $('#audio')[0].play()
+      // }
       // if ($('#audio')[0].paused) {
       //   $('#audio')[0].play()
       // } else {
@@ -486,6 +506,7 @@ export default defineComponent({
       background-position: center;
       background-repeat: no-repeat;
       cursor: pointer;
+      z-index: 2;
       div {
         animation: circle infinite 5s linear;
         background: url(@/assets/images/play-text.png);
@@ -518,7 +539,7 @@ export default defineComponent({
   }
   .lines-box {
     width: 100%;
-    height: 36rem;
+    min-height: 36rem;
     background: #ffffff;
     font-family: Teko;
     font-weight: 400;
@@ -527,10 +548,11 @@ export default defineComponent({
     padding: 12rem 0;
     align-items: center;
     text-align: center;
-
-    /* #2A2A2A */
-
     color: #2a2a2a;
+    .dialogue {
+      width: 126.4rem;
+      margin: 0 auto;
+    }
   }
   .basic-box {
     width: 126.4rem;
@@ -629,7 +651,7 @@ export default defineComponent({
           font-family: Teko;
           font-weight: 400;
           font-size: 6.4rem;
-          line-height: 9.2rem;
+          line-height: 6.4rem;
 
           text-align: center;
           text-transform: uppercase;
@@ -645,7 +667,7 @@ export default defineComponent({
           }
           .name {
             font-size: 7rem;
-            line-height: 9.2rem;
+            line-height: 7rem;
           }
         }
       }
@@ -954,6 +976,10 @@ export default defineComponent({
       font-size: 3.6rem;
       line-height: 4rem;
       display: flex;
+      .dialogue {
+        width: unset;
+        margin: unset;
+      }
     }
     .basic-box {
       width: 100%;
@@ -1057,7 +1083,7 @@ export default defineComponent({
             float: left;
             position: relative;
             width: 23.3rem;
-            height: 20rem;
+            height: 19.4rem;
 
             margin-left: 1.2rem;
             margin-bottom: 0;
