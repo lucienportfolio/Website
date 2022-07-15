@@ -245,7 +245,8 @@ export default defineComponent({
       }
       .text {
         display: block;
-        width: 48.3rem;
+        // width: 48.3rem;
+        height: 9rem;
         margin: 5.8rem auto 0;
       }
     }
@@ -651,6 +652,7 @@ export default defineComponent({
         padding-top: 26.4rem;
         .text {
           width: 25.8rem;
+          height: unset;
           margin: 2.4rem auto 0;
         }
       }
