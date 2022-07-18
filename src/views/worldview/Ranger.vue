@@ -116,7 +116,7 @@
             class="gallery-info"
             v-for="(v, i) in ranger.gallery_mob"
             :key="i"
-            @click="onShowBigGallery('gallery-mob-list', i)"
+            @click="onPreviewImgObjectWap(i)"
             :style="`width:${v.width}`"
           >
             <img :src="v.src" alt="" class="gallery" />
@@ -147,6 +147,8 @@ import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import 'viewerjs/dist/viewer.css'
+import { api as viewerApi } from 'v-viewer'
 import $ from 'jquery'
 import { getRangerInfoApi } from '@/api/ranger/index'
 
@@ -404,6 +406,22 @@ export default defineComponent({
     const slideChange = (x) => {
       renderIndex.value = x.activeIndex + 1
     }
+    const onPreviewImgObjectWap = (index) => {
+      viewerApi({
+        options: {
+          zIndex: 999999999,
+          button: false,
+          toolbar: false,
+          url: 'src',
+          navbar: false,
+          loop: false,
+          // inline: true,
+          // movable: false,
+          initialViewIndex: 0
+        },
+        images: [galleryMob.value[index]]
+      })
+    }
     return {
       ranger,
       banner,
@@ -417,6 +435,7 @@ export default defineComponent({
       slideChange,
       onLoadImg,
       onErrorImg,
+      onPreviewImgObjectWap,
       swiperModules: [Navigation, Pagination, A11y, Autoplay]
     }
   }
