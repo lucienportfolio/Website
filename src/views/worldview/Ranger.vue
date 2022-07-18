@@ -192,6 +192,28 @@ export default defineComponent({
     }
 
     const init = async () => {
+      ranger.value = {
+        banner: '',
+        mob_banner: '',
+        avatar: '',
+        thumbnail: '',
+        name: '',
+        title: '',
+        code: '',
+        ability: [],
+        dialogue: '',
+        misc_info: '',
+        gallery: [],
+        biography: '',
+        audio: [],
+        organization_info: {
+          id: '',
+          logo: '',
+          name: '',
+          slogan: ''
+        },
+        connections_list: []
+      }
       const rangerRes = await getRangerInfoApi(id)
       if (rangerRes.code === 200) {
         ranger.value = rangerRes.data
@@ -463,6 +485,7 @@ export default defineComponent({
       font-size: 3.6rem;
       line-height: 5.2rem;
       width: calc(100vh - 20.1rem - 8.8rem);
+      min-width: calc(80rem - 20.1rem - 8.8rem);
 
       text-transform: uppercase;
       color: #ffffff;
@@ -874,6 +897,7 @@ export default defineComponent({
     width: 100%;
     .banner-box {
       // height: calc(100vh - 7.5rem);
+      min-height: 130vw;
       .map-box {
         top: 10.4rem;
         left: 3.6rem;
@@ -1190,12 +1214,19 @@ export default defineComponent({
     }
   }
 }
+@media screen and (min-width: 960px) {
+  .worldview-ranger-main {
+    .banner-box {
+      min-height: 80rem;
+    }
+  }
+}
 @media screen and (max-width: 960px) {
   .worldview-ranger-main {
     .skip-list {
       height: 1.6rem;
       .swiper-pagination-bullet {
-        width: 6rem;
+        width: calc((100vw - 9.2rem) / 5);
         height: 1.6rem;
         margin-right: 0.4rem;
       }
