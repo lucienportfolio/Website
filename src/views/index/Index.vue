@@ -136,7 +136,7 @@
         <div class="title inside">{{ tokenInfo.name }}</div>
         <div class="token-info-list clearfix" v-html="tokenInfo.html"></div>
         <div class="token-btn-box">
-          <div class="desc">Learn about our E4C: Verse and more:</div>
+          <div class="desc">Learn about our E4C Verse and more:</div>
           <a href="https://litepaper.ambrus.studio/" target="_blank" class="btn">E4C: Litepaper</a>
         </div>
       </div>
