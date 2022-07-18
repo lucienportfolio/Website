@@ -134,11 +134,7 @@
       <!-- <div class="background"></div> -->
       <div class="token-info-box">
         <div class="title inside">{{ tokenInfo.name }}</div>
-        <div class="token-info-list clearfix" v-html="tokenInfo.html"></div>
-        <div class="token-btn-box">
-          <div class="desc">Learn about our E4C Verse and more:</div>
-          <a href="https://litepaper.ambrus.studio/" target="_blank" class="btn">E4C: Litepaper</a>
-        </div>
+        <div class="token-info-has-btn" v-html="tokenInfo.html"></div>
       </div>
     </section>
     <section class="team-box sect">
@@ -1054,59 +1050,61 @@ export default defineComponent({
       text-transform: uppercase;
       color: #ffffff;
     }
-    .token-info-list {
-      padding-bottom: 3.6rem;
-      /deep/.token-info {
-        float: left;
-        width: 50%;
-        padding: 0 4.8rem;
-        .title {
-          font-family: Montserrat;
-          font-weight: 700;
-          font-size: 2.4rem;
-          line-height: 2.9rem;
-          color: #ff4125;
-          padding-left: 2rem;
-          margin: 3.6rem 0 1.6rem;
-        }
-        .desc {
-          font-family: Montserrat;
-          font-weight: 400;
-          font-size: 1.6rem;
-          line-height: 3rem;
-          color: #ffffff;
-          li {
-            list-style-type: disc;
-            margin-left: 2rem;
+    .token-info-has-btn {
+      /deep/.token-info-list {
+        padding-bottom: 3.6rem;
+        .token-info {
+          float: left;
+          width: 50%;
+          padding: 0 4.8rem;
+          .title {
+            font-family: Montserrat;
+            font-weight: 700;
+            font-size: 2.4rem;
+            line-height: 2.9rem;
+            color: #ff4125;
+            padding-left: 2rem;
+            margin: 3.6rem 0 1.6rem;
+          }
+          .desc {
+            font-family: Montserrat;
+            font-weight: 400;
+            font-size: 1.6rem;
+            line-height: 3rem;
+            color: #ffffff;
+            li {
+              list-style-type: disc;
+              margin-left: 2rem;
+            }
           }
         }
       }
-    }
 
-    .token-btn-box {
-      text-align: center;
-      .desc {
-        font-family: Montserrat;
-        font-weight: 400;
-        font-size: 1.2rem;
-        line-height: 1.5rem;
+      /deep/.token-btn-box {
         text-align: center;
-        color: #ffffff;
-        margin-bottom: 1.2rem;
-      }
-      .btn {
-        display: block;
-        width: 26rem;
-        height: 5.4rem;
-        border-radius: 0.4rem;
-        font-family: Montserrat;
-        font-weight: 600;
-        font-size: 1.6rem;
-        line-height: 5.4rem;
-        text-align: center;
-        text-transform: uppercase;
-        color: #ffffff;
-        margin: 0 auto;
+        .desc {
+          font-family: Montserrat;
+          font-weight: 400;
+          font-size: 1.2rem;
+          line-height: 1.5rem;
+          text-align: center;
+          color: #ffffff;
+          margin-bottom: 1.2rem;
+        }
+        .btn {
+          display: block;
+          width: 26rem;
+          height: 5.4rem;
+          border-radius: 0.4rem;
+          font-family: Montserrat;
+          font-weight: 600;
+          font-size: 1.6rem;
+          line-height: 5.4rem;
+          text-align: center;
+          text-transform: uppercase;
+          color: #ffffff;
+          margin: 0 auto;
+        }
       }
     }
   }
@@ -1914,24 +1912,26 @@ export default defineComponent({
         font-size: 3.6rem;
         line-height: 5.2rem;
       }
-      .token-info-list {
-        padding-bottom: 3.6rem;
-        /deep/.token-info {
-          float: unset;
-          width: unset;
-          padding: 0 3.6rem;
-          .title {
-            font-size: 2.4rem;
-            text-align: center;
+      .token-info-has-btn {
+        /deep/.token-info-list {
+          padding-bottom: 3.6rem;
+          .token-info {
+            float: unset;
+            width: unset;
+            padding: 0 3.6rem;
+            .title {
+              font-size: 2.4rem;
+              text-align: center;
+            }
           }
         }
-      }
 
-      .token-btn-box {
-        text-align: center;
-        .btn {
-          width: 30.3rem;
-          margin: 0 auto;
+        /deep/.token-btn-box {
+          text-align: center;
+          .btn {
+            width: 30.3rem;
+            margin: 0 auto;
+          }
         }
       }
     }
