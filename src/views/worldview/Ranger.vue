@@ -96,7 +96,13 @@
             :key="i"
             @click="onShowBigGallery('gallery-pc-list', i)"
           >
-            <img :src="v" alt="" class="gallery" />
+            <img
+              :src="v"
+              alt=""
+              class="gallery"
+              :onload="(e) => onLoadImg(e, i)"
+              :onerror="(e) => onErrorImg(e, i)"
+            />
             <img src="@/assets/images/worldview-ranger-gallery-big.png" alt="" class="big" />
           </div>
         </div>
@@ -108,11 +114,12 @@
         >
           <swiper-slide
             class="gallery-info"
-            v-for="(v, i) in ranger.gallery"
+            v-for="(v, i) in ranger.gallery_mob"
             :key="i"
             @click="onShowBigGallery('gallery-mob-list', i)"
+            :style="`width:${v.width}`"
           >
-            <img :src="v" alt="" class="gallery" />
+            <img :src="v.src" alt="" class="gallery" />
             <img src="@/assets/images/worldview-ranger-gallery-big.png" alt="" class="big" />
           </swiper-slide>
         </swiper>
@@ -156,6 +163,7 @@ export default defineComponent({
     const shadowImg = ref('')
     const audioUrl = ref('')
     let { id } = router.currentRoute.value.params
+    const galleryMob = ref([])
     const ranger = ref({
       banner: '',
       mob_banner: '',
@@ -168,6 +176,7 @@ export default defineComponent({
       dialogue: '',
       misc_info: '',
       gallery: [],
+      gallery_mob: [],
       biography: '',
       audio: [],
       organization_info: {
@@ -204,6 +213,7 @@ export default defineComponent({
         dialogue: '',
         misc_info: '',
         gallery: [],
+        gallery_mob: [],
         biography: '',
         audio: [],
         organization_info: {
@@ -214,9 +224,18 @@ export default defineComponent({
         },
         connections_list: []
       }
+      galleryMob.value = []
       const rangerRes = await getRangerInfoApi(id)
       if (rangerRes.code === 200) {
         ranger.value = rangerRes.data
+        // rangerRes.data.gallery.push('http://www.baidu.com/')
+        rangerRes.data.gallery.forEach((v) => {
+          galleryMob.value.push({
+            src: v,
+            width: 'auto',
+            status: ''
+          })
+        })
         if (rangerRes.data.audio.length > 0) {
           const audioIndex = randomNumber(0, rangerRes.data.audio.length - 1)
           console.log(`随机${audioIndex}`)
@@ -267,7 +286,7 @@ export default defineComponent({
           shadowShow.value = false
         }
       }
-      init()
+      // init()
 
       function checkFontSize() {
         const oldIsWap = isWap.value
@@ -293,6 +312,38 @@ export default defineComponent({
         $('.banner-box').css('height', `${window.innerHeight}px`)
       }
     })
+
+    const onLoadImg = (e, i) => {
+      console.log(galleryMob)
+      const imgDiv = $('.gallery-pc-list div').eq(i).find('.gallery')
+      galleryMob.value[i].width = `${(imgDiv.width() * 19.4) / imgDiv.height()}rem`
+      galleryMob.value[i].status = 'load'
+      let flag = true
+      galleryMob.value.forEach((v) => {
+        if (v.width === 'auto' && v.status === '') {
+          flag = false
+        }
+      })
+      if (flag === true) {
+        ranger.value.gallery_mob = galleryMob.value
+        console.log(ranger.value.gallery_mob)
+      }
+    }
+
+    const onErrorImg = (e, i) => {
+      galleryMob.value[i].width = `23.3rem`
+      galleryMob.value[i].status = 'error'
+      let flag = true
+      galleryMob.value.forEach((v) => {
+        if (v.width === 'auto' && v.status === '') {
+          flag = false
+        }
+      })
+      if (flag === true) {
+        ranger.value.gallery_mob = galleryMob.value
+        console.log(ranger.value.gallery_mob)
+      }
+    }
 
     const onShowBigGallery = (type, i) => {
       shadowImg.value = ranger.value.gallery[i]
@@ -364,6 +415,8 @@ export default defineComponent({
       renderBullet,
       renderIndex,
       slideChange,
+      onLoadImg,
+      onErrorImg,
       swiperModules: [Navigation, Pagination, A11y, Autoplay]
     }
   }
@@ -1108,7 +1161,16 @@ export default defineComponent({
           height: 20rem;
           width: 100%;
           &.gallery-pc-list {
-            display: none;
+            position: absolute;
+            top: -20000px;
+            left: -20000px;
+            .gallery-info {
+              img {
+                &.gallery {
+                  height: unset;
+                }
+              }
+            }
           }
           &.gallery-mob-list {
             padding-right: 1.2rem;
@@ -1129,7 +1191,7 @@ export default defineComponent({
             img {
               &.gallery {
                 width: 100%;
-                height: auto;
+                height: 100%;
                 border: unset;
                 vertical-align: top;
               }
