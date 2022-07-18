@@ -645,7 +645,6 @@ export default defineComponent({
   }
   .lines-box {
     width: 100%;
-    min-height: 36rem;
     background: #ffffff;
     font-family: Teko;
     font-weight: 400;
