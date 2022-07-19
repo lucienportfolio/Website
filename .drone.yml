@@ -7,10 +7,10 @@ platform:
   arch: amd64
 
 steps:
-- name: build main
+- name: build dev
   when:
     branch:
-    - main
+    - testing
   commands:
   - cd /mnt/website-dev
   - git pull
