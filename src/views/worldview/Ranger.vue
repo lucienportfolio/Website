@@ -415,6 +415,7 @@ export default defineComponent({
           url: 'src',
           navbar: false,
           loop: false,
+          title: false,
           // inline: true,
           // movable: false,
           initialViewIndex: 0
