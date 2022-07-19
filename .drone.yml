@@ -10,7 +10,7 @@ steps:
 - name: build main
   when:
     branch:
-    - main
+    - testing
   commands:
   - cd /mnt/website-dev
   - git pull
