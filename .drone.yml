@@ -7,7 +7,7 @@ platform:
   arch: amd64
 
 steps:
-- name: build main
+- name: build dev
   when:
     branch:
     - testing
