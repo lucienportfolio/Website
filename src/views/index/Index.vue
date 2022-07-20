@@ -323,34 +323,44 @@ export default defineComponent({
       } else {
         $('header').removeClass('bg')
       }
-      if (window.scrollY < sections[1].offsetTop - 480) {
+      if (sections.length > 1 && window.scrollY < sections[1].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
       }
 
-      if (window.scrollY > sections[1].offsetTop - 480) {
+      if (sections.length > 1 && window.scrollY > sections[1].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
       }
 
-      if (window.scrollY > sections[2].offsetTop - 480) {
+      if (sections.length > 1 && window.scrollY > sections[2].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
       }
 
-      if (window.scrollY > sections[3].offsetTop - 480) {
+      if (sections.length > 1 && sections[4] && window.scrollY > sections[3].offsetTop - 480) {
         sections[4].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
       }
 
-      if (window.scrollY > sections[4].offsetTop - 480) {
+      if (
+        sections.length > 1 &&
+        sections[4] &&
+        sections[5] &&
+        window.scrollY > sections[4].offsetTop - 480
+      ) {
         sections[4].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
-        sections[5].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+        if (
+          sections[5].getElementsByClassName('inside') &&
+          sections[5].getElementsByClassName('inside')[0]
+        ) {
+          sections[5].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+        }
       }
 
-      if (window.scrollY > sections[5].offsetTop - 480) {
+      if (sections.length > 1 && sections[5] && window.scrollY > sections[5].offsetTop - 480) {
         sections[4].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
         sections[5].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
         sections[6].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
       }
 
-      if (window.scrollY > sections[6].offsetTop - 480) {
+      if (sections.length > 1 && sections[5] && window.scrollY > sections[6].offsetTop - 480) {
         sections[5].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
         sections[6].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
       }
@@ -516,15 +526,17 @@ export default defineComponent({
       const nftTopImgTimer = setInterval(() => {
         const oUl = document.getElementById('img-top-list')
         const speed = 2
-        if (oUl.offsetLeft < -(oUl.offsetWidth / 2)) {
-          oUl.style.left = 0
-        }
+        if (oUl) {
+          if (oUl.offsetLeft < -(oUl.offsetWidth / 2)) {
+            oUl.style.left = 0
+          }
 
-        if (oUl.offsetLeft > 0) {
-          oUl.style.left = `${-(oUl.offsetWidth / 2)}px`
-        }
+          if (oUl.offsetLeft > 0) {
+            oUl.style.left = `${-(oUl.offsetWidth / 2)}px`
+          }
 
-        oUl.style.left = `${oUl.offsetLeft + speed}px`
+          oUl.style.left = `${oUl.offsetLeft + speed}px`
+        }
       }, 30)
 
       const nftBottomImgListDiv = $('#img-bottom-list')
@@ -539,15 +551,17 @@ export default defineComponent({
       const nftBottomImgTimer = setInterval(() => {
         const oUl = document.getElementById('img-bottom-list')
         const speed = -2
-        if (oUl.offsetLeft < -(oUl.offsetWidth / 2)) {
-          oUl.style.left = 0
-        }
+        if (oUl) {
+          if (oUl.offsetLeft < -(oUl.offsetWidth / 2)) {
+            oUl.style.left = 0
+          }
 
-        if (oUl.offsetLeft > 0) {
-          oUl.style.left = `${-(oUl.offsetWidth / 2)}px`
-        }
+          if (oUl.offsetLeft > 0) {
+            oUl.style.left = `${-(oUl.offsetWidth / 2)}px`
+          }
 
-        oUl.style.left = `${oUl.offsetLeft + speed}px`
+          oUl.style.left = `${oUl.offsetLeft + speed}px`
+        }
       }, 30)
       console.log(nftTopImgTimer, nftBottomImgTimer)
 

@@ -8,47 +8,58 @@
             >HOME</router-link
           >
           <div class="show-games">
-            <!-- <div :class="routeType === 'game' ? 'show-info has-act active' : 'show-info has-act'"> -->
-            <div class="show-info">
+            <div :class="routeType === 'game' ? 'show-info has-act active' : 'show-info has-act'">
+              <!-- <div class="show-info"> -->
               E4C: GAMES
               <img
                 src="https://ambrus.s3.amazonaws.com/1654419946109_0.85_header-arrow-1.png"
                 alt=""
               />
-              <span class="soon">soon</span>
+              <!-- <span class="soon">soon</span> -->
             </div>
             <div class="games-list-box hidden">
-              <div class="games-list">
-                <div class="games-img-text">Games</div>
-                <div class="games-img-list clearfix">
-                  <div class="games-img-box">
-                    <img
-                      src="@/assets/images/header-games-img-1.png"
-                      alt=""
-                      @click="toUrl('/game/1')"
-                    />
-                  </div>
-                  <div class="games-img-box">
-                    <img
-                      src="@/assets/images/header-games-img-2.png"
-                      alt=""
-                      @click="toUrl('/game/1')"
-                    />
-                  </div>
-                  <div class="games-img-box">
-                    <img
-                      src="@/assets/images/header-games-img-3.png"
-                      alt=""
-                      @click="toUrl('/game/1')"
-                    />
+              <div class="games-list clearfix">
+                <div class="games-list-info">
+                  <div class="games-text">Games</div>
+                  <div
+                    @click="toUrl(`/game/${v.id}`)"
+                    @mouseover="onMouseOverGame('games', i, v.img)"
+                    v-for="(v, i) in headerGameInfo.games"
+                    :key="i"
+                    :class="
+                      headerGameAct.type === 'games' && headerGameAct.index === i
+                        ? 'games-info-name active'
+                        : 'games-info-name'
+                    "
+                    v-html="v.name"
+                  ></div>
+                </div>
+                <div class="games-mob-img-list">
+                  <div
+                    class="games-mob-img"
+                    v-for="(v, i) in headerGameInfo.games"
+                    @click="toUrl(`/game/${v.id}`)"
+                    :key="i"
+                  >
+                    <img :src="v.img" alt="" />
                   </div>
                 </div>
-                <div class="gaming-text">Gaming Experience</div>
-                <div class="gaming-list">
-                  <p @click="toUrl('/game/news/list/1')">News & Dev Blogs</p>
-                  <p @click="toUrl('/game/archive/1')">Archive</p>
-                  <p @click="toUrl('/game/1')">Esports</p>
-                  <p @click="toUrl('/game/1')">Leaderboards</p>
+                <div class="games-list-exp">
+                  <div class="games-text">Gaming Experience</div>
+                  <div
+                    :class="
+                      headerGameAct.type === 'exp' && headerGameAct.index === i
+                        ? 'games-exp-name active'
+                        : 'games-exp-name'
+                    "
+                    v-for="(v, i) in headerGameInfo.exp"
+                    @mouseover="onMouseOverGame('exp', i, v.img)"
+                    :key="i"
+                    v-html="v.name"
+                  ></div>
+                </div>
+                <div class="games-list-img">
+                  <img :src="headerGameAct.img" alt="" />
                 </div>
               </div>
             </div>
@@ -161,6 +172,31 @@ export default defineComponent({
     const headerLink = ref([])
     const footerLink = ref([])
     const isWap = ref(false)
+    const headerGameInfo = ref({
+      games: [
+        {
+          id: 2,
+          name: 'E4C Final Salvation',
+          img: 'https://ambrus.s3.amazonaws.com/1658233706332_0.37_header-game-img-1.png'
+        },
+        {
+          id: 1,
+          name: 'E4C Fallen Arena<span>Out now</span>',
+          img: 'https://ambrus.s3.amazonaws.com/1658239291817_0.43_header-game-img-3.png'
+        }
+      ],
+      exp: [
+        {
+          name: 'UGC Tool<span>Beta</span>',
+          img: 'https://ambrus.s3.amazonaws.com/1658233706352_0.55_header-game-img-2.png'
+        }
+      ]
+    })
+    const headerGameAct = ref({
+      type: 'games',
+      index: 0,
+      img: headerGameInfo.value.games[0].img
+    })
     onMounted(async () => {
       window.onload = () => {}
 
@@ -187,23 +223,23 @@ export default defineComponent({
         })
       }
 
-      // $('.show-games .show-info').bind('click', () => {
-      //   $('.games-list-box').toggle()
-      //   if ($('.games-list-box').is(':visible')) {
-      //     $('header').addClass('games-bg')
-      //     $('.show-info img').addClass('show')
-      //   } else {
-      //     $('header').removeClass('games-bg')
-      //     $('.show-info img').removeClass('show')
-      //   }
-      // })
-      // $('.show-games').bind('mouseleave', () => {
-      //   if ($(window).width() > 960) {
-      //     $('.games-list-box').hide()
-      //   }
-      //   $('header').removeClass('games-bg')
-      //   $('.show-info img').removeClass('show')
-      // })
+      $('.show-games .show-info').bind('click', () => {
+        $('.games-list-box').toggle()
+        if ($('.games-list-box').is(':visible')) {
+          $('header').addClass('games-bg')
+          $('.show-info img').addClass('show')
+        } else {
+          $('header').removeClass('games-bg')
+          $('.show-info img').removeClass('show')
+        }
+      })
+      $('.show-games').bind('mouseleave', () => {
+        if ($(window).width() > 960) {
+          $('.games-list-box').hide()
+        }
+        $('header').removeClass('games-bg')
+        $('.show-info img').removeClass('show')
+      })
       $('.menu-box').bind('click', () => {
         $('.middle-box').toggle()
         if ($('.middle-box').is(':hidden')) {
@@ -233,6 +269,8 @@ export default defineComponent({
         }
         if ($(window).width() <= 960) {
           $('.top-right').css('top', `${window.innerHeight - 87}px`)
+        } else {
+          $('.top-right').css('top', `unset`)
         }
       }
       function htmlshow() {
@@ -243,6 +281,8 @@ export default defineComponent({
       $(window).resize(checkFontSize)
       if ($(window).width() <= 960) {
         $('.top-right').css('top', `${window.innerHeight - 87}px`)
+      } else {
+        $('.top-right').css('top', `unset`)
       }
     })
     const router = useRouter()
@@ -268,15 +308,30 @@ export default defineComponent({
       })
       if ($(window).width() > 960) {
         $('.games-list-box').hide()
+      } else {
+        $('.middle-box').hide()
+        $('.header-menu').show()
+        $('.header-menu-close').hide()
+        $('header').removeClass('mob-bg')
       }
       $('header').removeClass('games-bg')
       $('.show-info img').removeClass('show')
+    }
+    const onMouseOverGame = (type, index, img) => {
+      headerGameAct.value = {
+        type,
+        index,
+        img
+      }
     }
     return {
       toUrl,
       routeType,
       headerLink,
-      footerLink
+      footerLink,
+      headerGameInfo,
+      headerGameAct,
+      onMouseOverGame
     }
   }
 })
@@ -701,72 +756,99 @@ header {
       text-align: left;
       box-sizing: border-box;
       .games-list {
-        // width: 144rem;
         padding: 0 8.8rem;
-        height: 49rem;
+        height: 52.5rem;
         margin: 0 auto;
-        .games-img-text {
-          margin: 4.8rem 0 1.2rem;
-          font-family: Montserrat;
-          font-weight: 500;
-          text-transform: uppercase;
-          color: #a0a4b0;
-          font-size: 1.4rem;
-          line-height: 1.7rem;
-        }
-        .games-img-list {
-          .games-img-box {
-            float: left;
-            position: relative;
-            width: 40.5rem;
-            background: #ffffff;
-            border: 0.2rem solid rgba(160, 164, 176, 0.2);
-            box-sizing: border-box;
-            border-radius: 0.4rem;
-            margin-right: 2.4rem;
-            box-sizing: border-box;
-            &:last-child {
-              margin-right: 0;
-            }
-            img {
-              width: 100%;
-              cursor: pointer;
-            }
+        .games-list-info {
+          float: left;
+          width: 36rem;
+          margin-right: 2.4rem;
+          .games-text {
+            font-family: Montserrat;
+            font-weight: 500;
+            font-size: 1.4rem;
+            line-height: 1.7rem;
+            text-transform: uppercase;
+            color: #a0a4b0;
+            padding: 4.8rem 0 0 2.4rem;
           }
-        }
-        .gaming-text {
-          margin: 3.6rem 0 1.2rem;
-          font-family: Montserrat;
-          font-weight: 500;
-          text-transform: uppercase;
-          color: #a0a4b0;
-          font-size: 1.4rem;
-          line-height: 1.7rem;
-        }
-        .gaming-list {
-          p {
+          .games-info-name {
             display: block;
-            float: left;
-            padding: 0 3.6rem;
-            gap: 1rem;
+            width: 36rem;
             height: 6rem;
-            background: #2a2a2a;
             border-radius: 0.8rem;
+            margin-top: 1.2rem;
             font-family: Montserrat;
             font-weight: 700;
             font-size: 2rem;
             line-height: 6rem;
-            text-align: center;
             text-transform: uppercase;
+            padding: 0 2.4rem;
             color: #ffffff;
-            flex: none;
-            order: 0;
-            flex-grow: 0;
-            margin-right: 2.4rem;
             cursor: pointer;
-            &:last-child {
-              margin-right: 0;
+            &.active {
+              background: #2a2a2a;
             }
+            span {
+              font-size: 1.2rem;
+              text-transform: uppercase;
+              color: #ff4125;
+              margin-left: 1rem;
+              vertical-align: top;
+            }
+          }
+        }
+        .games-mob-img-list {
+          display: none;
+        }
+        .games-list-exp {
+          float: left;
+          width: 30rem;
+          margin-right: 2.4rem;
+          .games-text {
+            font-family: Montserrat;
+            font-weight: 500;
+            font-size: 1.4rem;
+            line-height: 1.7rem;
+            text-transform: uppercase;
+            color: #a0a4b0;
+            padding: 4.8rem 0 0 2.4rem;
+          }
+          .games-exp-name {
+            display: block;
+            width: 30rem;
+            height: 6rem;
+            border-radius: 0.8rem;
+            margin-top: 1.2rem;
+            font-family: Montserrat;
+            font-weight: 700;
+            font-size: 2rem;
+            line-height: 6rem;
+            text-transform: uppercase;
+            padding: 0 2.4rem;
+            color: #ffffff;
+            &.active {
+              background: #2a2a2a;
+            }
+            span {
+              font-size: 1.2rem;
+              text-transform: uppercase;
+              color: #ff4125;
+              margin-left: 1rem;
+              vertical-align: top;
+            }
+          }
+        }
+        .games-list-img {
+          float: left;
+          margin-top: 7.7rem;
+          width: 55.6rem;
+          height: 36rem;
+          background: linear-gradient(229.11deg, #393939 1.23%, #4f4f4f 73.2%);
+          border-radius: 0.4rem;
+          border: 0.2rem solid rgba(160, 164, 176, 0.2);
+          img {
+            width: 100%;
           }
         }
       }
@@ -940,11 +1022,11 @@ footer {
     // background: rgba(0, 0, 0, 0.4);
     // backdrop-filter: blur(1rem);
     &.bg {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(1rem);
     }
     &.mob-bg {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(1rem);
       -webkit-backdrop-filter: blur(1rem);
       height: 100vh;
@@ -1047,37 +1129,71 @@ footer {
           height: unset;
           width: unset;
           padding: 0 2.4rem;
-          .games-img-text {
+          .games-list-info {
             display: none;
           }
-          .games-img-list {
-            .games-img-box {
-              width: calc(100vw - 4.8rem);
-              margin-bottom: 1.2rem;
+          .games-mob-img-list {
+            display: block;
+            padding-top: 0.7rem;
+            .games-mob-img {
+              margin-top: 2.4rem;
+              width: 100%;
+              background: linear-gradient(229.11deg, #393939 1.23%, #4f4f4f 73.2%);
+              border-radius: 0.4rem;
+              border: 0.2rem solid rgba(160, 164, 176, 0.2);
+              img {
+                width: 100%;
+              }
             }
           }
-          .gaming-text {
-            margin: 0;
-            padding: 1.2rem 0 2.4rem;
-          }
-          .gaming-list {
-            margin-left: 0;
-            padding: 0;
-            p {
-              text-align: left;
-              margin: 0;
-              float: unset;
-              padding: 1.2rem 0;
-              background: unset;
-              height: unset;
-              line-height: unset;
+          .games-list-exp {
+            float: unset;
+            width: 100%;
+            margin-right: 0;
+            .games-text {
               font-family: Montserrat;
-              font-weight: 600;
+              font-weight: 500;
               font-size: 1.4rem;
               line-height: 1.7rem;
+              text-transform: uppercase;
+              color: #a0a4b0;
+              padding: 2.4rem 0 1.2rem 0;
+            }
+            .games-exp-name {
+              display: block;
+              width: 100%;
+              gap: 1rem;
+              height: 6rem;
+              border-radius: 0.8rem;
+              margin-top: 0;
+              font-family: Montserrat;
+              font-weight: 700;
+              font-size: 2rem;
+              padding: 0;
+              margin-bottom: 0.3rem;
+              &.active {
+                background: unset;
+              }
             }
           }
+          .games-list-img {
+            display: none;
+          }
         }
+        // .games-list {
+        //   height: unset;
+        //   width: unset;
+        //   padding: 0 2.4rem;
+        //   .games-img-text {
+        //     display: none;
+        //   }
+        //   .games-img-list {
+        //     .games-img-box {
+        //       width: calc(100vw - 4.8rem);
+        //       margin-bottom: 1.2rem;
+        //     }
+        //   }
+        // }
       }
 
       .menu-box {
