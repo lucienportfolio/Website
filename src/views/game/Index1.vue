@@ -1,7 +1,7 @@
 <template>
   <section class="main">
     <section class="banner-box">
-      <img src="@/assets/images/game-1-banner-img.png" alt="" class="img" />
+      <img src="@/assets/images/game-1-logo.png" alt="" class="img" />
       <button>Coming soon</button>
     </section>
     <section class="rangers-box clearfix">
