@@ -97,21 +97,31 @@ export default defineComponent({
         $('header').removeClass('bg')
       }
 
-      if (window.scrollY < sections[1].offsetTop - 480) {
+      if (sections.length > 1 && window.scrollY < sections[1].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
       }
 
-      if (window.scrollY > sections[1].offsetTop - 480) {
+      if (sections.length > 1 && window.scrollY > sections[1].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
       }
 
-      if (window.scrollY > sections[2].offsetTop - 480) {
+      if (sections.length > 1 && sections[3] && window.scrollY > sections[2].offsetTop - 480) {
         sections[1].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
-        sections[3].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+        if (
+          sections[3].getElementsByClassName('inside') &&
+          sections[3].getElementsByClassName('inside')[0]
+        ) {
+          sections[3].getElementsByClassName('inside')[0].style.filter = 'grayscale(100%)'
+        }
       }
 
-      if (window.scrollY > sections[3].offsetTop - 480) {
-        sections[3].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+      if (sections.length > 1 && sections[3] && window.scrollY > sections[3].offsetTop - 480) {
+        if (
+          sections[3].getElementsByClassName('inside') &&
+          sections[3].getElementsByClassName('inside')[0]
+        ) {
+          sections[3].getElementsByClassName('inside')[0].style.filter = 'grayscale(0)'
+        }
       }
     }
     onUnmounted(() => {
