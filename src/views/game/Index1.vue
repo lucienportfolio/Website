@@ -1,8 +1,22 @@
 <template>
   <section class="main">
     <section class="banner-box">
-      <img src="@/assets/images/game-1-logo.png" alt="" class="img" />
-      <button>Coming soon</button>
+      <div class="box-background">
+        <video
+          preload="auto"
+          loop
+          playsinline
+          autoplay
+          tabindex="-1"
+          muted="muted"
+          poster="https://ambrus.s3.amazonaws.com/1658414473737_0.27_Video_cover.jpg"
+          src="https://ambrus.s3.amazonaws.com/1658413936207_0.79_Fallen%20Arena_MP4.mp4"
+        ></video>
+      </div>
+      <div class="box-section">
+        <img src="@/assets/images/game-1-logo.png" alt="" class="img" />
+        <button>Coming soon</button>
+      </div>
     </section>
     <section class="rangers-box clearfix">
       <div class="ranger-left">
@@ -135,9 +149,6 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 71.8rem;
-  background-image: url(@/assets/images/game-1-banner-bg.png);
-  background-size: cover;
-  background-position: center;
   text-align: center;
   .img {
     margin-top: 17.8rem;
@@ -434,7 +445,6 @@ export default defineComponent({
   .banner-box {
     height: 100vh;
     min-height: 130vw;
-    background-image: url(@/assets/images/game-1-banner-mob-bg.png);
     .img {
       margin-top: 18.8rem;
       height: 20rem;
@@ -573,5 +583,23 @@ export default defineComponent({
       box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.25);
     }
   }
+}
+.box-background {
+  video {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.box-section {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
