@@ -51,7 +51,52 @@
         </div>
       </div>
     </section>
+    <section class="map-design-mob-box">
+      <div class="box-info">
+        <div class="title">Innovative Map Design</div>
+        <div class="desc">Short descriptions of the game environment design</div>
+      </div>
+      <div class="mob-img-box">
+        <swiper
+          :modules="swiperModules"
+          :pagination="{
+            el: '.game-2-map-design-skip-list',
+            clickable: true,
+            renderBullet
+          }"
+          :slides-per-view="1"
+          :initial-slide="1"
+          :centered-slides="true"
+          :parallax="true"
+        >
+          <div class="parallax-bg" data-swiper-parallax="-66.67%"></div>
+          <swiper-slide class="slide">
+            <div class="map-design-info">
+              <div class="title">Portals</div>
+              <div class="desc">Descriptions of the portals in the map</div>
+            </div>
+          </swiper-slide>
+          <swiper-slide class="slide">
+            <div class="map-design-info">
+              <div class="title">Lanes</div>
+              <div class="desc">
+                Each player selects 3 champions. And controls an active squad of 2 of them at the
+                same time.
+              </div>
+            </div>
+          </swiper-slide>
+          <swiper-slide class="slide">
+            <div class="map-design-info">
+              <div class="title">Resource Points</div>
+              <div class="desc">Descriptions of the resource points in the map</div>
+            </div>
+          </swiper-slide>
+        </swiper>
+        <div class="game-2-map-design-skip-list"></div>
+      </div>
+    </section>
     <section class="ranger-box">
+      <div class="ranger-img"></div>
       <div class="ranger-info-box">
         <div class="ranger-box-title">Ranger concept art</div>
         <div class="ranger-change-info-list">
@@ -92,7 +137,12 @@
       <swiper
         :modules="swiperModules"
         direction="vertical"
+        :mousewheel="true"
         class="my-swiper"
+        :autoplay="{
+          delay: 5000,
+          disableOnInteraction: false
+        }"
         :pagination="{
           el: '.game-2-skip-list',
           clickable: true,
@@ -145,7 +195,7 @@
 <script>
 import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import $ from 'jquery'
-import { Navigation, Pagination, A11y, Autoplay } from 'swiper'
+import { Navigation, Pagination, A11y, Autoplay, Parallax } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 
@@ -200,7 +250,7 @@ export default defineComponent({
       onVideoPlay,
       renderBullet,
       featuresInfo,
-      swiperModules: [Navigation, Pagination, A11y, Autoplay]
+      swiperModules: [Navigation, Pagination, A11y, Autoplay, Parallax]
     }
   }
 })
@@ -477,12 +527,24 @@ export default defineComponent({
     }
   }
 }
+.map-design-mob-box {
+  display: none;
+}
 .ranger-box {
   width: 100%;
   height: 64rem;
-  background-image: url(@/assets/images/game-2-ranger-1-banner.png);
-  background-size: cover;
-  background-position: top center;
+  position: relative;
+  .ranger-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64rem;
+    background-image: url(@/assets/images/game-2-ranger-1-banner.png);
+    background-size: cover;
+    background-position: top center;
+  }
+
   .ranger-info-box {
     // width: 144rem;
     height: 64rem;
@@ -693,8 +755,306 @@ export default defineComponent({
     }
   }
 }
+
+@media screen and (max-width: 960px) {
+  .banner-box {
+    height: 100vh;
+    min-height: 130vw;
+    background-image: url(@/assets/images/game-2-banner-mob-bg.png);
+    .img {
+      margin-top: 18.8rem;
+      height: 7.6rem;
+    }
+    button {
+      position: absolute;
+      bottom: 6rem;
+      width: 25.5rem;
+      left: calc((100vw - 25.5rem) / 2);
+    }
+  }
+  .video-box {
+    padding: 6rem 2.4rem;
+    .video-info-box {
+      position: relative;
+      width: 100%;
+      height: 18.4rem;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 0;
+      .video {
+        width: 100%;
+        height: 18.4rem;
+      }
+      .play-box {
+        margin-left: -8.6rem;
+        margin-top: -5.3rem;
+        width: 17.2rem;
+        height: 10.6rem;
+        padding-top: 0.8rem;
+        &::before {
+          width: 0.4rem;
+          height: 10.6rem;
+        }
+        &::after {
+          content: '';
+          width: 0.4rem;
+          height: 10.6rem;
+        }
+        .text {
+          font-size: 3.6rem;
+          line-height: 5.2rem;
+        }
+        img {
+          width: 2.7rem;
+          height: 3rem;
+        }
+      }
+      .around-list {
+        display: none;
+      }
+    }
+  }
+  .map-design-box {
+    display: none;
+  }
+  .map-design-mob-box {
+    display: block;
+    .box-info {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 2.4rem;
+      .title {
+        font-family: Teko;
+        font-weight: 400;
+        font-size: 3.6rem;
+        line-height: 5.2rem;
+        text-transform: uppercase;
+        color: #ff4125;
+      }
+      .desc {
+        font-family: Montserrat;
+        font-weight: 400;
+        font-size: 1.4rem;
+        line-height: 2.4rem;
+        color: #ffffff;
+      }
+    }
+    .mob-img-box {
+      display: block;
+      width: 100%;
+      height: 100vh;
+      min-height: 64rem;
+      position: relative;
+      .parallax-bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 300%;
+        height: 100%;
+        background-image: url(@/assets/images/game-2-design.png);
+        background-size: cover;
+        background-position: center;
+      }
+      .slide {
+        height: 100vh;
+        min-height: 64rem;
+        position: relative;
+        .map-design-info {
+          position: absolute;
+          left: 0;
+          bottom: 1rem;
+          width: 100%;
+          min-height: 12rem;
+          padding: 2.4rem;
+          gap: 0.4rem;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(1.2rem);
+          &::after {
+            content: '';
+            width: 12rem;
+            height: 0.8rem;
+            background: #ff4125;
+            position: absolute;
+            top: -0.4rem;
+            left: calc(50vw - 6rem);
+          }
+          .title {
+            font-family: Montserrat;
+            font-weight: 700;
+            font-size: 1.6rem;
+            line-height: 2rem;
+            text-transform: uppercase;
+            color: #ff4125;
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+          }
+          .desc {
+            font-family: Montserrat;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 1.4rem;
+            line-height: 2.4rem;
+            color: #ffffff;
+            flex: none;
+            order: 1;
+            flex-grow: 0;
+          }
+        }
+      }
+    }
+  }
+  .ranger-box {
+    width: 100%;
+    height: unset;
+    position: relative;
+    .ranger-img {
+      position: unset;
+      width: 100%;
+      height: 20rem;
+      background-image: url(@/assets/images/game-2-ranger-1-banner.png);
+      background-size: cover;
+      background-position: top left;
+    }
+    .ranger-info-box {
+      height: unset;
+      position: unset;
+      .ranger-box-title {
+        position: absolute;
+        top: 9.3rem;
+        width: 100%;
+        left: unset;
+      }
+      .ranger-change-info-list {
+        position: absolute;
+        top: 2.4rem;
+        bottom: unset;
+        left: 2.4rem;
+        .ranger-change-info {
+          width: 3.6rem;
+          height: 3.6rem;
+          font-size: 1rem;
+          line-height: 3.6rem;
+          margin-bottom: 1.2rem;
+          &:after {
+            height: 1.2rem;
+            bottom: -1.4rem;
+            left: 1.7rem;
+          }
+        }
+      }
+      .ranger-info {
+        position: unset;
+        bottom: unset;
+        left: unset;
+        padding: 2.4rem;
+      }
+      .ability-info-box {
+        position: unset;
+        bottom: unset;
+        right: unset;
+        margin: 0 2.4rem;
+        width: calc(100vw - 4.8rem);
+        padding: 1.2rem;
+      }
+      .ability-change-info-list {
+        position: unset;
+        bottom: unset;
+        right: unset;
+        margin: 1.2rem 0 8rem 2.4rem;
+        .ability-change-info {
+          width: 6rem;
+          height: 6rem;
+          margin-left: 0;
+          margin-right: 1.2rem;
+          &.active {
+            &::before {
+              width: 6rem;
+              height: 6rem;
+            }
+          }
+          &:hover {
+            &::before {
+              width: 6rem;
+              height: 6rem;
+            }
+          }
+          &:last-child {
+            margin-left: 0;
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+  .features-box {
+    width: 100%;
+    height: 100vh;
+    min-height: 130vw;
+    position: relative;
+    overflow: hidden;
+    .my-swiper {
+      height: 100vh;
+      min-height: 130vw;
+    }
+    .feature {
+      .feature-info {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-image: url(@/assets/images/game-2-feature-1.png);
+        background-size: cover;
+        background-position: center;
+      }
+      &:nth-child(2) {
+        .feature-info {
+          background-image: url(@/assets/images/game-2-feature-2.png);
+        }
+      }
+      &:nth-child(3) {
+        .feature-info {
+          background-image: url(@/assets/images/game-2-feature-3.png);
+        }
+      }
+      &:nth-child(4) {
+        .feature-info {
+          background-image: url(@/assets/images/game-2-feature-4.png);
+        }
+      }
+      .info {
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding: 2.4rem;
+        .title {
+          line-height: 4.8rem;
+        }
+      }
+    }
+  }
+}
 </style>
 <style lang="less">
+.game-2-map-design-skip-list {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1rem;
+  z-index: 9;
+  .swiper-pagination-bullet {
+    display: inline-block;
+    vertical-align: top;
+    width: 33.33vw;
+    height: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    &.swiper-pagination-bullet-active {
+      background: #ffffff;
+      box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.25);
+    }
+  }
+}
 .game-2-skip-list {
   position: absolute;
   right: 9.9rem;
@@ -726,6 +1086,26 @@ export default defineComponent({
       margin-bottom: 0;
       &::after {
         display: none;
+      }
+    }
+  }
+}
+@media screen and (max-width: 960px) {
+  .game-2-skip-list {
+    right: 2.4rem;
+    top: 50vh;
+    transform: translateY(-50%);
+    z-index: 9;
+    .swiper-pagination-bullet {
+      width: 1rem;
+      height: 1rem;
+      margin-bottom: 1.2rem;
+      &:after {
+        content: '';
+        width: 0.2rem;
+        height: 1.2rem;
+        bottom: -1.1rem;
+        left: -0.6rem;
       }
     }
   }
