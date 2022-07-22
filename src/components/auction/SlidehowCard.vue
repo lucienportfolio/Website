@@ -6,6 +6,7 @@ interface Props {
 defineProps<Props>()
 </script>
 
+<!-- TODO: animation time -->
 <template>
   <div class="m-y-9 overflow-hidden w-full">
     <div class="logoShowcase">
