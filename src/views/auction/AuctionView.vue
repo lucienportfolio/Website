@@ -3,6 +3,7 @@ const auction = {
   subtitle: 'E4C Rangers NFT Series 1',
   subtitleFocus: 'Ultimate Edition',
   title: 'auction event',
+  // TODO: 时间设置
   images: [
     'https://i.imgur.com/uo7YvMO.jpg',
     'https://i.imgur.com/3fL1nMr.jpg',
@@ -94,7 +95,7 @@ const auction = {
 
 <template>
   <main id="main" class="pt-68px xl:pt-100px bg-black-bg bg-cover bg-top bg-repeat-y">
-    <div class="max-w-1280px p-x-2.5 mx-auto">
+    <div class="max-w-1332px p-x-9 mx-auto">
       <h2 class="text-2xl uppercase text-white leading-29px mt-15 not-italic">
         {{ auction.subtitle }}
         <span class="text-2xl font-bold uppercase text-rust leading-29px">{{
@@ -107,9 +108,13 @@ const auction = {
       <div class="w-40 h-2 bg-gradient-to-r from-[#b7220c] to-[#ff4125]"></div>
     </div>
 
-    <div class="m-y-9">
+    <div class="m-y-9 overflow-hidden w-full">
       <div class="logoShowcase">
-        <div v-for="(image, index) in [...auction.images, ...auction.images]" :key="index">
+        <div
+          v-for="(image, index) in [...auction.images, ...auction.images]"
+          :key="index"
+          class="w-240px h-240px sm:w-280px sm:h-280px md:w-320px md:h-320px xl:w-480px xl:h-480px"
+        >
           <a href="#">
             <img class="w-full h-auto select-none" :src="image" alt="Disclaimer Image" />
           </a>
@@ -117,13 +122,15 @@ const auction = {
       </div>
     </div>
 
-    <div class="max-w-1264px p-x-2.5 mx-auto grid grid-cols-2 gap-x-9 p-b-14.25">
-      <div class="grid gap-y-32.5">
+    <div
+      class="max-w-1332px p-x-9 mx-auto grid grid-cols-1 xl:grid-cols-2 xl:gap-x-9 gap-y-9 xl:gap-y-0 p-b-14.25"
+    >
+      <div class="grid gap-y-9">
         <div v-for="(detail, index) in auction.detail" :key="index">
           <h4 class="text-base font-semibold not-italic uppercase text-[#a0a4b0] mb-3">
             {{ detail.title }}
           </h4>
-          <div class="w-693px grid grid-cols-2 gap-3">
+          <div class="xl:w-693px grid grid-cols-1 md:grid-cols-2 gap-3">
             <section
               v-for="(item, indexJ) in detail.introduction"
               :key="indexJ"
@@ -144,8 +151,8 @@ const auction = {
         </div>
       </div>
 
-      <div class="fixed bottom-15 right-15 max-w-[532px] z-100">
-        <div class="bg-black p-6">
+      <div class="xl:fixed xl:bottom-15 xl:right-15 xl:max-w-[532px] z-100">
+        <div class="bg-black/50 p-6">
           <div class="text-white">
             <span class="text-2xl uppercase italic font-bold leading-30px">{{
               auction.notes.title
@@ -202,8 +209,6 @@ const auction = {
 }
 
 .logoShowcase > * {
-  width: 480px;
-  height: 480px;
   overflow: hidden;
   background: #000;
   image-rendering: crisp-edges;
