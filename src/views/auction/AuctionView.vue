@@ -84,7 +84,10 @@ const auction = {
   },
   actions: {
     text: '15 ULTIMATELY UNIQUE NFTs',
-    button: 'RSVP for the auction'
+    button: 'RSVP for the auction', // Big on Opensea
+    buttonStyle: {
+      backgroundColor: '#ff4125' // #2081E2
+    }
   }
 }
 </script>
@@ -162,6 +165,7 @@ const auction = {
             {{ auction.actions.text }}
           </p>
           <button
+            :style="auction.actions.buttonStyle"
             class="bg-[#ff4125] text-2xl font-semibold uppercase text-white leading-29px p-y-5.5 p-x-19.25 mt-6"
           >
             {{ auction.actions.button }}
