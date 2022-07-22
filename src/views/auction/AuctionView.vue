@@ -13,6 +13,9 @@ const onSlideChange = () => {
 }
 
 const auction = {
+  subtitle: 'E4C Rangers NFT Series 1',
+  subtitleFocus: 'Ultimate Edition',
+  title: 'auction event',
   images: [
     'http://localhost:3000/demo/images/nft-disclaimer.png',
     'http://localhost:3000/demo/images/nft-disclaimer.png',
@@ -24,19 +27,23 @@ const auction = {
       introduction: [
         {
           title: '10%',
-          content: 'Revenue share of corresponding in-game hero/skin'
+          content: 'Revenue share of corresponding in-game hero/skin',
+          style: {}
         },
         {
           title: 'E4C',
-          content: 'Governance token airdrop'
+          content: 'Governance token airdrop',
+          style: {}
         },
         {
           title: 'Loots',
-          content: '& other in-game assets airdrops'
+          content: '& other in-game assets airdrops',
+          style: {}
         },
         {
           title: '5',
-          content: 'Free gifts to friends'
+          content: 'Free gifts to friends',
+          style: {}
         }
       ]
     },
@@ -45,24 +52,52 @@ const auction = {
       introduction: [
         {
           title: 'When',
-          content: 'July 31st 9AM EST - August 6th 9AM EST'
+          content: 'July 31st 9AM EST - <br> August 6th 9AM EST',
+          style: {
+            lineHeight: '51px',
+            fontSize: '42px'
+          }
         },
         {
           title: 'How',
           content:
-            'Open ascending bid auction in which the highest bidder wins and pays the second highest price'
+            'Open ascending bid auction in which the highest bidder wins and pays the second highest price',
+          style: {
+            lineHeight: '51px',
+            fontSize: '42px'
+          }
         },
         {
           title: 'Where',
-          content: 'OpenSea'
+          content: 'OpenSea',
+          style: {
+            lineHeight: '51px',
+            fontSize: '42px'
+          }
         },
         {
           title: 'How much',
-          content: 'Starting from 6.5 ETH'
+          content: 'Starting from 6.5 ETH',
+          style: {
+            lineHeight: '51px',
+            fontSize: '42px'
+          }
         }
       ]
     }
-  ]
+  ],
+  notes: {
+    title: 'Rin',
+    subtitle: 'Heir of Musashi',
+    content: `Rin is the first ranger came to life in E4C Verse. We crafted 15 best-quality 3D arts as
+            our one-of-one NFTs, each having a meaningful background, the most special texture and
+            color combinations, and ultimately unique vibes.<br><br> She’ll also make an appearance in our
+            upcoming games, <a href="#">E4C Final Salvation</a> and <a href="#">E4C Fallen Arena</a>.`
+  },
+  actions: {
+    text: '15 ULTIMATELY UNIQUE NFTs',
+    button: 'RSVP for the auction'
+  }
 }
 </script>
 
@@ -70,11 +105,13 @@ const auction = {
   <main id="main" class="pt-68px xl:pt-100px bg-black-bg bg-cover bg-top bg-repeat-y">
     <div class="max-w-1280px p-x-2.5 mx-auto">
       <h2 class="text-2xl uppercase text-white leading-29px mt-15 not-italic">
-        E4C Rangers NFT Series 1
-        <span class="text-2xl font-bold uppercase text-rust leading-29px">Ultimate Edition</span>
+        {{ auction.subtitle }}
+        <span class="text-2xl font-bold uppercase text-rust leading-29px">{{
+          auction.subtitleFocus
+        }}</span>
       </h2>
       <h1 class="text-5xl font-bold uppercase text-white leading-59px mt-1 mb-3 not-italic">
-        auction event
+        {{ auction.title }}
       </h1>
       <div class="w-40 h-2 bg-gradient-to-r from-[#b7220c] to-[#ff4125]"></div>
     </div>
@@ -108,14 +145,18 @@ const auction = {
             <section
               v-for="(item, indexJ) in detail.introduction"
               :key="indexJ"
-              class="flex flex-col justify-center items-center px-6 py-3 bg-black/50"
+              class="flex flex-col items-center px-6 py-3 bg-black/50 min-h-148px"
             >
-              <p class="text-64px font-bold text-center text-white leading-78px not-italic">
+              <p
+                class="text-64px font-bold text-center text-white leading-78px not-italic',"
+                :style="item.style"
+              >
                 {{ item.title }}
               </p>
-              <p class="text-sm text-center text-[#f0f0f0] leading-24px not-italic">
-                {{ item.content }}
-              </p>
+              <p
+                class="text-sm text-center text-[#f0f0f0] leading-24px not-italic"
+                v-html="item.content"
+              ></p>
             </section>
           </div>
         </div>
@@ -124,26 +165,27 @@ const auction = {
       <div class="fixed bottom-15 right-15 max-w-[532px] z-100">
         <div class="bg-black p-6">
           <div class="text-white">
-            <span class="text-2xl uppercase italic font-bold leading-30px">Rin</span>
-            <span class="text-base relative top-0.75 uppercase italic font-bold leading-30px ml-3"
-              >Heir of Musashi</span
+            <span class="text-2xl uppercase italic font-bold leading-30px">{{
+              auction.notes.title
+            }}</span>
+            <span
+              class="text-base relative top-0.75 uppercase italic font-bold leading-30px ml-3"
+              >{{ auction.notes.subtitle }}</span
             >
           </div>
-          <p class="text-sm not-italic text-white mt-3 leading-24px">
-            Rin is the first ranger came to life in E4C Verse. We crafted 15 best-quality 3D arts as
-            our one-of-one NFTs, each having a meaningful background, the most special texture and
-            color combinations, and ultimately unique vibes. She’ll also make an appearance in our
-            upcoming games, E4C Final Salvation and E4C Fallen Arena.
-          </p>
+          <p
+            class="text-sm not-italic text-white mt-3 leading-24px notes-content"
+            v-html="auction.notes.content"
+          ></p>
         </div>
         <div class="bg-white p-9 text-center">
           <p class="text-2xl not-italic font-bold text-[#ff4125] leading-29px">
-            15 ULTIMATELY UNIQUE NFTs
+            {{ auction.actions.text }}
           </p>
           <button
             class="bg-[#ff4125] text-2xl font-semibold uppercase text-white leading-29px p-y-5.5 p-x-19.25 mt-6"
           >
-            RSVP for the auction
+            {{ auction.actions.button }}
           </button>
         </div>
       </div>
@@ -178,4 +220,10 @@ const auction = {
   > .swiper-pagination-bullet.swiper-pagination-bullet-active {
   @apply opacity-100;
 } */
+</style>
+
+<style>
+.notes-content a {
+  text-decoration: underline;
+}
 </style>
