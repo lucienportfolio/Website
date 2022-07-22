@@ -14,7 +14,7 @@ defineProps<Props>()
         :key="index"
         class="w-240px h-240px sm:w-280px sm:h-280px md:w-320px md:h-320px xl:w-480px xl:h-480px"
       >
-        <a href="#">
+        <a>
           <img class="w-full h-auto select-none" :src="image" alt="Disclaimer Image" />
         </a>
       </div>
