@@ -1,25 +1,13 @@
 <script setup lang="ts">
-// Import Swiper styles
-import 'swiper/css'
-
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue'
-
-const onSwiper = (swiper: any) => {
-  console.log(swiper)
-}
-const onSlideChange = () => {
-  console.log('slide change')
-}
-
 const auction = {
   subtitle: 'E4C Rangers NFT Series 1',
   subtitleFocus: 'Ultimate Edition',
   title: 'auction event',
   images: [
-    'http://localhost:3000/demo/images/nft-disclaimer.png',
-    'http://localhost:3000/demo/images/nft-disclaimer.png',
-    'http://localhost:3000/demo/images/nft-disclaimer.png'
+    'https://i.imgur.com/uo7YvMO.jpg',
+    'https://i.imgur.com/3fL1nMr.jpg',
+    'https://i.imgur.com/bAHWfBZ.jpg',
+    'https://i.imgur.com/KDb0h62.jpg'
   ],
   detail: [
     {
@@ -116,23 +104,14 @@ const auction = {
       <div class="w-40 h-2 bg-gradient-to-r from-[#b7220c] to-[#ff4125]"></div>
     </div>
 
-    <!-- h-[480px]  -->
     <div class="m-y-9">
-      <swiper
-        class="auction-swiper"
-        :slides-per-view="3"
-        :space-between="24"
-        :loop="true"
-        :autoplay="{ delay: 5000 }"
-        @swiper="onSwiper"
-        @slideChange="onSlideChange"
-      >
-        <swiper-slide v-for="(image, index) in auction.images" :key="index">
+      <div class="logoShowcase">
+        <div v-for="(image, index) in [...auction.images, ...auction.images]" :key="index">
           <a href="#">
             <img class="w-full h-auto select-none" :src="image" alt="Disclaimer Image" />
           </a>
-        </swiper-slide>
-      </swiper>
+        </div>
+      </div>
     </div>
 
     <div class="max-w-1264px p-x-2.5 mx-auto grid grid-cols-2 gap-x-9 p-b-14.25">
@@ -202,28 +181,45 @@ const auction = {
     url('~@/assets/images/bg/bg-page@3x.png') 3x
   );
 }
-
-.auction-swiper {
-  @apply m-0 w-full h-auto;
-}
-
-.auction-swiper .swiper-slide {
-}
-/* .disclaimer-swiper > .swiper-pagination {
-  @apply left-24px bottom-24px w-auto text-left;
-}
-.disclaimer-swiper > .swiper-pagination > .swiper-pagination-bullet {
-  @apply w-30px xl:w-60px h-2px bg-none bg-white opacity-50 rounded-none;
-}
-.disclaimer-swiper
-  > .swiper-pagination
-  > .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  @apply opacity-100;
-} */
 </style>
 
 <style>
 .notes-content a {
   text-decoration: underline;
+}
+</style>
+
+<style>
+.logoShowcase {
+  animation: conveyerBelt 30s linear infinite forwards;
+  display: flex;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.logoShowcase > * {
+  width: 480px;
+  height: 480px;
+  overflow: hidden;
+  background: #000;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  margin-left: 12px;
+  margin-right: 12px;
+}
+.logoShowcase img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes conveyerBelt {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 </style>
