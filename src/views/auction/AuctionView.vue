@@ -10,18 +10,19 @@ const auction = {
   title: 'auction event',
   // TODO: animation time
   images: [
-    'https://i.imgur.com/uo7YvMO.jpg',
-    'https://i.imgur.com/3fL1nMr.jpg',
-    'https://i.imgur.com/bAHWfBZ.jpg',
-    'https://i.imgur.com/KDb0h62.jpg'
+    'https://ambrus.s3.amazonaws.com/1657877346203_0.92_206.jpg',
+    'https://ambrus.s3.amazonaws.com/1657877346199_0.09_204.jpg',
+    'https://ambrus.s3.amazonaws.com/1657877346191_0.92_107.jpg ',
+    'https://ambrus.s3.amazonaws.com/1657877346186_0.34_105.jpg ',
+    'https://ambrus.s3.amazonaws.com/1657877346176_0.08_102.jpg'
   ],
   detail: [
     {
       title: 'The Ultimate Utilities',
       introduction: [
         {
-          title: '10%',
-          content: 'Revenue share of corresponding in-game hero/skin',
+          title: '2%',
+          content: 'Exclusive IP didvidend ownership',
           style: {}
         },
         {
@@ -35,8 +36,8 @@ const auction = {
           style: {}
         },
         {
-          title: '5',
-          content: 'Free gifts to friends',
+          title: 'VIP',
+          content: 'RSVP, bid, and get our exclusive customized NFT airdrop and more',
           style: {}
         }
       ]
