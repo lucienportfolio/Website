@@ -54,12 +54,14 @@ defineProps<Props>()
         <p class="text-2xl not-italic font-bold text-[#ff4125] leading-29px">
           {{ auction.actions.text }}
         </p>
-        <button
-          :style="auction.actions.buttonStyle"
-          class="bg-[#ff4125] text-2xl font-semibold uppercase text-white leading-29px p-y-5.5 p-x-19.25 mt-6"
-        >
-          {{ auction.actions.button }}
-        </button>
+        <a :href="auction.actions.link" target="_blank" rel="noopener">
+          <button
+            :style="auction.actions.buttonStyle"
+            class="bg-[#ff4125] text-2xl font-semibold uppercase text-white leading-29px p-y-5.5 p-x-19.25 mt-6"
+          >
+            {{ auction.actions.button }}
+          </button>
+        </a>
       </div>
     </div>
   </div>
