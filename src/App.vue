@@ -54,6 +54,7 @@
                         : 'games-exp-name'
                     "
                     v-for="(v, i) in headerGameInfo.exp"
+                    @click="toUrl(v.url)"
                     @mouseover="onMouseOverGame('exp', i, v.img)"
                     :key="i"
                     v-html="v.name"
@@ -176,25 +177,7 @@ export default defineComponent({
     const isWap = ref(false)
     const headerGameInfo = ref({
       games: [],
-      exp: [
-        {
-          name: 'UGC Tool<span>Beta</span>',
-          img: {
-            material: {
-              type: 'image',
-              url: 'https://ambrus.s3.amazonaws.com/1658233706352_0.55_header-game-img-2.png'
-            },
-            material_pc: {
-              type: 'image',
-              url: 'https://ambrus.s3.amazonaws.com/1658233706352_0.55_header-game-img-2.png'
-            },
-            material_mob: {
-              type: '',
-              url: ''
-            }
-          }
-        }
-      ]
+      exp: []
     })
     const headerGameAct = ref({
       type: 'games',
@@ -232,14 +215,22 @@ export default defineComponent({
       const headerGameRes = await getBlockInfoApi('headerGame')
       if (headerGameRes.code === 200) {
         headerGameInfo.value.games = []
+        headerGameInfo.value.exp = []
         headerGameRes.data.forEach((v) => {
-          headerGameInfo.value.games.push({
-            url: v.url,
-            name: v.name,
-            img: onCheckMaterial(v.material, v.material_mob)
-          })
+          if (v.sort < 200) {
+            headerGameInfo.value.games.push({
+              url: v.url,
+              name: v.name,
+              img: onCheckMaterial(v.material, v.material_mob)
+            })
+          } else {
+            headerGameInfo.value.exp.push({
+              url: v.url,
+              name: v.name,
+              img: onCheckMaterial(v.material, v.material_mob)
+            })
+          }
         })
-        console.log(headerGameInfo)
         headerGameAct.value = {
           type: 'games',
           index: 0,
@@ -339,19 +330,21 @@ export default defineComponent({
       { immediate: true }
     )
     const toUrl = (path) => {
-      router.push({
-        path
-      })
-      if ($(window).width() > 960) {
-        $('.games-list-box').hide()
-      } else {
-        $('.middle-box').hide()
-        $('.header-menu').show()
-        $('.header-menu-close').hide()
-        $('header').removeClass('mob-bg')
+      if (path) {
+        router.push({
+          path
+        })
+        if ($(window).width() > 960) {
+          $('.games-list-box').hide()
+        } else {
+          $('.middle-box').hide()
+          $('.header-menu').show()
+          $('.header-menu-close').hide()
+          $('header').removeClass('mob-bg')
+        }
+        $('header').removeClass('games-bg')
+        $('.show-info img').removeClass('show')
       }
-      $('header').removeClass('games-bg')
-      $('.show-info img').removeClass('show')
     }
     const onMouseOverGame = (type, index, img) => {
       headerGameAct.value = {
