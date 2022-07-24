@@ -2,7 +2,7 @@
  * @Author       : hwl
  * @Date         : 2022-05-14 18:06:33
  * @LastEditors  : hwl
- * @LastEditTime : 2022-06-05 21:44:52
+ * @LastEditTime : 2022-07-24 14:12:46
  * @Description  :
  */
 import $ from 'jquery'
@@ -22,9 +22,9 @@ export const isPad = () => {}
 
 export const onCheckMaterial = (pcUrl, mobUrl) => {
   const data = {
-    material: { type: '', url: '' },
-    material_pc: { type: '', url: '' },
-    material_mob: { type: '', url: '' }
+    material: { type: '', url: '', poster: '' },
+    material_pc: { type: '', url: '', poster: '' },
+    material_mob: { type: '', url: '', poster: '' }
   }
   data.material_pc.type = pcUrl && pcUrl.split('|')[0] ? pcUrl.split('|')[0] : ''
   data.material_pc.url = pcUrl && pcUrl.split('|')[1] ? pcUrl.split('|')[1] : pcUrl
