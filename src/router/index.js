@@ -2,13 +2,13 @@
  * @Author       : hwl
  * @Date         : 2022-05-11 16:39:03
  * @LastEditors  : hwl
- * @LastEditTime : 2022-07-20 19:57:14
+ * @LastEditTime : 2022-07-24 13:47:55
  * @Description  :
  */
 import { createRouter, createWebHistory } from 'vue-router'
 import IndexIndex from '../views/index/Index.vue'
-import GameIndex1 from '../views/game/Index1.vue'
-import GameIndex2 from '../views/game/Index2.vue'
+import GameIndex20 from '../views/game/Index20.vue'
+import GameIndex22 from '../views/game/Index22.vue'
 import GameNewsList from '../views/game/NewsList.vue'
 import GameNewsContent from '../views/game/NewsContent.vue'
 import WorldviewIndex from '../views/worldview/Index.vue'
@@ -24,15 +24,15 @@ const routes = [
     meta: { title: 'HOME', keepAlive: true, type: 'home' }
   },
   {
-    path: '/game/1',
-    name: 'GameIndex1',
-    component: GameIndex1,
+    path: '/game/20',
+    name: 'GameIndex20',
+    component: GameIndex20,
     meta: { title: 'GAME', keepAlive: true, type: 'game' }
   },
   {
-    path: '/game/2',
-    name: 'GameIndex2',
-    component: GameIndex2,
+    path: '/game/22',
+    name: 'GameIndex22',
+    component: GameIndex22,
     meta: { title: 'GAME', keepAlive: true, type: 'game' }
   },
   {

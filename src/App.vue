@@ -22,7 +22,7 @@
                 <div class="games-list-info">
                   <div class="games-text">Games</div>
                   <div
-                    @click="toUrl(`/game/${v.id}`)"
+                    @click="toUrl(v.url)"
                     @mouseover="onMouseOverGame('games', i, v.img)"
                     v-for="(v, i) in headerGameInfo.games"
                     :key="i"
@@ -38,11 +38,12 @@
                   <div
                     class="games-mob-img"
                     v-for="(v, i) in headerGameInfo.games"
-                    @click="toUrl(`/game/${v.id}`)"
+                    @click="toUrl(v.url)"
                     :key="i"
-                  >
-                    <img :src="v.img" alt="" />
-                  </div>
+                    :style="`background-image: url(${
+                      v.img.material_mob.url ? v.img.material_mob.url : v.img.material_pc.url
+                    })`"
+                  ></div>
                 </div>
                 <div class="games-list-exp">
                   <div class="games-text">Gaming Experience</div>
@@ -58,9 +59,10 @@
                     v-html="v.name"
                   ></div>
                 </div>
-                <div class="games-list-img">
-                  <img :src="headerGameAct.img" alt="" />
-                </div>
+                <div
+                  class="games-list-img"
+                  :style="`background-image: url(${headerGameAct.img.material_pc.url}) `"
+                ></div>
               </div>
             </div>
           </div>
@@ -173,29 +175,44 @@ export default defineComponent({
     const footerLink = ref([])
     const isWap = ref(false)
     const headerGameInfo = ref({
-      games: [
-        {
-          id: 2,
-          name: 'E4C Final Salvation',
-          img: 'https://ambrus.s3.amazonaws.com/1658233706332_0.37_header-game-img-1.png'
-        },
-        {
-          id: 1,
-          name: 'E4C Fallen Arena<span>Out now</span>',
-          img: 'https://ambrus.s3.amazonaws.com/1658239291817_0.43_header-game-img-3.png'
-        }
-      ],
+      games: [],
       exp: [
         {
           name: 'UGC Tool<span>Beta</span>',
-          img: 'https://ambrus.s3.amazonaws.com/1658233706352_0.55_header-game-img-2.png'
+          img: {
+            material: {
+              type: 'image',
+              url: 'https://ambrus.s3.amazonaws.com/1658233706352_0.55_header-game-img-2.png'
+            },
+            material_pc: {
+              type: 'image',
+              url: 'https://ambrus.s3.amazonaws.com/1658233706352_0.55_header-game-img-2.png'
+            },
+            material_mob: {
+              type: '',
+              url: ''
+            }
+          }
         }
       ]
     })
     const headerGameAct = ref({
       type: 'games',
       index: 0,
-      img: headerGameInfo.value.games[0].img
+      img: {
+        material: {
+          type: '',
+          url: ''
+        },
+        material_pc: {
+          type: 'image',
+          url: ''
+        },
+        material_mob: {
+          type: '',
+          url: ''
+        }
+      }
     })
     onMounted(async () => {
       window.onload = () => {}
@@ -212,12 +229,31 @@ export default defineComponent({
         console.log(headerLink)
       }
 
+      const headerGameRes = await getBlockInfoApi('headerGame')
+      if (headerGameRes.code === 200) {
+        headerGameInfo.value.games = []
+        headerGameRes.data.forEach((v) => {
+          headerGameInfo.value.games.push({
+            url: v.url,
+            name: v.name,
+            img: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+        console.log(headerGameInfo)
+        headerGameAct.value = {
+          type: 'games',
+          index: 0,
+          img: headerGameInfo.value.games[0].img
+        }
+      }
+
       const footerLinkRes = await getBlockInfoApi('footerIcon')
       if (footerLinkRes.code === 200) {
         footerLink.value = []
         footerLinkRes.data.forEach((v) => {
           footerLink.value.push({
             url: v.url,
+            name: v.name,
             material_list: onCheckMaterial(v.material, v.material_mob)
           })
         })
@@ -845,6 +881,8 @@ header {
           width: 55.6rem;
           height: 36rem;
           background: linear-gradient(229.11deg, #393939 1.23%, #4f4f4f 73.2%);
+          background-size: cover;
+          background-position: center;
           border-radius: 0.4rem;
           border: 0.2rem solid rgba(160, 164, 176, 0.2);
           img {
@@ -1138,9 +1176,12 @@ footer {
             .games-mob-img {
               margin-top: 2.4rem;
               width: 100%;
+              height: 53.33vw;
               background: linear-gradient(229.11deg, #393939 1.23%, #4f4f4f 73.2%);
               border-radius: 0.4rem;
               border: 0.2rem solid rgba(160, 164, 176, 0.2);
+              background-size: cover;
+              background-position: center;
               img {
                 width: 100%;
               }

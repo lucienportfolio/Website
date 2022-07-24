@@ -3,39 +3,49 @@
     <section class="banner-box">
       <div class="box-background">
         <video
+          v-if="bannerInfo.material_list.material.type === 'video'"
           preload="auto"
           loop
           playsinline
           autoplay
           tabindex="-1"
           muted="muted"
-          poster="https://ambrus.s3.amazonaws.com/1658414473737_0.27_Video_cover.jpg"
-          src="https://ambrus.s3.amazonaws.com/1658413936207_0.79_Fallen%20Arena_MP4.mp4"
+          :poster="bannerInfo.material_list.material.poster"
+          :src="bannerInfo.material_list.material.url"
         ></video>
+        <img
+          :src="bannerInfo.material_list.material.url"
+          v-else-if="bannerInfo.material_list.material.type === 'image'"
+        />
       </div>
-      <div class="box-section">
-        <img src="@/assets/images/game-1-logo.png" alt="" class="img" />
-        <button>Coming soon</button>
-      </div>
+      <div class="box-section" v-html="bannerInfo.html"></div>
     </section>
     <section class="rangers-box clearfix">
       <div class="ranger-left">
-        <img src="@/assets/images/game-1-ranger.png" alt="" />
+        <img
+          :src="rangersInfo[1].material_list.material.url"
+          alt=""
+          v-if="rangersInfo[1].material_list.material.url"
+        />
       </div>
       <div class="ranger-right">
-        <img src="@/assets/images/5.gif" alt="" />
+        <img
+          :src="rangersInfo[2].material_list.material.url"
+          alt=""
+          v-if="rangersInfo[2].material_list.material.url"
+        />
       </div>
       <div class="ranger-info">
-        <div class="text">Play with your</div>
-        <div class="title">E4C rangers</div>
-        <div class="desc">
-          Play E4C: Fallen Arena with a dozen unique Rangers. And you’ll get a Ranger for free if
-          you are an E4C Ranger NFT holder. More Rangers to be released in the future!
-        </div>
+        <div class="text">{{ rangersInfo[0].introduction }}</div>
+        <div class="title">{{ rangersInfo[0].name }}</div>
+        <div class="desc">{{ rangersInfo[0].html }}</div>
       </div>
     </section>
     <section class="battlefield-box">
-      <div class="img-box"></div>
+      <div
+        class="img-box"
+        :style="`background-image: url(${funInfo[0].material_list.material_pc.url}) `"
+      ></div>
       <div class="mob-img-box">
         <swiper
           :modules="swiperModules"
@@ -49,7 +59,15 @@
           :centered-slides="true"
           :parallax="true"
         >
-          <div class="parallax-bg" data-swiper-parallax="-50%"></div>
+          <div
+            class="parallax-bg"
+            data-swiper-parallax="-50%"
+            :style="`background-image: url(${
+              funInfo[0].material_list.material_mob.url
+                ? funInfo[0].material_list.material_mob.url
+                : funInfo[0].material_list.material_pc.url
+            })`"
+          ></div>
           <swiper-slide class="slide"></swiper-slide>
           <swiper-slide class="slide"></swiper-slide>
           <swiper-slide class="slide"></swiper-slide>
@@ -57,34 +75,22 @@
         <div class="game-1-skip-list"></div>
       </div>
       <div class="battlefield-info">
-        <div class="title">Wasteland Battlefield</div>
-        <div class="desc">Short descriptions of the game environment design</div>
+        <div class="title">{{ funInfo[0].name }}</div>
+        <div class="desc">{{ funInfo[0].introduction }}</div>
       </div>
     </section>
     <section class="video-list-box clear">
-      <div class="video-box">
-        <div class="video">
-          <img src="@/assets/images/1.gif" alt="" />
+      <template v-for="(v, i) in funInfo">
+        <div class="video-box" v-if="i > 0" :key="i">
+          <div class="video">
+            <img :src="v.material_list.material.url" alt="" />
+          </div>
+          <div class="video-info">
+            <div class="title">{{ v.name }}</div>
+            <div class="desc">{{ v.introduction }}</div>
+          </div>
         </div>
-        <div class="video-info">
-          <div class="title">Seckill Fun</div>
-          <div class="desc">Have fun in the first-ever seckill game on web3</div>
-        </div>
-      </div>
-      <div class="video-box">
-        <div class="video"><img src="@/assets/images/3.gif" alt="" /></div>
-        <div class="video-info">
-          <div class="title">Stunning Weapons</div>
-          <div class="desc">Use a variety of different weapons with all the rangers</div>
-        </div>
-      </div>
-      <div class="video-box">
-        <div class="video"><img src="@/assets/images/4.gif" alt="" /></div>
-        <div class="video-info">
-          <div class="title">Play with the community</div>
-          <div class="desc">Have fun in the first-ever seckill game on web3</div>
-        </div>
-      </div>
+      </template>
     </section>
     <!-- <section class="battlepass-box">
       <img src="@/assets/images/game-1-battlepass-top.png" alt="" />
@@ -102,6 +108,8 @@ import $ from 'jquery'
 import { Navigation, Pagination, A11y, Autoplay, Parallax } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import { onCheckMaterial } from '@/utils/index.js'
+import { getBlockInfoApi } from '@/api/block/index'
 
 export default defineComponent({
   name: 'GameIndex',
@@ -111,7 +119,52 @@ export default defineComponent({
   },
   setup() {
     const isWap = ref(false)
-    const id = 1
+    const id = 20
+    const bannerInfo = ref({
+      html: '',
+      material_list: {
+        material: { type: '', url: '', poster: '' },
+        material_pc: { type: '', url: '', poster: '' },
+        material_mob: { type: '', url: '', poster: '' }
+      }
+    })
+    const rangersInfo = ref([
+      {
+        name: '',
+        introduction: '',
+        html: '',
+        material_list: {
+          material: { type: '', url: '', poster: '' },
+          material_pc: { type: '', url: '', poster: '' },
+          material_mob: { type: '', url: '', poster: '' }
+        }
+      },
+      {
+        material_list: {
+          material: { type: '', url: '', poster: '' },
+          material_pc: { type: '', url: '', poster: '' },
+          material_mob: { type: '', url: '', poster: '' }
+        }
+      },
+      {
+        material_list: {
+          material: { type: '', url: '', poster: '' },
+          material_pc: { type: '', url: '', poster: '' },
+          material_mob: { type: '', url: '', poster: '' }
+        }
+      }
+    ])
+    const funInfo = ref([
+      {
+        name: '',
+        introduction: '',
+        material_list: {
+          material: { type: '', url: '', poster: '' },
+          material_pc: { type: '', url: '', poster: '' },
+          material_mob: { type: '', url: '', poster: '' }
+        }
+      }
+    ])
     const scrollFun = () => {
       if (window.scrollY > $('.banner-box').height() - $('header').height()) {
         $('header').addClass('bg')
@@ -131,16 +184,92 @@ export default defineComponent({
         const oldIsWap = isWap.value
         isWap.value = !($(window).width() > 960)
         if (isWap.value !== oldIsWap) {
-          console.log('change')
+          if (isWap.value) {
+            bannerInfo.value.material_list.material = bannerInfo.value.material_list.material_mob
+              .url
+              ? bannerInfo.value.material_list.material_mob
+              : bannerInfo.value.material_list.material_pc
+          } else {
+            bannerInfo.value.material_list.material = bannerInfo.value.material_list.material_pc
+          }
+          console.log('----------')
+          console.log(bannerInfo)
         }
       }
       $(document).ready(checkFontSize)
       $(window).resize(checkFontSize)
+
+      const bannerRes = await getBlockInfoApi('gameBanner', id)
+      if (bannerRes.code === 200) {
+        bannerInfo.value = []
+        if (bannerRes.data[0]) {
+          bannerInfo.value = {
+            html: bannerRes.data[0].html,
+            material_list: onCheckMaterial(
+              bannerRes.data[0].material,
+              bannerRes.data[0].material_mob
+            )
+          }
+          if (bannerRes.data[1]) {
+            const poster = onCheckMaterial(
+              bannerRes.data[1].material,
+              bannerRes.data[1].material_mob
+            )
+            console.log(poster)
+            console.log(poster.material_pc)
+            if (bannerInfo.value.material_list.material_pc.type === 'video') {
+              bannerInfo.value.material_list.material_pc.poster = poster.material_pc.url
+            }
+            if (bannerInfo.value.material_list.material_mob.type === 'video') {
+              bannerInfo.value.material_list.material_mob.poster = poster.material_mob.url
+                ? poster.material_mob.url
+                : poster.material_pc.url
+            }
+            bannerInfo.value.material_list.material.poster =
+              bannerInfo.value.material_list.material.url ===
+              bannerInfo.value.material_list.material_pc.url
+                ? bannerInfo.value.material_list.material_pc.poster
+                : bannerInfo.value.material_list.material_mob.poster
+          }
+        }
+      }
+
+      const rangersRes = await getBlockInfoApi('gameRangers', id)
+      if (rangersRes.code === 200) {
+        rangersInfo.value = []
+        rangersRes.data.forEach((v) => {
+          rangersInfo.value.push({
+            name: v.name,
+            html: v.html,
+            introduction: v.introduction,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+      }
+
+      const funRes = await getBlockInfoApi('gameFun', id)
+      if (funRes.code === 200) {
+        funInfo.value = []
+        funRes.data.forEach((v) => {
+          funInfo.value.push({
+            name: v.name,
+            introduction: v.introduction,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+      }
     })
     const renderBullet = (index, className) => {
       return `<div class="${className}"></div>`
     }
-    return { id, renderBullet, swiperModules: [Navigation, Pagination, A11y, Autoplay, Parallax] }
+    return {
+      id,
+      bannerInfo,
+      rangersInfo,
+      funInfo,
+      renderBullet,
+      swiperModules: [Navigation, Pagination, A11y, Autoplay, Parallax]
+    }
   }
 })
 </script>
@@ -150,25 +279,45 @@ export default defineComponent({
   width: 100%;
   height: 71.8rem;
   text-align: center;
-  .img {
-    margin-top: 17.8rem;
-    height: 36rem;
+  .box-background {
+    video,
+    img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
-  button {
-    display: block;
-    width: 26rem;
-    height: 5.4rem;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 0.4rem;
-    font-weight: 600;
-    font-size: 1.6rem;
-    line-height: 2rem;
-    text-align: center;
-    text-transform: uppercase;
-    color: #000000;
-    margin: 3.6rem auto 0;
-    outline: none;
-    border: none;
+  /deep/.box-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    .img {
+      margin-top: 17.8rem;
+      height: 36rem;
+    }
+    button {
+      font-family: Montserrat;
+      display: block;
+      width: 26rem;
+      height: 5.4rem;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 0.4rem;
+      font-weight: 600;
+      font-size: 1.6rem;
+      line-height: 2rem;
+      text-align: center;
+      text-transform: uppercase;
+      color: #000000;
+      margin: 3.6rem auto 0;
+      outline: none;
+      border: none;
+    }
   }
 }
 .rangers-box {
@@ -240,7 +389,6 @@ export default defineComponent({
   .img-box {
     width: 100%;
     height: 90rem;
-    background-image: url(@/assets/images/game-1-battlefield.png);
     background-size: cover;
     background-position: center;
   }
@@ -286,8 +434,13 @@ export default defineComponent({
       width: 100%;
       height: 100%;
       img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         width: 100%;
         height: 100%;
+        object-fit: cover;
       }
     }
     .video-info {
@@ -445,15 +598,17 @@ export default defineComponent({
   .banner-box {
     height: 100vh;
     min-height: 130vw;
-    .img {
-      margin-top: 18.8rem;
-      height: 20rem;
-    }
-    button {
-      position: absolute;
-      bottom: 6rem;
-      width: 25.5rem;
-      left: calc((100vw - 25.5rem) / 2);
+    /deep/.box-section {
+      .img {
+        margin-top: 18.8rem;
+        height: 20rem;
+      }
+      button {
+        position: absolute;
+        bottom: 6rem;
+        width: 25.5rem;
+        left: calc((100vw - 25.5rem) / 2);
+      }
     }
   }
   .rangers-box {
@@ -511,7 +666,6 @@ export default defineComponent({
         top: 0;
         width: 200%;
         height: 100%;
-        background-image: url(@/assets/images/game-1-battlefield.png);
         background-size: cover;
         background-position: center;
       }
@@ -583,23 +737,5 @@ export default defineComponent({
       box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.25);
     }
   }
-}
-.box-background {
-  video {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-.box-section {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
 }
 </style>

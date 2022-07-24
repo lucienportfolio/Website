@@ -1,23 +1,41 @@
 <template>
   <section class="main">
     <section class="banner-box">
-      <img src="@/assets/images/game-2-logo.png" alt="" class="img" />
-      <button>Coming soon</button>
+      <div class="box-background">
+        <video
+          v-if="bannerInfo.material_list.material.type === 'video'"
+          preload="auto"
+          loop
+          playsinline
+          autoplay
+          tabindex="-1"
+          muted="muted"
+          :poster="bannerInfo.material_list.material.poster"
+          :src="bannerInfo.material_list.material.url"
+        ></video>
+        <img
+          :src="bannerInfo.material_list.material.url"
+          v-else-if="bannerInfo.material_list.material.type === 'image'"
+        />
+      </div>
+      <div class="box-section" v-html="bannerInfo.html"></div>
     </section>
     <section class="video-box">
       <div class="video-info-box">
         <video
           preload
           :controls="videoControls"
-          src="@/assets/images/movie.mp4"
-          poster="@/assets/images/game-2-video-poster.png"
+          :poster="videoInfo.material_list.material.poster"
+          :src="videoInfo.material_list.material.url"
           class="video"
           id="game-video"
         ></video>
-        <div class="play-box" @click="onVideoPlay" v-if="!videoControls">
-          <div class="text">Game Demo</div>
-          <img src="@/assets/images/game-2-video-play.png" alt="" />
-        </div>
+        <div
+          class="play-box"
+          @click="onVideoPlay"
+          v-if="!videoControls"
+          v-html="videoInfo.html"
+        ></div>
         <div class="around-list">
           <div></div>
           <div></div>
@@ -26,35 +44,29 @@
         </div>
       </div>
     </section>
-    <section class="map-design-box">
+    <section
+      class="map-design-box"
+      :style="`background-image: url(${mapInfo[0].material_list.material_pc.url})`"
+    >
       <div class="map-design-main-box">
         <div class="box-info">
-          <div class="title">Innovative Map Design</div>
-          <div class="desc">A 3v3,2 lanes MOBA experience.</div>
+          <div class="title">{{ mapInfo[0].name }}</div>
+          <div class="desc">{{ mapInfo[0].introduction }}</div>
         </div>
         <div class="map-design-info-list">
-          <div class="map-design-info">
-            <div class="title">Portals</div>
-            <div class="desc">Descriptions of the portals in the map</div>
-          </div>
-          <div class="map-design-info">
-            <div class="title">Lanes</div>
-            <div class="desc">
-              Each player selects 3 champions. And controls an active squad of 2 of them at the same
-              time.
+          <template v-for="(v, i) in mapInfo">
+            <div class="map-design-info" v-if="i > 0" :key="i">
+              <div class="title">{{ v.name }}</div>
+              <div class="desc">{{ v.introduction }}</div>
             </div>
-          </div>
-          <div class="map-design-info">
-            <div class="title">Resource Points</div>
-            <div class="desc">Descriptions of the resource points in the map</div>
-          </div>
+          </template>
         </div>
       </div>
     </section>
     <section class="map-design-mob-box">
       <div class="box-info">
-        <div class="title">Innovative Map Design</div>
-        <div class="desc">Short descriptions of the game environment design</div>
+        <div class="title">{{ mapInfo[0].name }}</div>
+        <div class="desc">{{ mapInfo[0].introduction }}</div>
       </div>
       <div class="mob-img-box">
         <swiper
@@ -69,28 +81,23 @@
           :centered-slides="true"
           :parallax="true"
         >
-          <div class="parallax-bg" data-swiper-parallax="-66.67%"></div>
-          <swiper-slide class="slide">
-            <div class="map-design-info">
-              <div class="title">Portals</div>
-              <div class="desc">Descriptions of the portals in the map</div>
-            </div>
-          </swiper-slide>
-          <swiper-slide class="slide">
-            <div class="map-design-info">
-              <div class="title">Lanes</div>
-              <div class="desc">
-                Each player selects 3 champions. And controls an active squad of 2 of them at the
-                same time.
+          <div
+            class="parallax-bg"
+            data-swiper-parallax="-66.67%"
+            :style="`background-image: url(${
+              mapInfo[0].material_list.material_mob.url
+                ? mapInfo[0].material_list.material_mob.url
+                : mapInfo[0].material_list.material_pc.url
+            })`"
+          ></div>
+          <template v-for="(v, i) in mapInfo">
+            <swiper-slide class="slide" v-if="i > 0" :key="i">
+              <div class="map-design-info">
+                <div class="title">{{ v.name }}</div>
+                <div class="desc">{{ v.introduction }}</div>
               </div>
-            </div>
-          </swiper-slide>
-          <swiper-slide class="slide">
-            <div class="map-design-info">
-              <div class="title">Resource Points</div>
-              <div class="desc">Descriptions of the resource points in the map</div>
-            </div>
-          </swiper-slide>
+            </swiper-slide>
+          </template>
         </swiper>
         <div class="game-2-map-design-skip-list"></div>
       </div>
@@ -149,46 +156,36 @@
           renderBullet
         }"
       >
-        <swiper-slide class="feature">
-          <div class="feature-info">
+        <swiper-slide class="feature" v-for="(v, i) in funInfo" :key="i">
+          <div
+            class="feature-info"
+            :style="`background-image: url(${v.material_list.material.url})`"
+          >
             <div class="info">
-              <div class="title">Designed for mobile</div>
-              <div class="desc">A completely revamped Mobile-native battle system</div>
-            </div>
-          </div>
-        </swiper-slide>
-        <swiper-slide class="feature">
-          <div class="feature-info">
-            <div class="info">
-              <div class="title">Incredibly exciting Experience</div>
-              <div class="desc">
-                Each player picks 3 champions at the start and controls an active squad of 2 at the
-                same time.
-              </div>
-            </div>
-          </div>
-        </swiper-slide>
-        <swiper-slide class="feature">
-          <div class="feature-info">
-            <div class="info">
-              <div class="title">An innovative game not only in web3</div>
-              <div class="desc">
-                Time your counters wisely to dissolve your opponents’ attack, explore various skill
-                shot combos to maximize team fight effectiveness
-              </div>
-            </div>
-          </div>
-        </swiper-slide>
-        <swiper-slide class="feature">
-          <div class="feature-info">
-            <div class="info">
-              <div class="title">Designed for mobile</div>
-              <div class="desc">Descriptions</div>
+              <div class="title">{{ v.name }}</div>
+              <div class="desc">{{ v.introduction }}</div>
             </div>
           </div>
         </swiper-slide>
       </swiper>
       <div class="game-2-skip-list"></div>
+    </section>
+    <section class="features-mob-box">
+      <div class="feature" v-for="(v, i) in funInfo" :key="i">
+        <div
+          class="feature-info"
+          :style="`background-image: url(${
+            v.material_list.material_mob.url
+              ? v.material_list.material_mob.url
+              : v.material_list.material_pc.url
+          })`"
+        >
+          <div class="info">
+            <div class="title">{{ v.name }}</div>
+            <div class="desc">{{ v.introduction }}</div>
+          </div>
+        </div>
+      </div>
     </section>
   </section>
 </template>
@@ -198,6 +195,8 @@ import $ from 'jquery'
 import { Navigation, Pagination, A11y, Autoplay, Parallax } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import { onCheckMaterial } from '@/utils/index.js'
+import { getBlockInfoApi } from '@/api/block/index'
 
 export default defineComponent({
   name: 'GameIndex',
@@ -207,8 +206,49 @@ export default defineComponent({
   },
   setup() {
     const isWap = ref(false)
-    const id = 2
+    const id = 22
+    const bannerInfo = ref({
+      html: '',
+      material_list: {
+        material: { type: '', url: '', poster: '' },
+        material_pc: { type: '', url: '', poster: '' },
+        material_mob: { type: '', url: '', poster: '' }
+      }
+    })
     const videoControls = ref(false)
+
+    const videoInfo = ref({
+      html: '',
+      material_list: {
+        material: { type: '', url: '', poster: '' },
+        material_pc: { type: '', url: '', poster: '' },
+        material_mob: { type: '', url: '', poster: '' }
+      }
+    })
+
+    const mapInfo = ref([
+      {
+        name: '',
+        introduction: '',
+        material_list: {
+          material: { type: '', url: '', poster: '' },
+          material_pc: { type: '', url: '', poster: '' },
+          material_mob: { type: '', url: '', poster: '' }
+        }
+      }
+    ])
+
+    const funInfo = ref([
+      {
+        name: '',
+        introduction: '',
+        material_list: {
+          material: { type: '', url: '', poster: '' },
+          material_pc: { type: '', url: '', poster: '' },
+          material_mob: { type: '', url: '', poster: '' }
+        }
+      }
+    ])
 
     const scrollFun = () => {
       if (window.scrollY > $('.banner-box').height() - $('header').height()) {
@@ -230,11 +270,110 @@ export default defineComponent({
         const oldIsWap = isWap.value
         isWap.value = !($(window).width() > 960)
         if (isWap.value !== oldIsWap) {
-          console.log('change')
+          if (isWap.value) {
+            bannerInfo.value.material_list.material = bannerInfo.value.material_list.material_mob
+              .url
+              ? bannerInfo.value.material_list.material_mob
+              : bannerInfo.value.material_list.material_pc
+
+            videoInfo.value.material_list.material = videoInfo.value.material_list.material_mob.url
+              ? videoInfo.value.material_list.material_mob
+              : videoInfo.value.material_list.material_pc
+          } else {
+            bannerInfo.value.material_list.material = bannerInfo.value.material_list.material_pc
+            videoInfo.value.material_list.material = videoInfo.value.material_list.material_pc
+          }
+          console.log('----------')
+          console.log(bannerInfo)
         }
       }
       $(document).ready(checkFontSize)
       $(window).resize(checkFontSize)
+      const bannerRes = await getBlockInfoApi('gameBanner', id)
+      if (bannerRes.code === 200) {
+        bannerInfo.value = []
+        if (bannerRes.data[0]) {
+          bannerInfo.value = {
+            html: bannerRes.data[0].html,
+            material_list: onCheckMaterial(
+              bannerRes.data[0].material,
+              bannerRes.data[0].material_mob
+            )
+          }
+          if (bannerRes.data[1]) {
+            const poster = onCheckMaterial(
+              bannerRes.data[1].material,
+              bannerRes.data[1].material_mob
+            )
+            console.log(poster)
+            console.log(poster.material_pc)
+            if (bannerInfo.value.material_list.material_pc.type === 'video') {
+              bannerInfo.value.material_list.material_pc.poster = poster.material_pc.url
+            }
+            if (bannerInfo.value.material_list.material_mob.type === 'video') {
+              bannerInfo.value.material_list.material_mob.poster = poster.material_mob.url
+                ? poster.material_mob.url
+                : poster.material_pc.url
+            }
+            bannerInfo.value.material_list.material.poster =
+              bannerInfo.value.material_list.material.url ===
+              bannerInfo.value.material_list.material_pc.url
+                ? bannerInfo.value.material_list.material_pc.poster
+                : bannerInfo.value.material_list.material_mob.poster
+          }
+        }
+      }
+
+      const videoRes = await getBlockInfoApi('gameVideo', id)
+      if (videoRes.code === 200) {
+        videoInfo.value = []
+        if (videoRes.data[0]) {
+          videoInfo.value = {
+            html: videoRes.data[0].html,
+            material_list: onCheckMaterial(videoRes.data[0].material, videoRes.data[0].material_mob)
+          }
+          if (videoRes.data[1]) {
+            const poster = onCheckMaterial(videoRes.data[1].material, videoRes.data[1].material_mob)
+            console.log(poster)
+            console.log(poster.material_pc)
+
+            videoInfo.value.material_list.material_pc.poster = poster.material_pc.url
+
+            videoInfo.value.material_list.material_mob.poster = poster.material_mob.url
+              ? poster.material_mob.url
+              : poster.material_pc.url
+            videoInfo.value.material_list.material.poster =
+              videoInfo.value.material_list.material.url ===
+              videoInfo.value.material_list.material_pc.url
+                ? videoInfo.value.material_list.material_pc.poster
+                : videoInfo.value.material_list.material_mob.poster
+          }
+        }
+      }
+
+      const mapRes = await getBlockInfoApi('gameMap', id)
+      if (mapRes.code === 200) {
+        mapInfo.value = []
+        mapRes.data.forEach((v) => {
+          mapInfo.value.push({
+            name: v.name,
+            introduction: v.introduction,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+      }
+
+      const funRes = await getBlockInfoApi('gameFun', id)
+      if (funRes.code === 200) {
+        funInfo.value = []
+        funRes.data.forEach((v) => {
+          funInfo.value.push({
+            name: v.name,
+            introduction: v.introduction,
+            material_list: onCheckMaterial(v.material, v.material_mob)
+          })
+        })
+      }
     })
     const onVideoPlay = () => {
       $('#game-video')[0].play()
@@ -243,13 +382,15 @@ export default defineComponent({
     const renderBullet = (index, className) => {
       return `<div class="${className}"></div>`
     }
-    const featuresInfo = ref([0, 1, 2, 3, 4])
     return {
       id,
+      bannerInfo,
       videoControls,
       onVideoPlay,
       renderBullet,
-      featuresInfo,
+      videoInfo,
+      mapInfo,
+      funInfo,
       swiperModules: [Navigation, Pagination, A11y, Autoplay, Parallax]
     }
   }
@@ -260,29 +401,46 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 71.8rem;
-  background-image: url(@/assets/images/game-2-banner-bg.png);
-  background-size: cover;
-  background-position: center;
   text-align: center;
-  .img {
-    margin-top: 24.7rem;
-    height: 22.5rem;
+  .box-background {
+    video,
+    img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
-  button {
-    display: block;
-    width: 26rem;
-    height: 5.4rem;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 0.4rem;
-    font-weight: 600;
-    font-size: 1.6rem;
-    line-height: 2rem;
-    text-align: center;
-    text-transform: uppercase;
-    color: #000000;
-    margin: 7.2rem auto 0;
-    outline: none;
-    border: none;
+  /deep/.box-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    .img {
+      margin-top: 24.7rem;
+      height: 22.5rem;
+    }
+    button {
+      font-family: Montserrat;
+      display: block;
+      width: 26rem;
+      height: 5.4rem;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 0.4rem;
+      font-weight: 600;
+      font-size: 1.6rem;
+      line-height: 2rem;
+      text-align: center;
+      text-transform: uppercase;
+      color: #000000;
+      margin: 7.2rem auto 0;
+      outline: none;
+      border: none;
+    }
   }
 }
 .video-box {
@@ -301,7 +459,7 @@ export default defineComponent({
       background: #d9d9d9;
       object-fit: fill;
     }
-    .play-box {
+    /deep/.play-box {
       position: absolute;
       left: 50%;
       top: 50%;
@@ -381,7 +539,6 @@ export default defineComponent({
 .map-design-box {
   width: 100%;
   height: 90rem;
-  background-image: url(@/assets/images/game-2-design.png);
   background-size: cover;
   background-position: center;
   .map-design-main-box {
@@ -534,6 +691,7 @@ export default defineComponent({
   width: 100%;
   height: 64rem;
   position: relative;
+  display: none;
   .ranger-img {
     position: absolute;
     top: 0;
@@ -708,24 +866,8 @@ export default defineComponent({
       position: relative;
       width: 100%;
       height: 100%;
-      background-image: url(@/assets/images/game-2-feature-1.png);
       background-size: cover;
       background-position: center;
-    }
-    &:nth-child(2) {
-      .feature-info {
-        background-image: url(@/assets/images/game-2-feature-2.png);
-      }
-    }
-    &:nth-child(3) {
-      .feature-info {
-        background-image: url(@/assets/images/game-2-feature-3.png);
-      }
-    }
-    &:nth-child(4) {
-      .feature-info {
-        background-image: url(@/assets/images/game-2-feature-4.png);
-      }
     }
     .info {
       position: absolute;
@@ -755,21 +897,25 @@ export default defineComponent({
     }
   }
 }
+.features-mob-box {
+  display: none;
+}
 
 @media screen and (max-width: 960px) {
   .banner-box {
     height: 100vh;
     min-height: 130vw;
-    background-image: url(@/assets/images/game-2-banner-mob-bg.png);
-    .img {
-      margin-top: 18.8rem;
-      height: 7.6rem;
-    }
-    button {
-      position: absolute;
-      bottom: 6rem;
-      width: 25.5rem;
-      left: calc((100vw - 25.5rem) / 2);
+    /deep/.box-section {
+      .img {
+        margin-top: 18.8rem;
+        height: 7.6rem;
+      }
+      button {
+        position: absolute;
+        bottom: 6rem;
+        width: 25.5rem;
+        left: calc((100vw - 25.5rem) / 2);
+      }
     }
   }
   .video-box {
@@ -785,7 +931,7 @@ export default defineComponent({
         width: 100%;
         height: 18.4rem;
       }
-      .play-box {
+      /deep/.play-box {
         margin-left: -8.6rem;
         margin-top: -5.3rem;
         width: 17.2rem;
@@ -851,7 +997,6 @@ export default defineComponent({
         top: 0;
         width: 300%;
         height: 100%;
-        background-image: url(@/assets/images/game-2-design.png);
         background-size: cover;
         background-position: center;
       }
@@ -908,6 +1053,7 @@ export default defineComponent({
     width: 100%;
     height: unset;
     position: relative;
+    display: none;
     .ranger-img {
       position: unset;
       width: 100%;
@@ -993,6 +1139,7 @@ export default defineComponent({
     min-height: 130vw;
     position: relative;
     overflow: hidden;
+    display: none;
     .my-swiper {
       height: 100vh;
       min-height: 130vw;
@@ -1002,24 +1149,8 @@ export default defineComponent({
         position: relative;
         width: 100%;
         height: 100%;
-        background-image: url(@/assets/images/game-2-feature-1.png);
         background-size: cover;
         background-position: center;
-      }
-      &:nth-child(2) {
-        .feature-info {
-          background-image: url(@/assets/images/game-2-feature-2.png);
-        }
-      }
-      &:nth-child(3) {
-        .feature-info {
-          background-image: url(@/assets/images/game-2-feature-3.png);
-        }
-      }
-      &:nth-child(4) {
-        .feature-info {
-          background-image: url(@/assets/images/game-2-feature-4.png);
-        }
       }
       .info {
         left: 0;
@@ -1028,6 +1159,49 @@ export default defineComponent({
         padding: 2.4rem;
         .title {
           line-height: 4.8rem;
+        }
+      }
+    }
+  }
+  .features-mob-box {
+    display: block;
+    width: 100%;
+    min-height: 130vw;
+    position: relative;
+    overflow: hidden;
+    .feature {
+      .feature-info {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+      }
+      .info {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        width: 100%;
+        padding: 2.4rem;
+        z-index: 9;
+        .title {
+          font-family: Teko;
+          font-weight: 400;
+          font-size: 4.8rem;
+          line-height: 4.8rem;
+          text-transform: uppercase;
+          color: #ff4125;
+          margin-bottom: 1.2rem;
+        }
+        .desc {
+          font-family: Montserrat;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 1.4rem;
+          line-height: 2.4rem;
+          min-height: 7.2rem;
+          color: #ffffff;
         }
       }
     }
