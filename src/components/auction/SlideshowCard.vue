@@ -8,7 +8,6 @@ interface Props {
 defineProps<Props>()
 </script>
 
-<!-- TODO: animation time -->
 <template>
   <div class="m-t-6 md:m-t-9 m-b-9 overflow-hidden w-full">
     <div class="logoShowcase" :style="{ 'animation-duration': 6 * auctionImages.length + 's' }">
@@ -29,8 +28,7 @@ defineProps<Props>()
 .logoShowcase {
   animation: conveyerBelt 30s linear infinite forwards;
   width: fit-content;
-  white-space: nowrap;
-  @apply flex;
+  @apply flex whitespace-nowrap;
 }
 
 .logoShowcase > * {

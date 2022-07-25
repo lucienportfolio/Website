@@ -39,7 +39,6 @@ export default defineConfig({
           greyMedium: '#A0A4B0',
           blackBg: '#2A2A2A',
           white_1: '#f0f0f0',
-          grey_1: '#a0a4b0',
           red_1: '#b7220c'
         },
         boxShadow: {
