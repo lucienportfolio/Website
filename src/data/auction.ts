@@ -79,13 +79,10 @@ export const auction: Auction = {
   notes: {
     title: 'Rin',
     subtitle: 'Heir of Musashi',
-    content: `Rin is the first ranger came to life in E4C Verse. We crafted 15 best-quality 3D arts as
-            our one-of-one NFTs, each having a meaningful background, the most special texture and
-            color combinations, and ultimately unique vibes.<br><br> She’ll also make an appearance in our
-            upcoming games, <a href="#">E4C Final Salvation</a> and <a href="#">E4C Fallen Arena</a>.`
+    content: `Rin is the first ranger came to life in <a href="#">E4C Verse</a>. We crafted 15 best-quality 3D arts as our one-of-one NFTs, each having a meaningful background, the most special texture and color combinations, and ultimately unique vibes.<br/><br/>She’ll also make an appearance in our upcoming games, <a href="#">E4C Final Salvation</a>.`
   },
   actions: {
-    text: '15 ULTIMATELY UNIQUE NFTs',
+    text: 'Sign up and get 5% off the bidding price',
     button: 'RSVP for the auction', // Big on Opensea
     link: 'https://forms.gle/wNDrwLKkbCwfW44EA',
     buttonStyle: {

@@ -14,7 +14,7 @@ const route = useRoute()
   <footer
     :class="[
       'p-24px xl:py-48px xl:px-0 bg-grey-dark',
-      route.name === 'auction' && 'auction-footer'
+      (route.name === 'auction' || route.name === 'mint') && 'auction-footer'
     ]"
   >
     <div class="flex flex-col max-w-1264px mx-auto">

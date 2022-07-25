@@ -6,7 +6,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'mint',
-      component: () => import('@/views/mint/MintView.vue')
+      // component: () => import('@/views/mint/MintView.vue')
+      component: () => import('@/views/auction/AuctionView.vue')
     },
     {
       path: '/auction',
