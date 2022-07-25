@@ -14,7 +14,7 @@ const route = useRoute()
   <footer
     :class="[
       'p-24px xl:py-48px xl:px-0 bg-grey-dark',
-      route.name === 'auction' && 'p-b-36 md:p-b-55.5'
+      route.name === 'auction' && 'auction-footer'
     ]"
   >
     <div class="flex flex-col max-w-1264px mx-auto">
@@ -46,3 +46,18 @@ const route = useRoute()
     </div>
   </footer>
 </template>
+
+<style scoped>
+@media (max-width: 1280px) {
+  .auction-footer {
+    padding-bottom: calc(222px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(222px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 768px) {
+  .auction-footer {
+    padding-bottom: calc(144px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(144px + env(safe-area-inset-bottom));
+  }
+}
+</style>

@@ -1,11 +1,12 @@
 export type AuctionImages = string
+export type AuctionDetailIntroduction = {
+  title: string
+  content: string
+  style: { [key: string]: string }
+}
 export type AuctionDetail = {
   title: string
-  introduction: {
-    title: string
-    content: string
-    style: { [key: string]: string }
-  }[]
+  introduction: AuctionDetailIntroduction[]
 }
 export type AuctionNotes = {
   title: string

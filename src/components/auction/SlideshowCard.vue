@@ -27,14 +27,14 @@ defineProps<Props>()
 <style scoped>
 .logoShowcase {
   animation: conveyerBelt 30s linear infinite forwards;
-  width: fit-content;
-  @apply flex whitespace-nowrap;
+  @apply flex whitespace-nowrap w-fit;
 }
 
 .logoShowcase > * {
   image-rendering: crisp-edges;
   backface-visibility: hidden;
-  @apply bg-black m-x-3 overflow-hidden translate-z-1;
+  transform: translateZ(0);
+  @apply bg-black m-x-3 overflow-hidden;
 }
 .logoShowcase img {
   @apply w-full h-full object-cover;
