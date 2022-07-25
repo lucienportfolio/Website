@@ -17,7 +17,7 @@ export const auction: Auction = {
       introduction: [
         {
           title: '2%',
-          content: 'Exclusive IP didvidend ownership',
+          content: 'Exclusive IP dividend ownership',
           style: {}
         },
         {
@@ -42,7 +42,7 @@ export const auction: Auction = {
       introduction: [
         {
           title: 'When',
-          content: 'July 31st 9AM EST - <br> August 6th 9AM EST',
+          content: 'July 31st 9AM EST - <br> August 7th 9AM EST',
           style: {
             lineHeight: '51px',
             fontSize: '42px'
