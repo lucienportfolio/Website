@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AuctionDetailIntroduction } from '@/types/auction'
+import { cleanupHTML } from '@/utils'
 
 interface Props {
   introduction: AuctionDetailIntroduction
@@ -18,7 +19,7 @@ defineProps<Props>()
     </p>
     <p
       class="text-sm text-center text-white_1 leading-24px not-italic"
-      v-html="introduction.content"
+      v-html="cleanupHTML(introduction.content)"
     ></p>
   </section>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AuctionNotes } from '@/types/auction'
+import { cleanupHTML } from '@/utils'
 
 interface Props {
   notes: AuctionNotes
@@ -18,7 +19,7 @@ defineProps<Props>()
     </div>
     <p
       class="text-sm not-italic text-white mt-3 leading-24px notes-content"
-      v-html="notes.content"
+      v-html="cleanupHTML(notes.content)"
     ></p>
   </div>
 </template>
