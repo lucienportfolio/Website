@@ -4,7 +4,6 @@ export const auction: Auction = {
   subtitle: 'E4C Rangers NFT Series 1',
   subtitleFocus: 'Ultimate Edition',
   title: 'auction event',
-  // TODO: animation time
   images: [
     'https://ambrus.s3.amazonaws.com/1657877346203_0.92_206.jpg',
     'https://ambrus.s3.amazonaws.com/1657877346199_0.09_204.jpg',

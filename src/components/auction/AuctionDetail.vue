@@ -72,11 +72,14 @@ defineProps<Props>()
   </div>
 </template>
 
-<style scoped>
+<style>
+/* a tag is not inside the component */
 .notes-content a {
   text-decoration: underline;
 }
+</style>
 
+<style scoped>
 @media (max-width: 768px) {
   .actions {
     padding-bottom: calc(12px + constant(safe-area-inset-bottom));
