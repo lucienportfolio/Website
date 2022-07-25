@@ -3,14 +3,13 @@ import HeadTitle from '@components/auction/HeadTitle.vue'
 import { ref, watchEffect } from 'vue'
 
 import AuctionDetail from '@/components/auction/AuctionDetail.vue'
-import SlidehowCard from '@/components/auction/SlidehowCard.vue'
+import SlideshowCard from '@/components/auction/SlideshowCard.vue'
 import { auction } from '@/data/auction'
 import type { Auction } from '@/types/auction'
 
 const auctionData = ref<Auction>()
 
 watchEffect(() => {
-  console.log('auction', auction)
   auctionData.value = auction
 })
 </script>
@@ -19,7 +18,7 @@ watchEffect(() => {
   <main id="main" class="pt-68px xl:pt-100px bg-black-bg bg-cover bg-top bg-repeat-y">
     <template v-if="auctionData">
       <HeadTitle :auction="auctionData" />
-      <SlidehowCard :auctionImages="auctionData.images" />
+      <SlideshowCard :auctionImages="auctionData.images" />
       <AuctionDetail :auction="auctionData" />
     </template>
   </main>
