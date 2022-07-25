@@ -25,7 +25,6 @@ export default defineComponent({
   setup() {
     const isWap = ref(false)
     onMounted(async () => {
-      $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
 
       function checkFontSize() {

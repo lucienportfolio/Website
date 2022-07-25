@@ -18,38 +18,52 @@
               <span class="soon">soon</span>
             </div>
             <div class="games-list-box hidden">
-              <div class="games-list">
-                <div class="games-img-text">Games</div>
-                <div class="games-img-list clearfix">
-                  <div class="games-img-box">
-                    <img
-                      src="@/assets/images/header-games-img-1.png"
-                      alt=""
-                      @click="toUrl('/game/1')"
-                    />
-                  </div>
-                  <div class="games-img-box">
-                    <img
-                      src="@/assets/images/header-games-img-2.png"
-                      alt=""
-                      @click="toUrl('/game/1')"
-                    />
-                  </div>
-                  <div class="games-img-box">
-                    <img
-                      src="@/assets/images/header-games-img-3.png"
-                      alt=""
-                      @click="toUrl('/game/1')"
-                    />
-                  </div>
+              <div class="games-list clearfix">
+                <div class="games-list-info">
+                  <div class="games-text">Games</div>
+                  <div
+                    @click="toUrl(v.url)"
+                    @mouseover="onMouseOverGame('games', i, v.img)"
+                    v-for="(v, i) in headerGameInfo.games"
+                    :key="i"
+                    :class="
+                      headerGameAct.type === 'games' && headerGameAct.index === i
+                        ? 'games-info-name active'
+                        : 'games-info-name'
+                    "
+                    v-html="v.name"
+                  ></div>
                 </div>
-                <div class="gaming-text">Gaming Experience</div>
-                <div class="gaming-list">
-                  <p @click="toUrl('/game/news/list/1')">News & Dev Blogs</p>
-                  <p @click="toUrl('/game/archive/1')">Archive</p>
-                  <p @click="toUrl('/game/1')">Esports</p>
-                  <p @click="toUrl('/game/1')">Leaderboards</p>
+                <div class="games-mob-img-list">
+                  <div
+                    class="games-mob-img"
+                    v-for="(v, i) in headerGameInfo.games"
+                    @click="toUrl(v.url)"
+                    :key="i"
+                    :style="`background-image: url(${
+                      v.img.material_mob.url ? v.img.material_mob.url : v.img.material_pc.url
+                    })`"
+                  ></div>
                 </div>
+                <div class="games-list-exp">
+                  <div class="games-text">Gaming Experience</div>
+                  <div
+                    :class="
+                      headerGameAct.type === 'exp' && headerGameAct.index === i
+                        ? 'games-exp-name active'
+                        : 'games-exp-name'
+                    "
+                    v-for="(v, i) in headerGameInfo.exp"
+                    @click="toUrl(v.url)"
+                    @mouseover="onMouseOverGame('exp', i, v.img)"
+                    :key="i"
+                    v-html="v.name"
+                  ></div>
+                </div>
+                <div
+                  class="games-list-img"
+                  :style="`background-image: url(${headerGameAct.img.material_pc.url}) `"
+                ></div>
               </div>
             </div>
           </div>
@@ -161,6 +175,66 @@ export default defineComponent({
     const headerLink = ref([])
     const footerLink = ref([])
     const isWap = ref(false)
+    const headerGameInfo = ref({
+      games: [],
+      exp: []
+    })
+    const headerGameAct = ref({
+      type: 'games',
+      index: 0,
+      img: {
+        material: {
+          type: '',
+          url: ''
+        },
+        material_pc: {
+          type: 'image',
+          url: ''
+        },
+        material_mob: {
+          type: '',
+          url: ''
+        }
+      }
+    })
+
+    const getScrollbarWidth = () => {
+      const outer = document.createElement('div')
+      outer.style.overflow = 'scroll'
+      outer.style.height = '200px'
+      outer.style.width = '100px'
+      outer.style.position = 'absolute'
+      outer.style.top = '-10000px'
+      outer.style.left = '-10000px'
+      document.body.appendChild(outer)
+      const widthNoScroll = outer.offsetWidth
+      const inner = document.createElement('div')
+      inner.style.width = '100%'
+      outer.appendChild(inner)
+      const widthWithScroll = inner.offsetWidth
+      const scrollBarWidth = widthNoScroll - widthWithScroll
+      outer.parentNode.removeChild(outer)
+      return scrollBarWidth
+    }
+
+    const thisWidth = $(window).width() + getScrollbarWidth()
+    if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+      $('html').css({ 'overflow-y': 'hidden' })
+    } else {
+      $('html').css({ 'overflow-y': 'auto' })
+    }
+    if (thisWidth > 960 && thisWidth < 1440) {
+      $('html').css({ 'font-size': `${(thisWidth / 1440) * 62.5}%` })
+    } else {
+      console.log(1)
+      if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+        $('html').attr('style', 'overflow-y:hidden;display:block;')
+      } else {
+        $('html').attr('style', 'overflow-y:auto;display:block;')
+      }
+    }
+    $('html').show()
+
     onMounted(async () => {
       window.onload = () => {}
 
@@ -176,12 +250,39 @@ export default defineComponent({
         console.log(headerLink)
       }
 
+      const headerGameRes = await getBlockInfoApi('headerGame')
+      if (headerGameRes.code === 200) {
+        headerGameInfo.value.games = []
+        headerGameInfo.value.exp = []
+        headerGameRes.data.forEach((v) => {
+          if (v.sort < 200) {
+            headerGameInfo.value.games.push({
+              url: v.url,
+              name: v.name,
+              img: onCheckMaterial(v.material, v.material_mob)
+            })
+          } else {
+            headerGameInfo.value.exp.push({
+              url: v.url,
+              name: v.name,
+              img: onCheckMaterial(v.material, v.material_mob)
+            })
+          }
+        })
+        headerGameAct.value = {
+          type: 'games',
+          index: 0,
+          img: headerGameInfo.value.games[0].img
+        }
+      }
+
       const footerLinkRes = await getBlockInfoApi('footerIcon')
       if (footerLinkRes.code === 200) {
         footerLink.value = []
         footerLinkRes.data.forEach((v) => {
           footerLink.value.push({
             url: v.url,
+            name: v.name,
             material_list: onCheckMaterial(v.material, v.material_mob)
           })
         })
@@ -197,13 +298,14 @@ export default defineComponent({
       //     $('.show-info img').removeClass('show')
       //   }
       // })
-      // $('.show-games').bind('mouseleave', () => {
-      //   if ($(window).width() > 960) {
-      //     $('.games-list-box').hide()
-      //   }
-      //   $('header').removeClass('games-bg')
-      //   $('.show-info img').removeClass('show')
-      // })
+
+      $('.show-games').bind('mouseleave', () => {
+        if ($(window).width() + getScrollbarWidth() > 960) {
+          $('.games-list-box').hide()
+        }
+        $('header').removeClass('games-bg')
+        $('.show-info img').removeClass('show')
+      })
       $('.menu-box').bind('click', () => {
         $('.middle-box').toggle()
         if ($('.middle-box').is(':hidden')) {
@@ -214,14 +316,25 @@ export default defineComponent({
         $('.header-menu,.header-menu-close').toggle()
       })
       function checkFontSize() {
-        const width = $(window).width()
+        const width = $(window).width() + getScrollbarWidth()
+        if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+          $('html').css({ 'overflow-y': 'hidden' })
+        } else {
+          $('html').css({ 'overflow-y': 'auto' })
+        }
         if (width > 960 && width < 1440) {
           $('html').css({ 'font-size': `${(width / 1440) * 62.5}%` })
-        } else if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
-          $('html').attr({ style: '' })
         } else {
-          $('html').attr({ style: 'overflow-y:auto' })
+          console.log(1)
+          if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+            $('html').attr('style', 'overflow-y:hidden;display:block;')
+          } else {
+            $('html').attr('style', 'overflow-y:auto;display:block;')
+          }
         }
+
+        $('html').show()
+
         if (width > 960) {
           isWap.value = false
           $('.middle-box').attr('style', '')
@@ -231,18 +344,24 @@ export default defineComponent({
         } else {
           isWap.value = true
         }
-        if ($(window).width() <= 960) {
+        if (width <= 960) {
           $('.top-right').css('top', `${window.innerHeight - 87}px`)
+        } else {
+          $('.top-right').css('top', `unset`)
         }
+        // setTimeout(() => {
+        //   $('html').show()
+        // }, 3000)
       }
       function htmlshow() {
         checkFontSize()
-        $('html').show()
       }
       $(document).ready(htmlshow)
       $(window).resize(checkFontSize)
-      if ($(window).width() <= 960) {
+      if ($(window).width() - getScrollbarWidth() <= 960) {
         $('.top-right').css('top', `${window.innerHeight - 87}px`)
+      } else {
+        $('.top-right').css('top', `unset`)
       }
     })
     const router = useRouter()
@@ -263,20 +382,37 @@ export default defineComponent({
       { immediate: true }
     )
     const toUrl = (path) => {
-      router.push({
-        path
-      })
-      if ($(window).width() > 960) {
-        $('.games-list-box').hide()
+      if (path) {
+        router.push({
+          path
+        })
+        if ($(window).width() - getScrollbarWidth() > 960) {
+          $('.games-list-box').hide()
+        } else {
+          $('.middle-box').hide()
+          $('.header-menu').show()
+          $('.header-menu-close').hide()
+          $('header').removeClass('mob-bg')
+        }
+        $('header').removeClass('games-bg')
+        $('.show-info img').removeClass('show')
       }
-      $('header').removeClass('games-bg')
-      $('.show-info img').removeClass('show')
+    }
+    const onMouseOverGame = (type, index, img) => {
+      headerGameAct.value = {
+        type,
+        index,
+        img
+      }
     }
     return {
       toUrl,
       routeType,
       headerLink,
-      footerLink
+      footerLink,
+      headerGameInfo,
+      headerGameAct,
+      onMouseOverGame
     }
   }
 })
@@ -321,10 +457,15 @@ a {
   padding: 0;
 }
 html {
-  font-size: 62.5%;
+  display: none;
   overflow: hidden;
-  // overflow-y: auto;
+  font-size: 62.5%;
 }
+// html {
+//   font-size: 62.5%;
+//   display: none;
+//   // overflow-y: auto;
+// }
 // @font-face {
 //   font-family: 'Montserrat';
 //   src: url(https://ambrus.s3.amazonaws.com/1653215851675_0.59_Montserrat-Regular-8.otf);
@@ -701,72 +842,101 @@ header {
       text-align: left;
       box-sizing: border-box;
       .games-list {
-        // width: 144rem;
-        padding: 0 8.8rem;
-        height: 49rem;
+        padding: 0 0 0 8.8rem;
+        height: 52.5rem;
         margin: 0 auto;
-        .games-img-text {
-          margin: 4.8rem 0 1.2rem;
-          font-family: Montserrat;
-          font-weight: 500;
-          text-transform: uppercase;
-          color: #a0a4b0;
-          font-size: 1.4rem;
-          line-height: 1.7rem;
-        }
-        .games-img-list {
-          .games-img-box {
-            float: left;
-            position: relative;
-            width: 40.5rem;
-            background: #ffffff;
-            border: 0.2rem solid rgba(160, 164, 176, 0.2);
-            box-sizing: border-box;
-            border-radius: 0.4rem;
-            margin-right: 2.4rem;
-            box-sizing: border-box;
-            &:last-child {
-              margin-right: 0;
-            }
-            img {
-              width: 100%;
-              cursor: pointer;
-            }
+        .games-list-info {
+          float: left;
+          width: 36rem;
+          margin-right: 2.4rem;
+          .games-text {
+            font-family: Montserrat;
+            font-weight: 500;
+            font-size: 1.4rem;
+            line-height: 1.7rem;
+            text-transform: uppercase;
+            color: #a0a4b0;
+            padding: 4.8rem 0 0 2.4rem;
           }
-        }
-        .gaming-text {
-          margin: 3.6rem 0 1.2rem;
-          font-family: Montserrat;
-          font-weight: 500;
-          text-transform: uppercase;
-          color: #a0a4b0;
-          font-size: 1.4rem;
-          line-height: 1.7rem;
-        }
-        .gaming-list {
-          p {
+          .games-info-name {
             display: block;
-            float: left;
-            padding: 0 3.6rem;
-            gap: 1rem;
+            width: 36rem;
             height: 6rem;
-            background: #2a2a2a;
             border-radius: 0.8rem;
+            margin-top: 1.2rem;
             font-family: Montserrat;
             font-weight: 700;
             font-size: 2rem;
             line-height: 6rem;
-            text-align: center;
             text-transform: uppercase;
+            padding: 0 2.4rem;
             color: #ffffff;
-            flex: none;
-            order: 0;
-            flex-grow: 0;
-            margin-right: 2.4rem;
             cursor: pointer;
-            &:last-child {
-              margin-right: 0;
+            &.active {
+              background: #2a2a2a;
             }
+            span {
+              font-size: 1.2rem;
+              text-transform: uppercase;
+              color: #ff4125;
+              margin-left: 1rem;
+              vertical-align: top;
+            }
+          }
+        }
+        .games-mob-img-list {
+          display: none;
+        }
+        .games-list-exp {
+          float: left;
+          width: 30rem;
+          margin-right: 2.4rem;
+          .games-text {
+            font-family: Montserrat;
+            font-weight: 500;
+            font-size: 1.4rem;
+            line-height: 1.7rem;
+            text-transform: uppercase;
+            color: #a0a4b0;
+            padding: 4.8rem 0 0 2.4rem;
+          }
+          .games-exp-name {
+            display: block;
+            width: 30rem;
+            height: 6rem;
+            border-radius: 0.8rem;
+            margin-top: 1.2rem;
+            font-family: Montserrat;
+            font-weight: 700;
+            font-size: 2rem;
+            line-height: 6rem;
+            text-transform: uppercase;
+            padding: 0 2.4rem;
+            color: #ffffff;
+            &.active {
+              background: #2a2a2a;
+            }
+            span {
+              font-size: 1.2rem;
+              text-transform: uppercase;
+              color: #ff4125;
+              margin-left: 1rem;
+              vertical-align: top;
+            }
+          }
+        }
+        .games-list-img {
+          float: left;
+          margin-top: 7.7rem;
+          width: 55.6rem;
+          height: 36rem;
+          background: linear-gradient(229.11deg, #393939 1.23%, #4f4f4f 73.2%);
+          background-size: cover;
+          background-position: center;
+          border-radius: 0.4rem;
+          border: 0.2rem solid rgba(160, 164, 176, 0.2);
+          img {
+            width: 100%;
           }
         }
       }
@@ -912,6 +1082,7 @@ footer {
 @media screen and (max-width: 960px) {
   html {
     font-size: 62.5%;
+    display: block;
   }
   .empty-main {
     width: 100%;
@@ -940,11 +1111,11 @@ footer {
     // background: rgba(0, 0, 0, 0.4);
     // backdrop-filter: blur(1rem);
     &.bg {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(1rem);
     }
     &.mob-bg {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(1rem);
       -webkit-backdrop-filter: blur(1rem);
       height: 100vh;
@@ -1047,37 +1218,74 @@ footer {
           height: unset;
           width: unset;
           padding: 0 2.4rem;
-          .games-img-text {
+          .games-list-info {
             display: none;
           }
-          .games-img-list {
-            .games-img-box {
-              width: calc(100vw - 4.8rem);
-              margin-bottom: 1.2rem;
+          .games-mob-img-list {
+            display: block;
+            padding-top: 0.7rem;
+            .games-mob-img {
+              margin-top: 2.4rem;
+              width: 100%;
+              height: 53.33vw;
+              background: linear-gradient(229.11deg, #393939 1.23%, #4f4f4f 73.2%);
+              border-radius: 0.4rem;
+              border: 0.2rem solid rgba(160, 164, 176, 0.2);
+              background-size: cover;
+              background-position: center;
+              img {
+                width: 100%;
+              }
             }
           }
-          .gaming-text {
-            margin: 0;
-            padding: 1.2rem 0 2.4rem;
-          }
-          .gaming-list {
-            margin-left: 0;
-            padding: 0;
-            p {
-              text-align: left;
-              margin: 0;
-              float: unset;
-              padding: 1.2rem 0;
-              background: unset;
-              height: unset;
-              line-height: unset;
+          .games-list-exp {
+            float: unset;
+            width: 100%;
+            margin-right: 0;
+            .games-text {
               font-family: Montserrat;
-              font-weight: 600;
+              font-weight: 500;
               font-size: 1.4rem;
               line-height: 1.7rem;
+              text-transform: uppercase;
+              color: #a0a4b0;
+              padding: 2.4rem 0 1.2rem 0;
+            }
+            .games-exp-name {
+              display: block;
+              width: 100%;
+              gap: 1rem;
+              height: 6rem;
+              border-radius: 0.8rem;
+              margin-top: 0;
+              font-family: Montserrat;
+              font-weight: 700;
+              font-size: 2rem;
+              padding: 0;
+              margin-bottom: 0.3rem;
+              &.active {
+                background: unset;
+              }
             }
           }
+          .games-list-img {
+            display: none;
+          }
         }
+        // .games-list {
+        //   height: unset;
+        //   width: unset;
+        //   padding: 0 2.4rem;
+        //   .games-img-text {
+        //     display: none;
+        //   }
+        //   .games-img-list {
+        //     .games-img-box {
+        //       width: calc(100vw - 4.8rem);
+        //       margin-bottom: 1.2rem;
+        //     }
+        //   }
+        // }
       }
 
       .menu-box {
@@ -1223,9 +1431,15 @@ footer {
     opacity: 1;
   }
 }
+@media screen and (min-width: 1440px) {
+  html {
+    display: block;
+  }
+}
 @media screen and (min-width: 640px) and (max-width: 960px) {
   html {
     font-size: 125%;
+    display: block;
   }
   .loading-main {
     .loading-box {
@@ -1245,6 +1459,7 @@ footer {
 @media screen and (min-width: 640px) and (max-width: 720px) {
   html {
     font-size: 106%;
+    display: block;
   }
 }
 </style>
