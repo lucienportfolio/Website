@@ -10,7 +10,7 @@ defineProps<Props>()
 
 <!-- TODO: animation time -->
 <template>
-  <div class="m-y-9 overflow-hidden w-full">
+  <div class="m-t-6 md:m-t-9 m-b-9 overflow-hidden w-full">
     <div class="logoShowcase">
       <div
         v-for="(image, index) in [...auctionImages, ...auctionImages]"
