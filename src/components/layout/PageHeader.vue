@@ -45,12 +45,12 @@ const handleMobileMenuToggle = () => {
 <template>
   <header
     id="header"
-    class="fixed top-0 z-10 w-100vw xl:w-full xl:h-auto bg-black/40 backdrop-blur-10px overflow-auto"
-    :class="{ 'h-100vh': mobileMenuOpen }"
+    class="fixed top-0 z-10 w-100vw xl:w-full xl:h-auto bg-black/50 backdrop-blur-10px overflow-auto"
+    :class="{ 'h-100vh !bg-black/80': mobileMenuOpen }"
   >
     <div class="flex flex-col xl:flex-row xl:items-center h-full xl:h-100px xl:px-32px">
       <div
-        class="flex flex-row items-center justify-between xl:justify-start h-68px xl:h-auto px-24px xl:p-0"
+        class="flex flex-row shrink-0 items-center justify-between xl:justify-start h-68px xl:h-auto px-24px xl:p-0"
       >
         <LogoNav />
         <button class="xl:hidden text-rust" @click.stop.prevent="handleMobileMenuToggle">
