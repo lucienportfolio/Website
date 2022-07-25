@@ -1,13 +1,22 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
+
 import IconAmbrus from '../icons/IconAmbrus.vue'
 import ImageAmbrusStudio from '../images/ImageAmbrusStudio.vue'
 import FooterNavItem from './FooterNavItem.vue'
 import NewsletterSubscribe from './NewsletterSubscribe.vue'
 import SocialNav from './SocialNav.vue'
+
+const route = useRoute()
 </script>
 
 <template>
-  <footer class="p-24px xl:py-48px xl:px-0 bg-grey-dark">
+  <footer
+    :class="[
+      'p-24px xl:py-48px xl:px-0 bg-grey-dark',
+      route.name === 'auction' && 'p-b-36 md:p-b-55.5'
+    ]"
+  >
     <div class="flex flex-col max-w-1264px mx-auto">
       <div class="flex flex-col xl:flex-row justify-between items-center mb-36px xl:mb-42px">
         <div
