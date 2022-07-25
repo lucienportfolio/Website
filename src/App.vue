@@ -197,6 +197,26 @@ export default defineComponent({
         }
       }
     })
+
+    const getScrollbarWidth = () => {
+      const outer = document.createElement('div')
+      outer.style.overflow = 'scroll'
+      outer.style.height = '200px'
+      outer.style.width = '100px'
+      outer.style.position = 'absolute'
+      outer.style.top = '-10000px'
+      outer.style.left = '-10000px'
+      document.body.appendChild(outer)
+      const widthNoScroll = outer.offsetWidth
+      const inner = document.createElement('div')
+      inner.style.width = '100%'
+      outer.appendChild(inner)
+      const widthWithScroll = inner.offsetWidth
+      const scrollBarWidth = widthNoScroll - widthWithScroll
+      outer.parentNode.removeChild(outer)
+      return scrollBarWidth
+    }
+
     onMounted(async () => {
       window.onload = () => {}
 
@@ -260,8 +280,9 @@ export default defineComponent({
           $('.show-info img').removeClass('show')
         }
       })
+
       $('.show-games').bind('mouseleave', () => {
-        if ($(window).width() > 960) {
+        if ($(window).width() + getScrollbarWidth() > 960) {
           $('.games-list-box').hide()
         }
         $('header').removeClass('games-bg')
@@ -277,14 +298,25 @@ export default defineComponent({
         $('.header-menu,.header-menu-close').toggle()
       })
       function checkFontSize() {
-        const width = $(window).width()
+        const width = $(window).width() + getScrollbarWidth()
+        if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+          $('html').css({ 'overflow-y': 'hidden' })
+        } else {
+          $('html').css({ 'overflow-y': 'auto' })
+        }
         if (width > 960 && width < 1440) {
           $('html').css({ 'font-size': `${(width / 1440) * 62.5}%` })
-        } else if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
-          $('html').attr({ style: '' })
         } else {
-          $('html').attr({ style: 'overflow-y:auto' })
+          console.log(1)
+          if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+            $('html').attr('style', 'overflow-y:hidden;display:block;')
+          } else {
+            $('html').attr('style', 'overflow-y:auto;display:block;')
+          }
         }
+
+        $('html').show()
+
         if (width > 960) {
           isWap.value = false
           $('.middle-box').attr('style', '')
@@ -294,19 +326,21 @@ export default defineComponent({
         } else {
           isWap.value = true
         }
-        if ($(window).width() <= 960) {
+        if (width <= 960) {
           $('.top-right').css('top', `${window.innerHeight - 87}px`)
         } else {
           $('.top-right').css('top', `unset`)
         }
+        // setTimeout(() => {
+        //   $('html').show()
+        // }, 3000)
       }
       function htmlshow() {
         checkFontSize()
-        $('html').show()
       }
       $(document).ready(htmlshow)
       $(window).resize(checkFontSize)
-      if ($(window).width() <= 960) {
+      if ($(window).width() - getScrollbarWidth() <= 960) {
         $('.top-right').css('top', `${window.innerHeight - 87}px`)
       } else {
         $('.top-right').css('top', `unset`)
@@ -334,7 +368,7 @@ export default defineComponent({
         router.push({
           path
         })
-        if ($(window).width() > 960) {
+        if ($(window).width() - getScrollbarWidth() > 960) {
           $('.games-list-box').hide()
         } else {
           $('.middle-box').hide()
@@ -405,10 +439,15 @@ a {
   padding: 0;
 }
 html {
-  font-size: 62.5%;
+  display: none;
   overflow: hidden;
-  // overflow-y: auto;
+  font-size: 62.5%;
 }
+// html {
+//   font-size: 62.5%;
+//   display: none;
+//   // overflow-y: auto;
+// }
 // @font-face {
 //   font-family: 'Montserrat';
 //   src: url(https://ambrus.s3.amazonaws.com/1653215851675_0.59_Montserrat-Regular-8.otf);
@@ -785,7 +824,7 @@ header {
       text-align: left;
       box-sizing: border-box;
       .games-list {
-        padding: 0 8.8rem;
+        padding: 0 0 0 8.8rem;
         height: 52.5rem;
         margin: 0 auto;
         .games-list-info {

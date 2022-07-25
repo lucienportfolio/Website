@@ -177,7 +177,6 @@ export default defineComponent({
     })
     onMounted(async () => {
       document.addEventListener('scroll', scrollFun, false)
-      $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
 
       function checkFontSize() {
