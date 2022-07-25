@@ -41,6 +41,7 @@
           <div></div>
           <div></div>
           <div></div>
+          <div></div>
         </div>
       </div>
     </section>
@@ -263,7 +264,6 @@ export default defineComponent({
 
     onMounted(async () => {
       document.addEventListener('scroll', scrollFun, false)
-      $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
 
       function checkFontSize() {
@@ -523,10 +523,22 @@ export default defineComponent({
         &:nth-child(3) {
           bottom: 0;
           left: 0;
-          border-bottom: 0.8rem solid #d9d9d9;
-          border-left: 0.8rem solid #d9d9d9;
+          width: 0.8rem;
+          background: #d9d9d9;
         }
         &:nth-child(4) {
+          bottom: 0;
+          left: 0;
+          height: 0.8rem;
+          background: #d9d9d9;
+        }
+        // &:nth-child(4) {
+        //   bottom: 0;
+        //   left: 0;
+        //   border-bottom: 0.8rem solid #d9d9d9;
+        //   border-left: 0.8rem solid #d9d9d9;
+        // }
+        &:nth-child(5) {
           bottom: 0;
           right: 0;
           border-bottom: 0.8rem solid #d9d9d9;

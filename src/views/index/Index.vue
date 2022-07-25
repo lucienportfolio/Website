@@ -59,7 +59,6 @@
       <div class="nft-info">
         <div class="title" v-html="nftInfo[0].name"></div>
         <div class="desc" v-html="nftInfo[0].introduction"></div>
-        <div class="nft-top-btn" v-html="nftInfo[0].html"></div>
       </div>
       <div class="img-list-box img-top-list">
         <ul class="img-list" id="img-top-list">
@@ -80,7 +79,7 @@
           </template>
         </div>
       </div>
-      <div class="nft-box-btn" v-html="nftInfo[0].html"></div>
+      <div class="nft-bottom-box" v-html="nftInfo[0].html"></div>
     </section>
     <section class="roadmap-box sect" :style="`background-image:url(${roadMapBg})`">
       <div class="roadmap-box-block">
@@ -806,9 +805,8 @@ export default defineComponent({
   /deep/.title {
     position: fixed;
     top: 30vh;
-    right: 46vw;
+    left: 17vw;
     margin: 0;
-    width: 100%;
     text-align: right;
     font-family: Teko, sans-serif;
     font-size: 30vh;
@@ -1696,27 +1694,63 @@ export default defineComponent({
       }
     }
   }
-
-  /deep/.nft-box-btn {
-    .btn {
-      display: block;
-      width: 26rem;
-      line-height: 5.4rem;
-      border-radius: 0.4rem;
+  /deep/.nft-bottom-box {
+    .text {
       font-family: Montserrat;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 1.6rem;
+      font-weight: 400;
+      font-size: 1.2rem;
+      line-height: 1.5rem;
       text-align: center;
-      text-transform: uppercase;
       color: #ffffff;
-      margin: 1.2rem auto 6rem;
+    }
+    .nft-box-btn {
+      text-align: center;
+      margin: 1.2rem 0 6rem;
+      .btn {
+        display: inline-block;
+        width: 26rem;
+        line-height: 5.4rem;
+        border-radius: 0.4rem;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 1.6rem;
+        text-align: center;
+        text-transform: uppercase;
+        color: #ffffff;
+        margin-left: 2.4rem;
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+      .yellow-btn {
+        background-image: linear-gradient(
+          60deg,
+          #f0f0f0,
+          #f0f0f0 10%,
+          #f0c75d 10%,
+          #f0c75d 10.5%,
+          #f0f0f0 10.5%,
+          #f0f0f0 11.2%,
+          #e4aa15 11.2%,
+          #f0c75d 13%,
+          #f0c75d 89%,
+          #e4aa15 90.8%,
+          #f0f0f0 90.8%,
+          #f0f0f0 91.5%,
+          #f0c75d 91.5%,
+          #f0c75d 92%,
+          #f0f0f0 92%,
+          #f0f0f0 100%
+        );
+      }
     }
   }
 }
 @media screen and (max-width: 960px) {
   .banner-box {
     overflow: hidden;
+    min-height: 130vw;
     /deep/.rin {
       width: 145%;
       height: 110%;
@@ -1728,9 +1762,8 @@ export default defineComponent({
 
     /deep/.title {
       transform: rotate(270deg);
-      top: 25vh;
-      right: 0;
-      left: -11vw;
+      top: 24vh;
+      left: -13vw;
       font-size: 24vh;
       line-height: 18vh;
       span {
@@ -2097,8 +2130,85 @@ export default defineComponent({
       }
     }
 
-    /deep/.nft-box-btn {
-      display: none;
+    /deep/.nft-bottom-box {
+      .text {
+        font-family: Montserrat;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        text-align: center;
+        color: #ffffff;
+      }
+      .nft-box-btn {
+        text-align: center;
+        margin: 1.2rem 0 6rem;
+        padding: 0 3.6rem;
+        .btn {
+          display: block;
+          width: 100%;
+          margin-left: 0;
+          margin-top: 1.2rem;
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 500px) and (max-width: 960px) {
+  .banner-box {
+    overflow: hidden;
+    /deep/.rin {
+      width: 125%;
+      height: 110%;
+      background-size: auto 80%;
+      background-position: right;
+      background-repeat: no-repeat;
+      z-index: 1;
+    }
+
+    /deep/.title {
+      transform: rotate(270deg);
+      top: 25vh;
+      left: -11vw;
+      font-size: 24vh;
+      line-height: 18vh;
+      span {
+        padding-left: 9vh;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 960px) and (max-width: 1200px) {
+  .banner-box {
+    /deep/.title {
+      top: 33vh;
+      left: 8vw;
+      font-size: 26vh;
+      line-height: 19vh;
+    }
+  }
+}
+@media screen and (min-width: 1200px) and (max-width: 1366px) {
+  .banner-box {
+    /deep/.title {
+      top: 33vh;
+      left: 13vw;
+      font-size: 26vh;
+      line-height: 19vh;
+    }
+  }
+}
+@media screen and (min-width: 1366px) and (max-width: 1440px) {
+  .banner-box {
+    /deep/.title {
+      top: 33vh;
+      left: 15vw;
+      font-size: 26vh;
+      line-height: 19vh;
     }
   }
 }

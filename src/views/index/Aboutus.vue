@@ -132,7 +132,6 @@ export default defineComponent({
         backgroundImage: 'url(https://ambrus.s3.amazonaws.com/1654997771178_0.80_BG-PATTERN.png)'
       })
       document.addEventListener('scroll', scrollFun, false)
-      $('html').attr({ style: 'overflow-y:auto' })
       $('header,.main,footer').show()
 
       const bannerInfoRes = await getBlockInfoApi('aboutusBanner')
