@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { type ContractTransaction, BigNumber, ethers } from 'ethers'
+import { computed, ref, watch } from 'vue'
 
-import { useWallet } from '@/hooks'
-import type { NFTItemEdition } from '@/types'
-import { formatDatetime, isHistorical } from '@/utils'
+import { getWhitelistSignature } from '@/api'
+import { type AmbrusStudioSaler, ERC721__factory } from '@/contracts'
+import { useReadonlyEthereum, useSalerContract, useSalerData, useWallet } from '@/hooks'
+import type { NFTItemEdition, NFTItemInfo } from '@/types'
+import { alertErrorMessage, formatDatetime } from '@/utils'
 
+import MarkdownView from '../markdown/MarkdownView.vue'
 import type { NFTModalData } from '../modal/NFTMintModal.vue'
 import NFTCurrency from '../nft/NFTCurrency.vue'
 import NFTEditionRadio from './NFTEditionRadio.vue'
 
 interface Props {
   className?: string
-  time: number
+  info: NFTItemInfo
   editions: NFTItemEdition[]
 }
 interface Emits {
@@ -20,71 +24,136 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-const { isConnected } = useWallet()
-const connected = computed(() => isConnected())
+const { account, ethereum, isConnected } = useWallet()
+
+const salerContract = ref<AmbrusStudioSaler>()
+const { price, amount, total, startTime, isWhitelistSaleStart, isPublicSaleStart } =
+  useSalerData(salerContract)
 const edition = ref<string>('')
-const selectedEdition = computed(() => props.editions.find((e) => e.value === edition.value))
-const selectedPrice = computed(() => selectedEdition.value?.price?.toString() || '0.0')
-const selectedDate = computed(() => formatDatetime(props.time))
-const isAvailable = computed(() => isHistorical(props.time))
-const disabled = computed(() => !(isAvailable.value && selectedEdition.value && connected.value))
+const isMinting = ref(false)
+const connected = computed(() => isConnected())
+const selectedDate = computed(() => formatDatetime(startTime.value))
+const saleStart = computed(() => isWhitelistSaleStart() || isPublicSaleStart())
+const disabled = computed(
+  () =>
+    !(
+      props.editions.length &&
+      connected.value &&
+      edition.value &&
+      salerContract.value &&
+      amount.value &&
+      saleStart.value
+    )
+)
 const buttonText = computed(() => {
+  if (!props.editions.length) return 'Coming Soon'
   if (!connected.value) return 'Connect Wallet'
-  if (isAvailable.value) return 'Mint Now'
+  if (!(edition.value && salerContract.value)) return 'Choose an Edition'
+  if (!amount.value) return 'Sold Out'
+  if (isWhitelistSaleStart()) return 'Whitelist Mint'
+  if (isPublicSaleStart()) return 'Mint Now'
   return 'Coming Soon'
 })
-const handleMintClick = () => {
-  const modalData: NFTModalData = {
-    images: 'http://localhost:3000/demo/images/nft-image-537.png',
-    name: 'E4C Rangers #537',
-    address: '0x85',
-    transaction: '0x85'
+const getNFTInfo = async (address: string, tx: ContractTransaction): Promise<NFTModalData> => {
+  // 摆烂了，Vue ref 的 get 有问题，Event filter 又臭又长
+  const ethereum = useReadonlyEthereum()
+  const contract = ERC721__factory.connect(address, ethereum)
+  const images = 'https://i.imgur.com/V0xOBYB.png'
+  let name = await contract.name() // AmbrusStudioRanger
+  const transaction = tx.hash
+  const receipt = await tx.wait()
+  const filteredLogs = receipt.logs.filter((log) => log.address === address)
+  const parsedLog = filteredLogs.map((log) => contract.interface.parseLog(log))
+  // Event Transfer(address,address,uint256)
+  const filteredTransfer = parsedLog.filter(
+    (log) =>
+      log.topic === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' &&
+      log.args[0] === ethers.constants.AddressZero
+  )
+  if (Array.isArray(filteredTransfer) && filteredTransfer.length > 0) {
+    const tokenId = filteredTransfer[0].args[2]
+    if (typeof tokenId === 'object' && tokenId instanceof BigNumber) {
+      name += ` #${tokenId.toNumber()}`
+    }
   }
-  emit('onMintComplete', modalData)
+  return { images, name, address, transaction }
 }
+const handleMintClick = async () => {
+  if (!salerContract.value) return
+  const modalData: NFTModalData = { images: '', name: '', address: '', transaction: '' }
+  try {
+    isMinting.value = true
+
+    const price = await salerContract.value.price()
+    const nftAddress = await salerContract.value.nft()
+
+    if (isWhitelistSaleStart()) {
+      if (!account.value) return
+      const signature = getWhitelistSignature(account.value)
+      const tx = await salerContract.value.whitelistSale(signature, { value: price })
+      const nftData = await getNFTInfo(nftAddress, tx)
+      Object.assign(modalData, { ...nftData })
+    }
+    if (isPublicSaleStart()) {
+      const tx = await salerContract.value.publicSale({ value: price })
+      const nftData = await getNFTInfo(nftAddress, tx)
+      Object.assign(modalData, { ...nftData })
+    }
+
+    emit('onMintComplete', modalData)
+  } catch (error) {
+    alertErrorMessage('Mint faild', error)
+  } finally {
+    isMinting.value = false
+  }
+}
+
+watch(
+  edition,
+  async (value: string) => {
+    const selected = props.editions.find((e) => e.value === value)
+    if (!selected) return
+    const _salerContract = useSalerContract(ethereum, selected.contract)
+    if (!_salerContract.value) return
+    salerContract.value = _salerContract.value
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <div class="p-24px xl:p-36px bg-black/80 shadow-nft-sale backdrop-blur-20px" :class="[className]">
     <div class="flex flex-col gap-4px mb-24px xl:mb-36px">
-      <h4 class="uppercase text-rust font-semibold text-14px leading-18px">E4C Fallen Arena</h4>
-      <h3 class="text-white font-semibold text-20px leading-24px">Thorn: Bumble Fighter</h3>
-      <p class="text-white font-normal text-14px leading-24px">
-        Pearce's fixed-wing X6 provides a surprising amount of comfortable living space aboard a
-        compact and highly agile fighter patrol ship. A supremely capable combat vessel with an
-        extended atmoglass canopy provides a conspicuous piloting advantage as well as a way
-      </p>
+      <h4 class="uppercase text-rust font-semibold text-14px leading-18px">{{ info.type }}</h4>
+      <h3 class="text-white font-semibold text-20px leading-24px">{{ info.name }}</h3>
+      <MarkdownView class="text-white font-medium text-14px leading-24px" :src="info.content" />
     </div>
     <form class="flex flex-col" action="#">
-      <div class="flex flex-col gap-12px mb-24px xl:mb-36px" v-if="isAvailable">
+      <div class="flex flex-col gap-12px mb-24px xl:mb-36px" v-if="editions.length">
         <NFTEditionRadio
-          v-for="(edi, index) in editions"
-          :key="`edition-radio-${index}`"
-          :id="`edition-radio-${index}`"
-          :amount="edi.amount"
-          :price="edi.price"
+          v-for="edi in editions"
+          :key="`edition-radio-${edi.value}`"
+          :id="`edition-radio-${edi.value}`"
           :name="edi.name"
           :value="edi.value"
+          :contract="edi.contract"
           :style="edi.style"
           v-model="edition"
         />
       </div>
       <div class="flex flex-col gap-2px mb-12px text-grey-medium" v-if="!disabled">
         <p class="font-semibold text-12px leading-16px uppercase">PRICE</p>
-        <NFTCurrency
-          className="font-semibold text-32px leading-40px text-white"
-          :price="selectedPrice"
-        />
+        <NFTCurrency className="font-semibold text-32px leading-40px text-white" :price="price" />
         <div
           class="flex flex-row flex-nowrap justify-between items-center font-normal text-14px leading-18px"
         >
           <p>Available through {{ selectedDate }}</p>
-          <p>{{ selectedEdition?.amount || 0 }} / {{ selectedEdition?.total || 0 }} Left</p>
+          <p>{{ amount }} / {{ total }} Left</p>
         </div>
       </div>
       <button
         class="w-full py-16px xl:py-22px bg-rust text-white font-semibold text-16px xl:text-24px leading-20px xl:leading-28px text-center uppercase hover:bg-white hover:text-rust disabled:bg-grey-medium disabled:text-white disabled:hover:text-white"
-        :disabled="disabled"
+        :disabled="disabled || isMinting"
         @click.stop.prevent="handleMintClick"
       >
         {{ buttonText }}

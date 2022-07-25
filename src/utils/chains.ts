@@ -25,14 +25,14 @@ export function getChainInfoFromId(id: string | number): ChainInfo | undefined {
   return CHAIN_INFO[id as SupportedChainId]
 }
 
-export function getChainInfo(): ChainInfo {
+export function getDefaultChainInfo(): ChainInfo {
   const chainId: string | undefined = import.meta.env.VITE_CHAIN_ID
   if (!chainId) console.warn('VITE_CHAIN_ID not set')
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return getChainInfoFromId(chainId || DefaultChainId)!
 }
 
-export function getInfuraId(): string | undefined {
+export function getInfuraKey(): string | undefined {
   const infuraId = import.meta.env.VITE_INFURA_API_KEY
   if (!infuraId) throw new TypeError('VITE_INFURA_API_KEY not set')
   return infuraId
@@ -42,9 +42,15 @@ export function getInfuraUrl(id: string | number): string | undefined {
   const chainInfo = getChainInfoFromId(id)
   if (!chainInfo) return undefined
   if (chainInfo.infuraNameKey) {
-    const infuraId = getInfuraId()
+    const infuraId = getInfuraKey()
     return `https://${chainInfo.infuraNameKey}.infura.io/v3/${infuraId}`
   }
   if (chainInfo.rpcUrl) return chainInfo.rpcUrl
   return undefined
+}
+
+export function getEtherscanKey(): string | undefined {
+  const etherscan = import.meta.env.VITE_ETHERSCAN_API_KEY
+  if (!etherscan) throw new TypeError('VITE_ETHERSCAN_API_KEY not set')
+  return etherscan
 }
