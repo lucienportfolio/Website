@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { AuctionImages } from '@/types/auction'
+
 interface Props {
-  auction: any
+  auctionImages: AuctionImages[]
 }
 
 defineProps<Props>()
@@ -11,7 +13,7 @@ defineProps<Props>()
   <div class="m-y-9 overflow-hidden w-full">
     <div class="logoShowcase">
       <div
-        v-for="(image, index) in [...auction.images, ...auction.images]"
+        v-for="(image, index) in [...auctionImages, ...auctionImages]"
         :key="index"
         class="w-240px h-240px sm:w-280px sm:h-280px md:w-320px md:h-320px xl:w-480px xl:h-480px"
       >
@@ -23,27 +25,21 @@ defineProps<Props>()
   </div>
 </template>
 
-<style>
+<style scoped>
 .logoShowcase {
   animation: conveyerBelt 30s linear infinite forwards;
-  display: flex;
   width: fit-content;
   white-space: nowrap;
+  @apply flex;
 }
 
 .logoShowcase > * {
-  overflow: hidden;
-  background: #000;
   image-rendering: crisp-edges;
   backface-visibility: hidden;
-  transform: translateZ(0);
-  margin-left: 12px;
-  margin-right: 12px;
+  @apply bg-black m-x-3 overflow-hidden translate-z-1;
 }
 .logoShowcase img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  @apply w-full h-full object-cover;
 }
 
 @keyframes conveyerBelt {
