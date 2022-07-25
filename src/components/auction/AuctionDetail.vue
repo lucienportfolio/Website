@@ -15,7 +15,7 @@ defineProps<Props>()
     <div class="grid gap-y-9">
       <div v-for="(detail, index) in auction.detail" :key="index">
         <h4
-          class="text-xs md:text-base font-semibold not-italic uppercase text-grey_1 mb-3 leading-15px md:leading-20px"
+          class="text-xs md:text-base font-semibold not-italic uppercase text-greyMedium mb-3 leading-15px md:leading-20px"
         >
           {{ detail.title }}
         </h4>
