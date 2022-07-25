@@ -217,6 +217,24 @@ export default defineComponent({
       return scrollBarWidth
     }
 
+    const thisWidth = $(window).width() + getScrollbarWidth()
+    if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+      $('html').css({ 'overflow-y': 'hidden' })
+    } else {
+      $('html').css({ 'overflow-y': 'auto' })
+    }
+    if (thisWidth > 960 && thisWidth < 1440) {
+      $('html').css({ 'font-size': `${(thisWidth / 1440) * 62.5}%` })
+    } else {
+      console.log(1)
+      if ($('.loading-main').length > 0 && !$('.loading-main').is(':hidden')) {
+        $('html').attr('style', 'overflow-y:hidden;display:block;')
+      } else {
+        $('html').attr('style', 'overflow-y:auto;display:block;')
+      }
+    }
+    $('html').show()
+
     onMounted(async () => {
       window.onload = () => {}
 
@@ -1064,6 +1082,7 @@ footer {
 @media screen and (max-width: 960px) {
   html {
     font-size: 62.5%;
+    display: block;
   }
   .empty-main {
     width: 100%;
@@ -1412,9 +1431,15 @@ footer {
     opacity: 1;
   }
 }
+@media screen and (min-width: 1440px) {
+  html {
+    display: block;
+  }
+}
 @media screen and (min-width: 640px) and (max-width: 960px) {
   html {
     font-size: 125%;
+    display: block;
   }
   .loading-main {
     .loading-box {
@@ -1434,6 +1459,7 @@ footer {
 @media screen and (min-width: 640px) and (max-width: 720px) {
   html {
     font-size: 106%;
+    display: block;
   }
 }
 </style>
