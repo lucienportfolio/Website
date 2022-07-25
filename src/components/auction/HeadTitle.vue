@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { Auction } from '@/types/auction'
+
 interface Props {
-  auction: any
+  auction: Auction
 }
 
 defineProps<Props>()
@@ -17,6 +19,6 @@ defineProps<Props>()
     <h1 class="text-5xl font-bold uppercase text-white leading-59px mt-1 mb-3 not-italic">
       {{ auction.title }}
     </h1>
-    <div class="w-40 h-2 bg-gradient-to-r from-[#b7220c] to-[#ff4125]"></div>
+    <div class="w-40 h-2 bg-gradient-to-r from-red_1 to-rust"></div>
   </div>
 </template>

@@ -1,20 +1,31 @@
 <script setup lang="ts">
 import HeadTitle from '@components/auction/HeadTitle.vue'
+import { ref, watchEffect } from 'vue'
 
 import AuctionDetail from '@/components/auction/AuctionDetail.vue'
 import SlidehowCard from '@/components/auction/SlidehowCard.vue'
 import { auction } from '@/data/auction'
+import type { Auction } from '@/types/auction'
+
+const auctionData = ref<Auction>()
+
+watchEffect(() => {
+  console.log('auction', auction)
+  auctionData.value = auction
+})
 </script>
 
 <template>
   <main id="main" class="pt-68px xl:pt-100px bg-black-bg bg-cover bg-top bg-repeat-y">
-    <HeadTitle :auction="auction" />
-    <SlidehowCard :auction="auction" />
-    <AuctionDetail :auction="auction" />
+    <template v-if="auctionData">
+      <HeadTitle :auction="auctionData" />
+      <SlidehowCard :auctionImages="auctionData.images" />
+      <AuctionDetail :auction="auctionData" />
+    </template>
   </main>
 </template>
 
-<style>
+<style scoped>
 #main {
   background-image: url('~@/assets/images/bg/bg-page.png');
   background-image: image-set(

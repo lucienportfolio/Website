@@ -1,4 +1,6 @@
-export const auction = {
+import type { Auction } from '@/types/auction'
+
+export const auction: Auction = {
   subtitle: 'E4C Rangers NFT Series 1',
   subtitleFocus: 'Ultimate Edition',
   title: 'auction event',
