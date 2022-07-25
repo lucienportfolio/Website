@@ -11,7 +11,7 @@ defineProps<Props>()
 <!-- TODO: animation time -->
 <template>
   <div class="m-t-6 md:m-t-9 m-b-9 overflow-hidden w-full">
-    <div class="logoShowcase">
+    <div class="logoShowcase" :style="{ 'animation-duration': 6 * auctionImages.length + 's' }">
       <div
         v-for="(image, index) in [...auctionImages, ...auctionImages]"
         :key="index"
