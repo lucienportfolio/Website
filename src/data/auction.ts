@@ -79,7 +79,7 @@ export const auction: Auction = {
   notes: {
     title: 'Rin',
     subtitle: 'Heir of Musashi',
-    content: `Rin is the first ranger came to life in <a href="https://www.ambrus.studio/worldview" target="_blank" rel="noopener">E4C Verse</a>. We crafted 15 best-quality 3D arts as our one-of-one NFTs, each having a meaningful background, the most special texture and color combinations, and ultimately unique vibes.<br/><br/>She’ll also make an appearance in our upcoming game, <a href="https://youtu.be/8v5PKotVznQ" target="_blank" rel="noopener">E4C Final Salvation</a>.`
+    content: `Rin is the first ranger comes to life in <a href="https://www.ambrus.studio/worldview" target="_blank" rel="noopener"><strong>E4C Verse</strong></a>. We crafted 15 superb 3D arts as our one-of-one NFTs, each having a meaningful background, the most special texture and color combinations, and ultimately unique vibes.<br/><br/>She will also make an appearance in our upcoming game, <a href="https://youtu.be/8v5PKotVznQ" target="_blank" rel="noopener">E4C Final Salvation</a>.`
   },
   actions: {
     text: 'Sign up and get 5% off the bidding price',
